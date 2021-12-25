@@ -14,6 +14,8 @@ import {
 	lightningCost,
 	MafiaClass,
 	mpCost,
+	myFamiliar,
+	myThrall,
 	rainCost,
 	soulsauceCost,
 	storageAmount,
@@ -54,8 +56,8 @@ interface Guidelines<T extends MafiaClass> {
 	name: string;
 	all: T[];
 	fields: FieldData<T>[];
-	favorites?: T[];
-	active?: T[];
+	favorites: T[];
+	active: T[];
 }
 
 // maybe some day I'll figure out a way to do this without any, maybe not...
@@ -86,16 +88,17 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(guid
 	return res.join('');
 };
 
-interface BrowserList<T> {
+export interface BrowserList<T> {
 	all: T[];
-	favorites?: T[];
-	active?: T[];
+	favorites: T[];
+	active: T[];
 	byName: { [key: string]: T; }
 }
 
 // BEGIN ACTUAL GUIDELINES
 
-interface BrowserItem {
+// Begin Effects
+export interface BrowserEffect {
 	name: string;
 	default: string;
 	image: string;
@@ -106,7 +109,7 @@ interface BrowserItem {
 	turnsActive: number;
 }
 
-export declare const effects: BrowserList<BrowserItem>;
+export declare const effects: BrowserList<BrowserEffect>;
 
 export const effectGuidelines: Guidelines<Effect> = {
 	name: "effects",
@@ -122,7 +125,58 @@ export const effectGuidelines: Guidelines<Effect> = {
 		["turnsActive", (eff) => haveEffect(eff)],
 	],
 	active: $effects``.filter((eff) => haveEffect(eff) !== 0),
+	favorites: [],
 };
+// End Effects
+
+// Begin Items
+export interface BrowserItem {
+	name: string;
+	image: string;
+	id: number;
+	plural: string;
+	inInventory: number;
+	inCloset: number;
+	inStorage: number;
+	unrestricted: boolean;
+}
+
+export declare const items: BrowserList<BrowserItem>;
+
+export const itemGuidelines: Guidelines<Item> = {
+	name: "items",
+	all: $items``,
+	fields: [
+		["name", (it) => it.toString()],
+		"image",
+		["id", (it) => toInt(it)],
+		"plural",
+		["inInventory", (it) => itemAmount(it)],
+		["inCloset", (it) => closetAmount(it)],
+		["inStorage", (it) => storageAmount(it)],
+		["unrestricted", (it) => isUnrestricted(it)],
+	],
+	favorites: getProperty("chit.gear.favorites").split('|').map((itemName) => Item.get(itemName)).sort((a, b) => toInt(a) - toInt(b)),
+	active: [],
+};
+// End Items
+
+// Begin Familiars
+export interface BrowserFamiliar {
+	type: string;
+	image: string;
+	id: number;
+	name: string;
+	experience: number;
+	weight: number;
+	drop: BrowserItem | undefined;
+	dropsLimit: number;
+	dropsToday: number;
+	owned: boolean;
+	unrestricted: boolean;
+}
+
+export declare const familiars: BrowserList<BrowserFamiliar>;
 
 export const familiarGuidelines: Guidelines<Familiar> = {
 	name: "familiars",
@@ -141,23 +195,30 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		["unrestricted", (fam) => isUnrestricted(fam)],
 	],
 	favorites: Object.keys(favoriteFamiliars()).map((famName) => Familiar.get(famName)).sort((a, b) => toInt(a) - toInt(b)),
+	active: [myFamiliar()],
 };
+// End Familiars
 
-export const itemGuidelines: Guidelines<Item> = {
-	name: "items",
-	all: $items``,
-	fields: [
-		["name", (it) => it.toString()],
-		"image",
-		["id", (it) => toInt(it)],
-		"plural",
-		["inInventory", (it) => itemAmount(it)],
-		["inCloset", (it) => closetAmount(it)],
-		["inStorage", (it) => storageAmount(it)],
-		["unrestricted", (it) => isUnrestricted(it)],
-	],
-	favorites: getProperty("chit.gear.favorites").split('|').map((itemName) => Item.get(itemName)).sort((a, b) => toInt(a) - toInt(b)),
-};
+// Begin Skills
+export interface BrowserSkill {
+	name: string;
+	image: string;
+	id: number;
+	have: boolean;
+	dailylimit: number;
+	timescast: number;
+	advCost: number;
+	fuelCost: number;
+	mpCost: number;
+	hpCost: number;
+	lightningCost: number;
+	rainCost: number;
+	thunderCost: number;
+	soulsauceCost: number;
+	unrestricted: boolean;
+}
+
+export declare const skills: BrowserList<BrowserSkill>;
 
 export const skillGuidelines: Guidelines<Skill> = {
 	name: "skills",
@@ -178,8 +239,24 @@ export const skillGuidelines: Guidelines<Skill> = {
 		["thunderCost", (skill) => thunderCost(skill)],
 		["soulsauceCost", (skill) => soulsauceCost(skill)],
 		["unrestricted", (skill) => isUnrestricted(skill)],
-	]
+	],
+	active: [],
+	favorites: [],
 };
+// End Skills
+
+// Begin Thralls
+export interface BrowserThrall {
+	type: string;
+	name: string;
+	id: number;
+	level: number;
+	image: string;
+	tinyimage: string;
+	skill: BrowserSkill;
+}
+
+export declare const thralls: BrowserList<BrowserThrall>;
 
 export const thrallGuidelines: Guidelines<Thrall> = {
 	name: "thralls",
@@ -192,5 +269,8 @@ export const thrallGuidelines: Guidelines<Thrall> = {
 		"image",
 		"tinyimage",
 		"skill",
-	]
+	],
+	favorites: [],
+	active: [myThrall()],
 };
+// End Thralls
