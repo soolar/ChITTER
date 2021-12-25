@@ -15,7 +15,8 @@
 		"pretty": true,
 		"strict": true,
 		"target": "es2018",
-		"jsx": "react"
+		"jsx": "react",
+		"skipLibCheck": true
 	},
 	"include": [
 		"src/**/*.ts",
