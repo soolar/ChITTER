@@ -1,0 +1,11 @@
+$icon-border-normal: #d0d0d0;
+$icon-border-all-drops: #b300ff;
+$icon-border-has-drops: blue;
+$icon-border-good: green;
+$icon-border-warning: orange;
+$icon-border-danger: red;
+
+img.chit-icon {
+  border: 1px solid $icon-border-normal;
+  margin: 1px;
+}

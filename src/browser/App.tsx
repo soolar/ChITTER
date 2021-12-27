@@ -1,15 +1,16 @@
 import * as React from "react";
+import Icon from './components/Icon';
 import {
 	BrowserFamiliar,
 	BrowserList,
-} from '../Guidelines'
+} from '../guidelines'
 
 declare const familiars: BrowserList<BrowserFamiliar>;
 
 function App() {
 	const favoriteFamiliars = familiars.favorites.map((fam) => {
 		return (
-			<img src={`/images/itemimages/${fam.image}`} />
+			<Icon image={fam.image} />
 		)
 	});
 

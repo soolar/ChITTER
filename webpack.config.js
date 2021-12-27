@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { merge } = require("webpack-merge");
 
 const sharedConfig = {
@@ -16,6 +17,19 @@ const sharedConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".json"],
 	},
+	module: {
+		rules: [
+			{
+				test: /\.(t|j)sx?$/,
+				loader: "babel-loader",
+			},
+			{
+				test: /\.scss$/,
+				use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+			}
+		]
+	},
+	plugins: [new MiniCssExtractPlugin()],
 	externals: {
 		kolmafia: "commonjs kolmafia",
 	}
@@ -32,6 +46,7 @@ const otherRelayConfig = merge(
 		module: {
 			rules: [
 				{
+					test: /\.(t|j)sx?$/,
 					loader: "babel-loader",
 				},
 			],
@@ -51,6 +66,7 @@ const relayConfig = merge(
 		module: {
 			rules: [
 				{
+					test: /\.(ts|js)x?$/,
 					loader: "babel-loader",
 					options: { presets: ["@babel/env", "@babel/preset-react"] },
 				},

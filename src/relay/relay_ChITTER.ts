@@ -8,13 +8,14 @@ import {
 	itemGuidelines,
 	skillGuidelines,
 	thrallGuidelines,
-} from '../Guidelines';
+} from '../guidelines';
 
 export function main(): void {
 write(`<!DOCTYPE html>
 <html lang="">
 	<head>
 		<title>ChITTER</title>
+		<link rel="stylesheet" href="/ChITTER/main.css">
 		<script>
 ${buildStringFromGuidelines(itemGuidelines)}
 ${buildStringFromGuidelines(effectGuidelines)}
