@@ -2,13 +2,20 @@ import {
 	write,
 } from 'kolmafia';
 import {
+	buildCharacter,
+} from '../character';
+import {
 	buildStringFromGuidelines,
 	effectGuidelines,
 	familiarGuidelines,
 	itemGuidelines,
 	skillGuidelines,
+	slotGuidelines,
 	thrallGuidelines,
 } from '../guidelines';
+import {
+	buildProperties
+} from '../properties';
 
 export function main(): void {
 write(`<!DOCTYPE html>
@@ -21,7 +28,10 @@ ${buildStringFromGuidelines(itemGuidelines)}
 ${buildStringFromGuidelines(effectGuidelines)}
 ${buildStringFromGuidelines(familiarGuidelines)}
 ${buildStringFromGuidelines(skillGuidelines)}
+${buildStringFromGuidelines(slotGuidelines)}
 ${buildStringFromGuidelines(thrallGuidelines)}
+${buildProperties()}
+${buildCharacter()}
 		</script>
 	</head>
 	<body>

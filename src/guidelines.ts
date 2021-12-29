@@ -1,6 +1,9 @@
 import {
 	advCost,
+	canEquip,
 	closetAmount,
+	equippedAmount,
+	equippedItem,
 	familiarWeight,
 	favoriteFamiliars,
 	fuelCost,
@@ -21,36 +24,21 @@ import {
 	storageAmount,
 	thunderCost,
 	toInt,
+	toSlot,
 } from 'kolmafia';
 import {
 	$effects,
 	$familiars,
 	$items,
 	$skills,
+	$slots,
 	$thralls,
 } from 'libram';
-
-type FieldValue = string | number | boolean | null | Item | Skill;
-type FieldData<T> = ([string, ((thing: T) => FieldValue)]) | string;
-
-export const fieldValueToString = (value: FieldValue) => {
-	if(value === null) {
-		return 'null';
-	}
-	if(typeof value === "boolean" || typeof value === "number") {
-		return value.toString();
-	}
-	if(typeof value === "string") {
-		return `"${value}"`;
-	}
-	if(value instanceof Item) {
-		return `items["${value.toString()}"]`;
-	}
-	if(value instanceof Skill) {
-		return `skills["${value.toString()}"]`;
-	}
-	return 'undefined';
-}
+import {
+	FieldData,
+	FieldValue,
+	fieldValueToJSString,
+} from './utils';
 
 interface Guidelines<T extends MafiaClass> {
 	name: string;
@@ -69,7 +57,7 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(guid
 		res.push(guidelines.fields.map((fieldData) => {
 			const fieldName = (typeof fieldData === "string") ? fieldData : fieldData[0];
 			const fieldValue: FieldValue = (typeof fieldData === "string") ? thing[fieldData] : fieldData[1](thing);
-			return `${fieldName}: ${fieldValueToString(fieldValue)}`;
+			return `${fieldName}: ${fieldValueToJSString(fieldValue)}`;
 		}).join(', '));
 		res.push('},\n');
 		return res.join('');
@@ -138,7 +126,10 @@ export interface BrowserItem {
 	inInventory: number;
 	inCloset: number;
 	inStorage: number;
+	equippedAmount: number;
 	unrestricted: boolean;
+	canEquip: boolean;
+	slotStr: string;
 }
 
 export declare const items: BrowserList<BrowserItem>;
@@ -154,7 +145,10 @@ export const itemGuidelines: Guidelines<Item> = {
 		["inInventory", (it) => itemAmount(it)],
 		["inCloset", (it) => closetAmount(it)],
 		["inStorage", (it) => storageAmount(it)],
+		["equippedAmount", (it) => equippedAmount(it)],
 		["unrestricted", (it) => isUnrestricted(it)],
+		["canEquip", (it) => canEquip(it)],
+		["slotStr", (it) => toSlot(it).toString()],
 	],
 	favorites: getProperty("chit.gear.favorites").split('|').map((itemName) => Item.get(itemName)).sort((a, b) => toInt(a) - toInt(b)),
 	active: [],
@@ -172,8 +166,10 @@ export interface BrowserFamiliar {
 	drop: BrowserItem | undefined;
 	dropsLimit: number;
 	dropsToday: number;
+	dropName: string;
 	owned: boolean;
 	unrestricted: boolean;
+	canEquip: boolean;
 }
 
 export declare const familiars: BrowserList<BrowserFamiliar>;
@@ -191,8 +187,10 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		["drop", (fam) => fam.dropItem],
 		"dropsLimit",
 		"dropsToday",
+		"dropName",
 		["owned", (fam) => haveFamiliar(fam)],
 		["unrestricted", (fam) => isUnrestricted(fam)],
+		["canEquip", (fam) => canEquip(fam)],
 	],
 	favorites: Object.keys(favoriteFamiliars()).map((famName) => Familiar.get(famName)).sort((a, b) => toInt(a) - toInt(b)),
 	active: [myFamiliar()],
@@ -244,6 +242,26 @@ export const skillGuidelines: Guidelines<Skill> = {
 	favorites: [],
 };
 // End Skills
+
+// Begin Slots
+export interface BrowserSlot {
+	name: string;
+	equipped: BrowserItem;
+}
+
+export declare const slots: BrowserList<BrowserSlot>;
+
+export const slotGuidelines: Guidelines<Slot> = {
+	name: "slots",
+	all: $slots``,
+	fields: [
+		["name", (slot) => slot.toString()],
+		["equipped", (slot) => equippedItem(slot)],
+	],
+	active: [], // TODO: Put relevant slots here
+	favorites: $slots`hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3`,
+};
+// End Slots
 
 // Begin Thralls
 export interface BrowserThrall {

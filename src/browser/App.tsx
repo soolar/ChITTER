@@ -1,24 +1,10 @@
-import * as React from "react";
-import Icon from './components/Icon';
-import {
-	BrowserFamiliar,
-	BrowserList,
-} from '../guidelines'
+import * as React from 'react';
+import FamiliarPicker from './components/FamiliarPicker';
 
-declare const familiars: BrowserList<BrowserFamiliar>;
-
-function App() {
-	const favoriteFamiliars = familiars.favorites.map((fam) => {
-		return (
-			<Icon image={fam.image} />
-		)
-	});
-
+export default function App() {
 	return (
 		<div id="chitterContainer">
-			{favoriteFamiliars}
+			<FamiliarPicker />
 		</div>
 	);
 }
-
-export default App;

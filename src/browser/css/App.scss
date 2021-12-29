@@ -4,8 +4,64 @@ $icon-border-has-drops: blue;
 $icon-border-good: green;
 $icon-border-warning: orange;
 $icon-border-danger: red;
+$kol-color: blue;
+$kol-color-fg: white;
+$picker-bg: #f8f8f8;
+
+td {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 img.chit-icon {
   border: 1px solid $icon-border-normal;
   margin: 1px;
+}
+
+img.chit-icon.has-drops {
+  border-color: $icon-border-has-drops;
+}
+
+img.chit-icon.all-drops {
+  border-color: $icon-border-all-drops;
+}
+
+img.chit-icon.good {
+  border-color: $icon-border-good;
+}
+
+img.chit-icon.warning {
+  border-color: $icon-border-warning;
+}
+
+img.chit-icon.danger {
+  border-color: $icon-border-danger;
+}
+
+table.chit-picker {
+  background-color: $picker-bg;
+  border: 1px solid $kol-color;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px;
+  border-spacing: 0px;
+}
+
+.chit-icon-picker {
+  background-color: $kol-color-fg;
+}
+
+.chit-icon-picker img.chit-icon {
+  float: left;
+}
+
+.chit-picker {
+  display: table;
+}
+
+.chit-picker .chit-picker-header {
+  text-align: center;
+  background-color: $kol-color;
+  color: $kol-color-fg;
+  padding: 4px 12px;
+  font-weight: bold;
 }
