@@ -1,9 +1,5 @@
-import {
-	write,
-} from 'kolmafia';
-import {
-	buildCharacter,
-} from '../character';
+import { write } from 'kolmafia';
+import { buildCharacter } from '../character';
 import {
 	buildStringFromGuidelines,
 	effectGuidelines,
@@ -13,12 +9,10 @@ import {
 	slotGuidelines,
 	thrallGuidelines,
 } from '../guidelines';
-import {
-	buildProperties
-} from '../properties';
+import { buildProperties } from '../properties';
 
 export function main(): void {
-write(`<!DOCTYPE html>
+	write(`<!DOCTYPE html>
 <html lang="">
 	<head>
 		<title>ChITTER</title>

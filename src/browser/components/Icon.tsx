@@ -1,6 +1,12 @@
 import * as React from 'react';
 
-type BorderType = 'normal' | 'has-drops' | 'all-drops' | 'good' | 'warning' | 'danger';
+type BorderType =
+	| 'normal'
+	| 'has-drops'
+	| 'all-drops'
+	| 'good'
+	| 'warning'
+	| 'danger';
 
 interface IconArgs {
 	image: string;
@@ -21,5 +27,5 @@ export default function Icon({
 			className={`chit-icon ${borderType}`}
 			title={title}
 		/>
-	)
+	);
 }
