@@ -27,6 +27,7 @@ import {
 	toSlot,
 } from 'kolmafia';
 import {
+	$classes,
 	$effects,
 	$familiars,
 	$items,
@@ -311,3 +312,25 @@ export const thrallGuidelines: Guidelines<Thrall> = {
 	active: [myThrall()],
 };
 // End Thralls
+
+// Begin Classes
+export interface BrowserClass {
+	name: string;
+	id: number;
+	mainstat: string;
+}
+
+export declare const classes: BrowserList<BrowserClass>;
+
+export const classGuidelines: Guidelines<Class> = {
+	name: 'classes',
+	all: $classes``,
+	fields: [
+		['name', (cl) => cl.toString()],
+		['id', (cl) => toInt(cl)],
+		['mainstat', (cl) => cl.primestat.toString()],
+	],
+	favorites: [],
+	active: [],
+};
+//End Classes

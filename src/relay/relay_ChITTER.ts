@@ -2,6 +2,7 @@ import { write } from 'kolmafia';
 import { buildCharacter } from '../character';
 import {
 	buildStringFromGuidelines,
+	classGuidelines,
 	effectGuidelines,
 	familiarGuidelines,
 	itemGuidelines,
@@ -24,6 +25,7 @@ ${buildStringFromGuidelines(familiarGuidelines)}
 ${buildStringFromGuidelines(skillGuidelines)}
 ${buildStringFromGuidelines(slotGuidelines)}
 ${buildStringFromGuidelines(thrallGuidelines)}
+${buildStringFromGuidelines(classGuidelines)}
 ${buildProperties()}
 ${buildCharacter()}
 		</script>
