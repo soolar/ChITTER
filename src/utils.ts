@@ -1,6 +1,13 @@
 import { BrowserItem } from './guidelines';
 
-export type FieldValueBase = string | number | boolean | null | Item | Skill;
+export type FieldValueBase =
+	| string
+	| number
+	| boolean
+	| null
+	| Item
+	| Skill
+	| Class;
 export type FieldValue = FieldValueBase | FieldValueBase[];
 export type FieldData<T> = [string, (thing: T) => FieldValue] | string;
 
@@ -26,6 +33,9 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	}
 	if (value instanceof Skill) {
 		return `skills.byName["${value.toString()}"]`;
+	}
+	if (value instanceof Class) {
+		return `classes.byName["${value.toString()}"]`;
 	}
 	return 'undefined';
 };
