@@ -9,7 +9,14 @@ declare const familiars: BrowserList<BrowserFamiliar>;
 export default function App() {
 	return (
 		<div id="chitterContainer">
-			<PickerLauncher picker={<FamiliarPicker />}>
+			<PickerLauncher
+				WrappedPicker={FamiliarPicker}
+				pickerProps={{
+					onClickHeader: (e: React.MouseEvent) => {
+						void e;
+					},
+				}}
+			>
 				<FamIcon fam={familiars.active[0]} />
 			</PickerLauncher>
 		</div>

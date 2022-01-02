@@ -5,6 +5,7 @@ interface PickerArgs {
 	header: React.ReactNode;
 	children: React.ReactNode;
 	footer: React.ReactNode;
+	onClickHeader?: (e: React.MouseEvent) => void;
 }
 
 export default function Picker({
@@ -12,11 +13,12 @@ export default function Picker({
 	header,
 	children,
 	footer,
+	onClickHeader,
 }: PickerArgs) {
 	return (
 		<table className="chit-picker">
 			<tbody>
-				<tr className="chit-picker-header">
+				<tr className="chit-picker-header" onClick={onClickHeader}>
 					<th colSpan={columns}>{header}</th>
 				</tr>
 				{children}

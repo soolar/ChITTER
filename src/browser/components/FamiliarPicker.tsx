@@ -8,10 +8,12 @@ declare const familiars: BrowserList<BrowserFamiliar>;
 
 interface FamiliarPickerArgs {
 	isBjorn?: boolean;
+	onClickHeader?: (e: React.MouseEvent) => void;
 }
 
 export default function FamiliarPicker({
 	isBjorn = false,
+	onClickHeader,
 }: FamiliarPickerArgs) {
 	void isBjorn; // for now
 
@@ -32,6 +34,7 @@ export default function FamiliarPicker({
 					</td>
 				</>
 			}
+			onClickHeader={onClickHeader}
 		>
 			{familiars.favorites.map((fam) => (
 				<FamIcon fam={fam} />
