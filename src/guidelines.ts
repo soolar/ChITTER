@@ -22,6 +22,7 @@ import {
 	rainCost,
 	soulsauceCost,
 	storageAmount,
+	stringModifier,
 	thunderCost,
 	toInt,
 	toSlot,
@@ -110,6 +111,7 @@ export interface BrowserEffect {
 	quality: string;
 	song: boolean;
 	turnsActive: number;
+	mods: string;
 }
 
 export declare const effects: BrowserList<BrowserEffect>;
@@ -126,6 +128,7 @@ export const effectGuidelines: Guidelines<Effect> = {
 		'quality',
 		'song',
 		['turnsActive', (eff) => haveEffect(eff)],
+		['mods', (eff) => stringModifier(eff, 'Evaluated Modifiers')],
 	],
 	active: $effects``.filter((eff) => haveEffect(eff) !== 0),
 	favorites: [],
