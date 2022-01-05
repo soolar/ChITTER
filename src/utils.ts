@@ -137,9 +137,6 @@ export const parseMods = (mods: string) => {
 	});
 
 	const fiddle = (modComboInfo: ModCombinationInfo) => {
-		if (modComboInfo.type !== 'Fuse') {
-			return;
-		}
 		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)\\d+`;
 		const regexp = new RegExp(initialPattern, 'g');
 		let matchInfo;
@@ -193,9 +190,9 @@ export const parseMods = (mods: string) => {
 			void sub;
 			const elementOrder = ['Hot', 'Sleaze', 'Stench', 'Cold', 'Spooky'];
 			let currElement = -1;
-			return `${args[0]}${args[1].replace(/..?/g, (twoChar: string) => {
+			return `${args[0]}${args[1].replace(/..?/g, (chars: string) => {
 				currElement = (currElement + 1) % elementOrder.length;
-				return `<span class="mod${elementOrder[currElement]}">${twoChar}</span>`;
+				return `<span class="mod${elementOrder[currElement]}">${chars}</span>`;
 			})},`;
 		}
 	);
