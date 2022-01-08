@@ -81,3 +81,25 @@ table.chit-picker {
 	padding: 4px 12px;
 	font-weight: bold;
 }
+
+.progress-bar {
+	height: 4px;
+	background-color: #eeeeee;
+}
+
+.progress-content {
+	height: 4px;
+	background-color: blue;
+}
+
+.chit-brick {
+	background-color: white;
+	border-collapse: separate;
+	border: 1px solid #d0d0d0;
+	empty-cells: show;
+	font-size: 12px;
+	font-weight: normal;
+	margin-bottom: 5px;
+	width: 100%;
+	padding: 1px 1px 0px;
+}

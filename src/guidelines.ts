@@ -26,6 +26,7 @@ import {
 	thunderCost,
 	toInt,
 	toSlot,
+	weightAdjustment,
 } from 'kolmafia';
 import {
 	$classes,
@@ -184,6 +185,7 @@ export interface BrowserFamiliar {
 	name: string;
 	experience: number;
 	weight: number;
+	buffedWeight: number;
 	drop: BrowserItem | undefined;
 	dropsLimit: number;
 	dropsToday: number;
@@ -205,6 +207,7 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		'name',
 		'experience',
 		['weight', (fam) => familiarWeight(fam)],
+		['buffedWeight', (fam) => familiarWeight(fam) + weightAdjustment()],
 		['drop', (fam) => fam.dropItem],
 		'dropsLimit',
 		'dropsToday',
