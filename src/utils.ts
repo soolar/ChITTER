@@ -199,3 +199,12 @@ export const parseMods = (mods: string) => {
 
 	return mods;
 };
+
+export function showFam(famNum: number) {
+	const wind = window.open(
+		`desc_familiar.php?which=${famNum}`,
+		'familiar',
+		'height=200,width=400'
+	);
+	wind?.focus();
+}

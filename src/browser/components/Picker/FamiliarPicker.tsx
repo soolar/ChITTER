@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { BrowserFamiliar, BrowserList } from '../../guidelines';
-import FamIcon from './FamIcon';
-import Icon from './Icon';
+import { BrowserFamiliar, BrowserList } from '../../../guidelines';
+import FamIcon from '../FamIcon';
+import Icon from '../Icon';
 import IconPicker from './IconPicker';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
