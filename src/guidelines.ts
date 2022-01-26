@@ -17,6 +17,7 @@ import {
 	lightningCost,
 	MafiaClass,
 	mpCost,
+	myClass,
 	myFamiliar,
 	myThrall,
 	rainCost,
@@ -337,6 +338,6 @@ export const classGuidelines: Guidelines<Class> = {
 		['mainstat', (cl) => cl.primestat.toString()],
 	],
 	favorites: [],
-	active: [],
+	active: [myClass()],
 };
 //End Classes
