@@ -1,5 +1,5 @@
 import { getProperty, propertyExists } from 'kolmafia';
-import { $items } from 'libram';
+import { $items, get } from 'libram';
 import { BrowserItem } from './guidelines';
 import { FieldValue, fieldValueToJSString } from './utils';
 
@@ -143,7 +143,7 @@ export interface BrowserChitProperties {
 }
 
 export interface BrowserMafiaProperties {
-	[key: string]: string;
+	[key: string]: FieldValue;
 }
 
 export const buildProperties = () => {
@@ -161,9 +161,10 @@ export const buildProperties = () => {
 	);
 	res.push('\t\t\t}\n\n\t\t\tvar mafiaProperties = {\n');
 	res.push(
-		...mafiaProperties
-			.map((propName) => `\t\t\t\t"${propName}": "${getProperty(propName)}",\n`)
-			.join('')
+		...mafiaProperties.map(
+			(propName) =>
+				`\t\t\t\t"${propName}": ${fieldValueToJSString(get(propName))},\n`
+		)
 	);
 	res.push('\t\t\t}\n');
 	return res.join('');

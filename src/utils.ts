@@ -1,5 +1,10 @@
 import { BrowserItem } from './guidelines';
 
+export interface CurrMax {
+	curr: number;
+	max: number;
+}
+
 export type FieldValueBase =
 	| string
 	| number
@@ -7,7 +12,8 @@ export type FieldValueBase =
 	| null
 	| Item
 	| Skill
-	| Class;
+	| Class
+	| CurrMax;
 export type FieldValue = FieldValueBase | FieldValueBase[];
 export type FieldData<T> = [string, (thing: T) => FieldValue] | string;
 
@@ -36,6 +42,9 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	}
 	if (value instanceof Class) {
 		return `classes.byName["${value.toString()}"]`;
+	}
+	if ('curr' in value && 'max' in value) {
+		return `{ curr: ${value.curr}, max: ${value.max} }`;
 	}
 	return 'undefined';
 };
