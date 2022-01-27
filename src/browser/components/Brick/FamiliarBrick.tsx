@@ -7,6 +7,7 @@ import FamiliarPicker from '../Picker/FamiliarPicker';
 import ItemIcon from '../ItemIcon';
 import PickerLauncher from '../Picker/PickerLauncher';
 import ProgressBar from '../ProgressBar';
+import Brick from './Brick';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
 declare const slots: BrowserList<BrowserSlot>;
@@ -16,9 +17,10 @@ export default function FamiliarBrick() {
 	const nextInfo = nextLevelInfo(currFam);
 
 	return (
-		<table id="chit-familiar" className="chit-brick">
-			<tbody>
-				<tr>
+		<Brick
+			name="familiar"
+			header={
+				<>
 					<th
 						style={{ width: 40, color: 'blue' }}
 						title={`Buffed Weight (Base Weight: ${currFam.weight} lb)`}
@@ -27,8 +29,10 @@ export default function FamiliarBrick() {
 					</th>
 					<th>{currFam.name}</th>
 					<th style={{ width: 30 }}>&nbsp;</th>
-				</tr>
-				<tr>
+				</>
+			}
+			body={
+				<>
 					<td>
 						<PickerLauncher
 							WrappedPicker={FamiliarPicker}
@@ -47,13 +51,13 @@ export default function FamiliarBrick() {
 					<td>
 						<ItemIcon item={slots.byName.familiar.equipped} />
 					</td>
-				</tr>
-				<tr>
-					<td colSpan={3}>
-						<ProgressBar value={nextInfo.progress} max={nextInfo.goal} />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+				</>
+			}
+			footer={
+				<td colSpan={3}>
+					<ProgressBar value={nextInfo.progress} max={nextInfo.goal} />
+				</td>
+			}
+		/>
 	);
 }
