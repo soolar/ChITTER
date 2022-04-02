@@ -13,6 +13,7 @@ export type FieldValueBase =
 	| Item
 	| Skill
 	| Class
+	| Familiar
 	| CurrMax;
 export type FieldValue = FieldValueBase | FieldValueBase[];
 export type FieldData<T> = [string, (thing: T) => FieldValue] | string;
@@ -42,6 +43,9 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	}
 	if (value instanceof Class) {
 		return `classes.byName["${value.toString()}"]`;
+	}
+	if (value instanceof Familiar) {
+		return `familiars.byName["${value.toString()}"]`;
 	}
 	if ('curr' in value && 'max' in value) {
 		return `{ curr: ${value.curr}, max: ${value.max} }`;

@@ -79,7 +79,10 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 		res.push(
 			`\t\t\t${guidelines.name}.${listName} = [\n${list
 				.map(
-					(thing) => `\t\t\t\t${guidelines.name}.byName["${thing.toString()}"]`
+					(thing) =>
+						`\t\t\t\t${guidelines.name}.byName["${
+							thing ? thing.toString() : 'none'
+						}"]`
 				)
 				.join(',\n')}\n\t\t\t];\n`
 		);

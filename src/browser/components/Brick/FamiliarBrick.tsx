@@ -37,6 +37,7 @@ export default function FamiliarBrick() {
 						<PickerLauncher
 							WrappedPicker={FamiliarPicker}
 							pickerProps={{
+								type: 'default' as const,
 								onClickHeader: (e: React.MouseEvent) => {
 									void e;
 								},

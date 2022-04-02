@@ -1,21 +1,30 @@
 import * as React from 'react';
+import { BrowserCharacter } from '../../../character';
 import { BrowserFamiliar, BrowserList } from '../../../guidelines';
 import FamIcon from '../FamIcon';
 import Icon from '../Icon';
 import IconPicker from './IconPicker';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
+declare const my: BrowserCharacter;
+
+export type FamiliarPickerType = 'default' | 'bjorn' | 'crown';
 
 interface FamiliarPickerArgs {
-	isBjorn?: boolean;
+	type?: FamiliarPickerType;
 	onClickHeader?: (e: React.MouseEvent) => void;
 }
 
 export default function FamiliarPicker({
-	isBjorn = false,
+	type = 'default',
 	onClickHeader,
 }: FamiliarPickerArgs) {
-	void isBjorn; // for now
+	const activeFam =
+		type === 'default'
+			? familiars.active[0]
+			: type === 'bjorn'
+			? my.bjornFam
+			: my.crownFam;
 
 	return (
 		<IconPicker
@@ -36,9 +45,11 @@ export default function FamiliarPicker({
 			}
 			onClickHeader={onClickHeader}
 		>
-			{familiars.favorites.map((fam) => (
-				<FamIcon fam={fam} />
-			))}
+			{familiars.favorites
+				.filter((fam) => fam !== activeFam)
+				.map((fam) => (
+					<FamIcon fam={fam} />
+				))}
 		</IconPicker>
 	);
 }

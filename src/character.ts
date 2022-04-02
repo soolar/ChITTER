@@ -3,7 +3,9 @@ import {
 	getClanName,
 	getWorkshed,
 	inebrietyLimit,
+	myBjornedFamiliar,
 	myClass,
+	myEnthronedFamiliar,
 	myFullness,
 	myFury,
 	myHp,
@@ -23,7 +25,7 @@ import {
 	spleenLimit,
 } from 'kolmafia';
 import { $class, $skill, $skills, have } from 'libram';
-import { BrowserClass, BrowserItem } from './guidelines';
+import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines';
 import { CurrMax, FieldValue, fieldValueToJSString } from './utils';
 
 export interface BrowserCharacter {
@@ -43,6 +45,8 @@ export interface BrowserCharacter {
 	inebriety: CurrMax;
 	spleenUse: CurrMax;
 	workshedItem: BrowserItem;
+	bjornFam: BrowserFamiliar;
+	crownFam: BrowserFamiliar;
 }
 
 const characterValues: [string, FieldValue][] = [
@@ -99,6 +103,8 @@ const characterValues: [string, FieldValue][] = [
 	['inebriety', { curr: myInebriety(), max: inebrietyLimit() }],
 	['spleenUse', { curr: mySpleenUse(), max: spleenLimit() }],
 	['workshedItem', getWorkshed()],
+	['bjornFam', myBjornedFamiliar()],
+	['crownFam', myEnthronedFamiliar()],
 ];
 
 export const buildCharacter = () => {
