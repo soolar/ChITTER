@@ -1,3 +1,4 @@
+import { Image, Tooltip } from '@chakra-ui/react';
 import * as React from 'react';
 
 type BorderType =
@@ -10,22 +11,24 @@ type BorderType =
 
 interface IconArgs {
 	image: string;
-	title: string;
+	tooltip: string;
 	borderType?: BorderType;
 	specialPath?: boolean;
 }
 
 export default function Icon({
 	image,
-	title,
+	tooltip,
 	borderType = 'normal',
 	specialPath = false,
 }: IconArgs) {
 	return (
-		<img
-			src={specialPath ? image : `/images/itemimages/${image}`}
-			className={`chit-icon ${borderType}`}
-			title={title}
-		/>
+		<Tooltip label={tooltip}>
+			<Image
+				src={specialPath ? image : `/images/itemimages/${image}`}
+				className={`chit-icon ${borderType}`}
+				alt={tooltip}
+			/>
+		</Tooltip>
 	);
 }

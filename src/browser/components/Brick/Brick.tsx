@@ -1,3 +1,4 @@
+import { Box, GridItem, SimpleGrid } from '@chakra-ui/react';
 import * as React from 'react';
 
 interface BrickArgs {
@@ -9,12 +10,12 @@ interface BrickArgs {
 
 export default function Brick({ name, header, body, footer }: BrickArgs) {
 	return (
-		<table id={`chit-brick-${name}`} className="chit-brick">
-			<tbody>
-				<tr>{header}</tr>
-				<tr>{body}</tr>
-				<tr>{footer}</tr>
-			</tbody>
-		</table>
+		<Box p={1} shadow="md" borderWidth="1px">
+			<SimpleGrid id={`chit-brick-${name}`}>
+				<GridItem>{header}</GridItem>
+				<GridItem>{body}</GridItem>
+				<GridItem>{footer}</GridItem>
+			</SimpleGrid>
+		</Box>
 	);
 }

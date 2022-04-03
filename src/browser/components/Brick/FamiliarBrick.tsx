@@ -8,6 +8,7 @@ import ItemIcon from '../ItemIcon';
 import PickerLauncher from '../Picker/PickerLauncher';
 import ProgressBar from '../ProgressBar';
 import Brick from './Brick';
+import { Flex, Heading, Spacer, Text, Tooltip } from '@chakra-ui/react';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
 declare const slots: BrowserList<BrowserSlot>;
@@ -20,44 +21,35 @@ export default function FamiliarBrick() {
 		<Brick
 			name="familiar"
 			header={
-				<>
-					<th
-						style={{ width: 40, color: 'blue' }}
-						title={`Buffed Weight (Base Weight: ${currFam.weight} lb)`}
-					>
-						{currFam.buffedWeight}
-					</th>
-					<th>{currFam.name}</th>
-					<th style={{ width: 30 }}>&nbsp;</th>
-				</>
+				<Flex>
+					<Tooltip label={`Buffed Weight (Base Weight: ${currFam.weight} lb)`}>
+						<Heading style={{ color: 'blue' }}>{currFam.buffedWeight}</Heading>
+					</Tooltip>
+					<Spacer />
+					<Heading>{currFam.name}</Heading>
+					<Spacer />
+				</Flex>
 			}
 			body={
-				<>
-					<td>
-						<PickerLauncher
-							WrappedPicker={FamiliarPicker}
-							pickerProps={{
-								type: 'default' as const,
-								onClickHeader: (e: React.MouseEvent) => {
-									void e;
-								},
-							}}
-						>
-							<FamIcon fam={currFam} />
-						</PickerLauncher>
-					</td>
-					<td className="info" onClick={() => showFam(currFam.id)}>
+				<Flex>
+					<PickerLauncher
+						WrappedPicker={FamiliarPicker}
+						pickerProps={{
+							type: 'default' as const,
+						}}
+					>
+						<FamIcon fam={currFam} />
+					</PickerLauncher>
+					<Spacer />
+					<Text className="info" onClick={() => showFam(currFam.id)}>
 						{currFam.type}
-					</td>
-					<td>
-						<ItemIcon item={slots.byName.familiar.equipped} />
-					</td>
-				</>
+					</Text>
+					<Spacer />
+					<ItemIcon item={slots.byName.familiar.equipped} />
+				</Flex>
 			}
 			footer={
-				<td colSpan={3}>
-					<ProgressBar value={nextInfo.progress} max={nextInfo.goal} />
-				</td>
+				<ProgressBar value={nextInfo.progress} max={nextInfo.goal} desc="exp" />
 			}
 		/>
 	);

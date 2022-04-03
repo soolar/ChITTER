@@ -1,9 +1,10 @@
+import { Button, Flex, Spacer, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import * as React from 'react';
 import { BrowserCharacter } from '../../../character';
 import { BrowserFamiliar, BrowserList } from '../../../guidelines';
 import FamIcon from '../FamIcon';
 import Icon from '../Icon';
-import IconPicker from './IconPicker';
+import Picker from './Picker';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
 declare const my: BrowserCharacter;
@@ -12,12 +13,10 @@ export type FamiliarPickerType = 'default' | 'bjorn' | 'crown';
 
 interface FamiliarPickerArgs {
 	type?: FamiliarPickerType;
-	onClickHeader?: (e: React.MouseEvent) => void;
 }
 
 export default function FamiliarPicker({
 	type = 'default',
-	onClickHeader,
 }: FamiliarPickerArgs) {
 	const activeFam =
 		type === 'default'
@@ -27,29 +26,29 @@ export default function FamiliarPicker({
 			: my.crownFam;
 
 	return (
-		<IconPicker
-			columns={3}
+		<Picker
 			header="Change Familiar"
 			footer={
-				<>
-					<td>
-						<Icon image="terrarium.gif" title="Visit your terrarium" />
-					</td>
-					<td>
-						<div>Visit Your Terrarium</div>
-					</td>
-					<td>
-						<Icon image="antianti.gif" title="Use no familiar" />
-					</td>
-				</>
+				<Flex>
+					<Icon image="terrarium.gif" tooltip="Visit your terrarium" />
+					<Spacer />
+					<Text>Visit Your Terrarium</Text>
+					<Spacer />
+					<Icon image="antianti.gif" tooltip="Use no familiar" />
+				</Flex>
 			}
-			onClickHeader={onClickHeader}
 		>
-			{familiars.favorites
-				.filter((fam) => fam !== activeFam)
-				.map((fam) => (
-					<FamIcon fam={fam} />
-				))}
-		</IconPicker>
+			<Wrap>
+				{familiars.favorites
+					.filter((fam) => fam !== activeFam)
+					.map((fam) => (
+						<WrapItem>
+							<Button variant="unstyled">
+								<FamIcon fam={fam} />
+							</Button>
+						</WrapItem>
+					))}
+			</Wrap>
+		</Picker>
 	);
 }

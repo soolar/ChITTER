@@ -18,23 +18,17 @@ export default function FamIcon({ fam, isBjorn = false }: FamIconArgs) {
 			: pluralize(fam.dropName, dropsLeft);
 
 		return (
-			<span>
-				<Icon
-					image={fam.image}
-					title={`${fam.name} (the ${fam.weight}lb ${fam.type})${
-						dropName && hasDrops ? ` (${dropsLeft} ${dropName})` : ''
-					}`}
-					borderType={
-						allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'
-					}
-				/>
-			</span>
+			<Icon
+				image={fam.image}
+				tooltip={`${fam.name} (the ${fam.weight}lb ${fam.type})${
+					dropName && hasDrops ? ` (${dropsLeft} ${dropName})` : ''
+				}`}
+				borderType={allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'}
+			/>
 		);
 	} else {
 		return (
-			<span>
-				<Icon image="antianti.gif" title="You don't have a familiar with you" />
-			</span>
+			<Icon image="antianti.gif" tooltip="You don't have a familiar with you" />
 		);
 	}
 }

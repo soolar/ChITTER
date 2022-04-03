@@ -8,16 +8,8 @@ interface ItemIconArgs {
 
 export default function ItemIcon({ item }: ItemIconArgs) {
 	if (item) {
-		return (
-			<span>
-				<Icon image={item.image} title={item.name} borderType="normal" />
-			</span>
-		);
+		return <Icon image={item.image} tooltip={item.name} borderType="normal" />;
 	} else {
-		return (
-			<span>
-				<Icon image="antianti.gif" title="No item here..." />
-			</span>
-		);
+		return <Icon image="antianti.gif" tooltip="No item here..." />;
 	}
 }
