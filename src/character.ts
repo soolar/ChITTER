@@ -110,6 +110,7 @@ const characterValues: [string, FieldValue][] = [
 export const buildCharacter = () => {
 	return `\t\t\tvar my = {
 ${characterValues
+	.filter((pair) => pair[1] !== undefined)
 	.map((pair) => `\t\t\t\t${pair[0]}: ${fieldValueToJSString(pair[1])},`)
 	.join('\n')}
 \t\t\t}`;

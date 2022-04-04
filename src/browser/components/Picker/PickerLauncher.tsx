@@ -22,7 +22,7 @@ export default function PickerLauncher<Params>({
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Button variant="unstyled">{children}</Button>
+				<Button variant="link">{children}</Button>
 			</PopoverTrigger>
 			<PopoverContent>
 				<PopoverArrow />

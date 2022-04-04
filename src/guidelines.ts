@@ -38,6 +38,7 @@ import {
 	$slots,
 	$thralls,
 } from 'libram';
+import { getExtraFamInfo } from './libramUtils';
 import { FieldData, FieldValue, fieldValueToJSString } from './utils';
 
 interface Guidelines<T extends MafiaClass> {
@@ -66,8 +67,12 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 							typeof fieldData === 'string'
 								? thing[fieldData]
 								: fieldData[1](thing);
+						if (fieldValue === undefined) {
+							return undefined;
+						}
 						return `${fieldName}: ${fieldValueToJSString(fieldValue)}`;
 					})
+					.filter((fieldStr) => fieldStr !== undefined)
 					.join(', ')
 			);
 			res.push('},\n');
@@ -190,13 +195,15 @@ export interface BrowserFamiliar {
 	experience: number;
 	weight: number;
 	buffedWeight: number;
-	drop: BrowserItem | undefined;
+	drop?: BrowserItem;
 	dropsLimit: number;
 	dropsToday: number;
 	dropName: string;
 	owned: boolean;
 	unrestricted: boolean;
 	canEquip: boolean;
+	desc?: string;
+	extraClass?: string;
 }
 
 export declare const familiars: BrowserList<BrowserFamiliar>;
@@ -219,6 +226,8 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		['owned', (fam) => haveFamiliar(fam)],
 		['unrestricted', (fam) => isUnrestricted(fam)],
 		['canEquip', (fam) => canEquip(fam)],
+		['desc', (fam) => getExtraFamInfo(fam)?.desc],
+		['extraClass', (fam) => getExtraFamInfo(fam)?.extraClass],
 	],
 	favorites: Object.keys(favoriteFamiliars())
 		.map((famName) => Familiar.get(famName))

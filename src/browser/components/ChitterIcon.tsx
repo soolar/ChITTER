@@ -9,25 +9,29 @@ type BorderType =
 	| 'warning'
 	| 'danger';
 
-interface IconArgs {
+interface ChitterIconArgs {
 	image: string;
-	tooltip: string;
+	tooltip: React.ReactNode;
 	borderType?: BorderType;
 	specialPath?: boolean;
+	extraClass?: string;
 }
 
-export default function Icon({
+export default function ChitterIcon({
 	image,
 	tooltip,
 	borderType = 'normal',
 	specialPath = false,
-}: IconArgs) {
+	extraClass = '',
+}: ChitterIconArgs) {
 	return (
 		<Tooltip label={tooltip}>
 			<Image
 				src={specialPath ? image : `/images/itemimages/${image}`}
-				className={`chit-icon ${borderType}`}
-				alt={tooltip}
+				className={`chit-icon ${borderType}${
+					extraClass ? ` ${extraClass}` : ''
+				}`}
+				alt={image}
 			/>
 		</Tooltip>
 	);

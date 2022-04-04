@@ -52,28 +52,28 @@ body {
 	padding: 2px;
 }
 
-img.chit-icon {
+.chit-icon {
 	border: 1px solid $icon-border-normal;
 	margin: 1px;
 }
 
-img.chit-icon.has-drops {
+.chit-icon.has-drops {
 	border-color: $icon-border-has-drops;
 }
 
-img.chit-icon.all-drops {
+.chit-icon.all-drops {
 	border-color: $icon-border-all-drops;
 }
 
-img.chit-icon.good {
+.chit-icon.good {
 	border-color: $icon-border-good;
 }
 
-img.chit-icon.warning {
+.chit-icon.warning {
 	border-color: $icon-border-warning;
 }
 
-img.chit-icon.danger {
+.chit-icon.danger {
 	border-color: $icon-border-danger;
 }
 

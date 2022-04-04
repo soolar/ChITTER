@@ -10,6 +10,7 @@ export type FieldValueBase =
 	| number
 	| boolean
 	| null
+	| undefined
 	| Item
 	| Skill
 	| Class
@@ -25,6 +26,11 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 		return `[${value
 			.map((subValue) => fieldValueToJSString(subValue))
 			.join(', ')}]`;
+	}
+	if (value === undefined) {
+		throw new TypeError(
+			'Filter out undefined before calling fieldValueToJSString'
+		);
 	}
 	if (value === null) {
 		return 'null';
@@ -50,7 +56,7 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	if ('curr' in value && 'max' in value) {
 		return `{ curr: ${value.curr}, max: ${value.max} }`;
 	}
-	return 'undefined';
+	throw new TypeError('Unhandled type in fieldValueToJSString');
 };
 
 export const pluralize = (thing: string | BrowserItem, amount: number) => {

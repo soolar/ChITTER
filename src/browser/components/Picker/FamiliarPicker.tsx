@@ -1,9 +1,17 @@
-import { Button, Flex, Spacer, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+	Button,
+	ButtonGroup,
+	Checkbox,
+	Flex,
+	Spacer,
+	Wrap,
+	WrapItem,
+} from '@chakra-ui/react';
 import * as React from 'react';
 import { BrowserCharacter } from '../../../character';
 import { BrowserFamiliar, BrowserList } from '../../../guidelines';
 import FamIcon from '../FamIcon';
-import Icon from '../Icon';
+import ChitterIcon from '../ChitterIcon';
 import Picker from './Picker';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
@@ -18,37 +26,46 @@ interface FamiliarPickerArgs {
 export default function FamiliarPicker({
 	type = 'default',
 }: FamiliarPickerArgs) {
+	const [favoritesOnly, setFavoritesOnly] = React.useState(true);
 	const activeFam =
 		type === 'default'
 			? familiars.active[0]
 			: type === 'bjorn'
 			? my.bjornFam
 			: my.crownFam;
+	const famsToShow = favoritesOnly ? familiars.favorites : familiars.all;
 
 	return (
 		<Picker
 			header="Change Familiar"
 			footer={
 				<Flex>
-					<Icon image="terrarium.gif" tooltip="Visit your terrarium" />
+					<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
 					<Spacer />
-					<Text>Visit Your Terrarium</Text>
+					<Checkbox
+						isChecked={favoritesOnly}
+						onChange={(e) => setFavoritesOnly(e.target.checked)}
+					>
+						Favorites Only
+					</Checkbox>
 					<Spacer />
-					<Icon image="antianti.gif" tooltip="Use no familiar" />
+					<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
 				</Flex>
 			}
 		>
-			<Wrap>
-				{familiars.favorites
-					.filter((fam) => fam !== activeFam)
-					.map((fam) => (
-						<WrapItem>
-							<Button variant="unstyled">
-								<FamIcon fam={fam} />
-							</Button>
-						</WrapItem>
-					))}
-			</Wrap>
+			<ButtonGroup variant="link">
+				<Wrap spacing={0}>
+					{famsToShow
+						.filter((fam) => fam !== activeFam && fam.canEquip && fam.owned)
+						.map((fam) => (
+							<WrapItem>
+								<Button>
+									<FamIcon fam={fam} />
+								</Button>
+							</WrapItem>
+						))}
+				</Wrap>
+			</ButtonGroup>
 		</Picker>
 	);
 }

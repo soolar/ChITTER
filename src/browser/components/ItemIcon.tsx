@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Icon from './Icon';
+import ChitterIcon from './ChitterIcon';
 import { BrowserItem } from '../../guidelines';
 
 interface ItemIconArgs {
@@ -8,8 +8,10 @@ interface ItemIconArgs {
 
 export default function ItemIcon({ item }: ItemIconArgs) {
 	if (item) {
-		return <Icon image={item.image} tooltip={item.name} borderType="normal" />;
+		return (
+			<ChitterIcon image={item.image} tooltip={item.name} borderType="normal" />
+		);
 	} else {
-		return <Icon image="antianti.gif" tooltip="No item here..." />;
+		return <ChitterIcon image="antianti.gif" tooltip="No item here..." />;
 	}
 }

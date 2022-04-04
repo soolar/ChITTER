@@ -1,14 +1,21 @@
 import * as React from 'react';
-import Icon from './Icon';
+import ChitterIcon from './ChitterIcon';
 import { BrowserFamiliar } from '../../guidelines';
 import { pluralize } from '../../utils';
+import { Text, Tooltip, VStack } from '@chakra-ui/react';
+import { getWeirdoDivContents } from '../familiarHelpers';
 
 interface FamIconArgs {
 	fam: BrowserFamiliar | undefined;
 	isBjorn?: boolean;
+	tooltipOverride?: React.ReactNode;
 }
 
-export default function FamIcon({ fam, isBjorn = false }: FamIconArgs) {
+export default function FamIcon({
+	fam,
+	isBjorn = false,
+	tooltipOverride = null,
+}: FamIconArgs) {
 	if (fam) {
 		const dropsLeft = fam.dropsLimit - fam.dropsToday;
 		const hasDrops = !isBjorn && dropsLeft > 0;
@@ -16,19 +23,40 @@ export default function FamIcon({ fam, isBjorn = false }: FamIconArgs) {
 		const dropName = fam.drop
 			? pluralize(fam.drop, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft);
+		const tooltip = tooltipOverride || (
+			<VStack spacing="none">
+				<Text>{fam.name}</Text>
+				<Text>
+					the {fam.weight}lb {fam.type}
+				</Text>
+				{dropName && hasDrops && (
+					<Text>
+						{dropsLeft} ${dropName}
+					</Text>
+				)}
+				{fam.desc && <Text>{fam.desc}</Text>}
+			</VStack>
+		);
+		const weirdoDivContents = getWeirdoDivContents(fam);
+
+		if (weirdoDivContents) {
+			return <Tooltip label={tooltip}>{weirdoDivContents}</Tooltip>;
+		}
 
 		return (
-			<Icon
+			<ChitterIcon
 				image={fam.image}
-				tooltip={`${fam.name} (the ${fam.weight}lb ${fam.type})${
-					dropName && hasDrops ? ` (${dropsLeft} ${dropName})` : ''
-				}`}
+				tooltip={tooltip}
 				borderType={allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'}
+				extraClass={fam.extraClass}
 			/>
 		);
 	} else {
 		return (
-			<Icon image="antianti.gif" tooltip="You don't have a familiar with you" />
+			<ChitterIcon
+				image="antianti.gif"
+				tooltip="You don't have a familiar with you"
+			/>
 		);
 	}
 }
