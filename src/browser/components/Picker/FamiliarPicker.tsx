@@ -10,8 +10,8 @@ import {
 import * as React from 'react';
 import { BrowserCharacter } from '../../../character';
 import { BrowserFamiliar, BrowserList } from '../../../guidelines';
-import FamIcon from '../FamIcon';
-import ChitterIcon from '../ChitterIcon';
+import FamIcon from '../Icons/FamIcon';
+import ChitterIcon from '../Icons/ChitterIcon';
 import Picker from './Picker';
 
 declare const familiars: BrowserList<BrowserFamiliar>;
@@ -40,7 +40,9 @@ export default function FamiliarPicker({
 			header="Change Familiar"
 			footer={
 				<Flex>
-					<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
+					<Button variant="link">
+						<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
+					</Button>
 					<Spacer />
 					<Checkbox
 						isChecked={favoritesOnly}
@@ -49,7 +51,9 @@ export default function FamiliarPicker({
 						Favorites Only
 					</Checkbox>
 					<Spacer />
-					<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
+					<Button variant="link">
+						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
+					</Button>
 				</Flex>
 			}
 		>

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BrowserFamiliar, BrowserList, BrowserSlot } from '../../../guidelines';
 import { showFam } from '../../../utils';
-import FamIcon from '../FamIcon';
+import FamIcon from '../Icons/FamIcon';
 import FamiliarPicker from '../Picker/FamiliarPicker';
-import ItemIcon from '../ItemIcon';
+import ItemIcon from '../Icons/ItemIcon';
 import PickerLauncher from '../Picker/PickerLauncher';
 import ProgressBar from '../ProgressBar';
 import Brick from './Brick';
@@ -34,7 +34,11 @@ export default function FamiliarBrick() {
 				</Flex>
 			}
 			footer={
-				<ProgressBar value={nextInfo.progress} max={nextInfo.goal} desc="exp" />
+				<ProgressBar
+					value={nextInfo.progress}
+					max={nextInfo.goal}
+					desc={`exp to ${currFam.weight + 1}lbs`}
+				/>
 			}
 		>
 			<Flex>

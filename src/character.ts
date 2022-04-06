@@ -1,3 +1,5 @@
+import { myBuffedstat } from 'kolmafia';
+import { myBasestat } from 'kolmafia';
 import {
 	fullnessLimit,
 	getClanName,
@@ -24,9 +26,10 @@ import {
 	myThunder,
 	spleenLimit,
 } from 'kolmafia';
+import { $stat } from 'libram';
 import { $class, $skill, $skills, have } from 'libram';
 import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines';
-import { CurrMax, FieldValue, fieldValueToJSString } from './utils';
+import { CurrMax, FieldValue, fieldValueToJSString, StatValues } from './utils';
 
 export interface BrowserCharacter {
 	name: string;
@@ -34,6 +37,9 @@ export interface BrowserCharacter {
 	clan: string;
 	pathName: string;
 	pathId: number;
+	muscle: StatValues;
+	mysticality: StatValues;
+	moxie: StatValues;
 	hp: CurrMax;
 	mp: CurrMax;
 	soulsauce: CurrMax;
@@ -55,6 +61,30 @@ const characterValues: [string, FieldValue][] = [
 	['clan', getClanName()],
 	['pathName', myPath()],
 	['pathId', myPathId()],
+	[
+		'muscle',
+		{
+			base: myBasestat($stat`muscle`),
+			buffed: myBuffedstat($stat`muscle`),
+			substats: myBasestat($stat`submuscle`),
+		},
+	],
+	[
+		'mysticality',
+		{
+			base: myBasestat($stat`mysticality`),
+			buffed: myBuffedstat($stat`mysticality`),
+			substats: myBasestat($stat`submysticality`),
+		},
+	],
+	[
+		'moxie',
+		{
+			base: myBasestat($stat`moxie`),
+			buffed: myBuffedstat($stat`moxie`),
+			substats: myBasestat($stat`submoxie`),
+		},
+	],
 	['hp', { curr: myHp(), max: myMaxhp() }],
 	['mp', { curr: myMp(), max: myMaxmp() }],
 	[

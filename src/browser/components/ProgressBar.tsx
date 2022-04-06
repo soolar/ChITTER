@@ -4,7 +4,7 @@ import * as React from 'react';
 interface ProgressBarArgs {
 	value: number;
 	max: number;
-	desc: string;
+	desc?: string;
 }
 
 export default function ProgressBar({ value, max, desc }: ProgressBarArgs) {

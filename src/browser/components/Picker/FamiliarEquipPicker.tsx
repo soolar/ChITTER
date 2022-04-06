@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Wrap, WrapItem } from '@chakra-ui/react';
 import * as React from 'react';
 import { BrowserItem, BrowserList } from '../../../guidelines';
-import ItemIcon from '../ItemIcon';
+import ItemIcon from '../Icons/ItemIcon';
 import Picker from './Picker';
 
 declare const items: BrowserList<BrowserItem>;

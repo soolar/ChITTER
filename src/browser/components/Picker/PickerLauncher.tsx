@@ -8,13 +8,15 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 
-interface PickerLauncherArgs<Params> {
+type ParamsBase = Record<string, unknown>;
+
+interface PickerLauncherArgs<Params extends ParamsBase> {
 	children: React.ReactNode;
 	WrappedPicker: React.ComponentType<Params>;
 	pickerProps: Params;
 }
 
-export default function PickerLauncher<Params>({
+export default function PickerLauncher<Params extends ParamsBase>({
 	children,
 	WrappedPicker,
 	pickerProps,

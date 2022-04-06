@@ -5,6 +5,12 @@ export interface CurrMax {
 	max: number;
 }
 
+export interface StatValues {
+	base: number;
+	buffed: number;
+	substats: number;
+}
+
 export type FieldValueBase =
 	| string
 	| number
@@ -15,7 +21,8 @@ export type FieldValueBase =
 	| Skill
 	| Class
 	| Familiar
-	| CurrMax;
+	| CurrMax
+	| StatValues;
 export type FieldValue = FieldValueBase | FieldValueBase[];
 export type FieldData<T> = [string, (thing: T) => FieldValue] | string;
 
@@ -55,6 +62,9 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	}
 	if ('curr' in value && 'max' in value) {
 		return `{ curr: ${value.curr}, max: ${value.max} }`;
+	}
+	if ('base' in value && 'buffed' in value && 'substats' in value) {
+		return `{ base: ${value.base}, buffed: ${value.buffed}, substats: ${value.substats} }`;
 	}
 	throw new TypeError('Unhandled type in fieldValueToJSString');
 };
@@ -142,7 +152,7 @@ const modShorthands: ModShorthand[] = [
 	// remove colons
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
-	[/([^+-])(\d+)([^-]|$)/, '$1+$2$3'],
+	[/ (\d+)([^-\d]|$)/g, ' +$1$2'],
 ];
 
 export const parseMods = (mods: string) => {
@@ -167,7 +177,7 @@ export const parseMods = (mods: string) => {
 						modComboInfo.mods[0],
 						modComboInfo.mods[i]
 					);
-					if (!mods.indexOf(thisFind)) {
+					if (mods.indexOf(thisFind) < 0) {
 						return false;
 					}
 				}
@@ -188,7 +198,7 @@ export const parseMods = (mods: string) => {
 					mods = mods.replace(`, ${thisRemoval}`, '');
 					// in case it was at the beginning
 					const beginningRemoval = new RegExp(
-						`$${thisRemoval.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`
+						`^${thisRemoval.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(, |$)`
 					);
 					mods = mods.replace(beginningRemoval, '');
 				}
@@ -204,7 +214,7 @@ export const parseMods = (mods: string) => {
 
 	// Prismatize
 	mods = mods.replace(
-		/( |^)([^,]*Prismatic[^,]*)(?:,|$)/g,
+		/( |^)([^,]*Prismatic[^,]*)(,|$)/g,
 		(sub: string, ...args: string[]) => {
 			void sub;
 			const elementOrder = ['Hot', 'Sleaze', 'Stench', 'Cold', 'Spooky'];
@@ -212,7 +222,7 @@ export const parseMods = (mods: string) => {
 			return `${args[0]}${args[1].replace(/..?/g, (chars: string) => {
 				currElement = (currElement + 1) % elementOrder.length;
 				return `<span class="mod${elementOrder[currElement]}">${chars}</span>`;
-			})},`;
+			})}${args[2]}`;
 		}
 	);
 

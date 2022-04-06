@@ -5,7 +5,7 @@ interface BrickArgs {
 	name: string;
 	header: React.ReactNode;
 	children: React.ReactNode;
-	footer: React.ReactNode;
+	footer?: React.ReactNode;
 }
 
 export default function Brick({ name, header, children, footer }: BrickArgs) {

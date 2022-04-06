@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ChitterIcon from './ChitterIcon';
-import { BrowserFamiliar } from '../../guidelines';
-import { pluralize } from '../../utils';
+import { BrowserFamiliar } from '../../../guidelines';
+import { pluralize } from '../../../utils';
 import { Text, Tooltip, VStack } from '@chakra-ui/react';
-import { getWeirdoDivContents } from '../familiarHelpers';
+import { getWeirdoDivContents } from '../../familiarHelpers';
 
 interface FamIconArgs {
 	fam: BrowserFamiliar | undefined;

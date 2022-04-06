@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ChitterIcon from './ChitterIcon';
-import { BrowserItem } from '../../guidelines';
+import { BrowserItem } from '../../../guidelines';
 
 interface ItemIconArgs {
-	item: BrowserItem | undefined;
+	item?: BrowserItem;
 }
 
 export default function ItemIcon({ item }: ItemIconArgs) {
