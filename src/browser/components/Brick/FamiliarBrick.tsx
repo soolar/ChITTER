@@ -24,12 +24,10 @@ export default function FamiliarBrick() {
 			header={
 				<Flex>
 					<Tooltip label={`Buffed Weight (Base Weight: ${currFam.weight} lb)`}>
-						<Heading style={{ color: 'blue' }} size="s">
-							{currFam.buffedWeight}
-						</Heading>
+						<Heading style={{ color: 'blue' }}>{currFam.buffedWeight}</Heading>
 					</Tooltip>
 					<Spacer />
-					<Heading size="s">{currFam.name}</Heading>
+					<Heading>{currFam.name}</Heading>
 					<Spacer />
 				</Flex>
 			}
@@ -53,7 +51,7 @@ export default function FamiliarBrick() {
 				<Spacer />
 				<VStack spacing="none">
 					<Tooltip label="Click for Familiar Haiku">
-						<Heading size="s" onClick={() => showFam(currFam.id)}>
+						<Heading onClick={() => showFam(currFam.id)}>
 							{currFam.type}
 						</Heading>
 					</Tooltip>

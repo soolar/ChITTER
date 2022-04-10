@@ -16,7 +16,7 @@ declare const effects: BrowserList<BrowserEffect>;
 
 export default function EffectsBrick() {
 	return (
-		<Brick name="Effects" header={<Heading size="s">Effects</Heading>}>
+		<Brick name="Effects" header={<Heading>Effects</Heading>}>
 			<SimpleGrid columns={4}>
 				{effects.active
 					.sort((eff1, eff2) => {

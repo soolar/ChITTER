@@ -17,7 +17,7 @@ function ResourceRow({ name, valueStr, value }: ResourceRowArgs) {
 	return (
 		<>
 			<GridItem>
-				<Heading size="s">{name}</Heading>
+				<Heading>{name}</Heading>
 			</GridItem>
 			<GridItem textAlign="right">
 				<Text>{valueStr}</Text>
@@ -66,7 +66,7 @@ function StatRow({ name, statValues }: StatRowArgs) {
 	return (
 		<>
 			<GridItem>
-				<Heading size="s">{name}</Heading>
+				<Heading>{name}</Heading>
 			</GridItem>
 			<GridItem textAlign="right">{valueBit}</GridItem>
 			<GridItem>
@@ -82,7 +82,7 @@ function StatRow({ name, statValues }: StatRowArgs) {
 
 export default function StatsBrick() {
 	return (
-		<Brick name="stats" header={<Heading size="s">My Stats</Heading>}>
+		<Brick name="stats" header={<Heading>My Stats</Heading>}>
 			<SimpleGrid columns={3}>
 				<SimpleResourceRow name="HP" value={my.hp} />
 				<SimpleResourceRow name="MP" value={my.mp} />
