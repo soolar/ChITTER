@@ -104,7 +104,11 @@ const chitProperties: ChitPropertyInfo[] = [
 	['toolbar.moods', 'true'], // do not change to boolean, 'bonus' is also valid
 ];
 
-const mafiaProperties = ['relayAddsUpArrowLinks', '_grimstoneMaskDropsCrown'];
+const mafiaProperties = [
+	'relayAddsUpArrowLinks',
+	'_grimstoneMaskDropsCrown',
+	'camelSpit',
+];
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {
 	if (propStr.startsWith('DEFAULT')) {

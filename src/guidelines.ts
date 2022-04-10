@@ -38,7 +38,6 @@ import {
 	$slots,
 	$thralls,
 } from 'libram';
-import { getExtraFamInfo } from './libramUtils';
 import { FieldData, FieldValue, fieldValueToJSString } from './utils';
 
 interface Guidelines<T extends MafiaClass> {
@@ -202,8 +201,6 @@ export interface BrowserFamiliar {
 	owned: boolean;
 	unrestricted: boolean;
 	canEquip: boolean;
-	desc?: string;
-	extraClass?: string;
 }
 
 export declare const familiars: BrowserList<BrowserFamiliar>;
@@ -226,8 +223,6 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		['owned', (fam) => haveFamiliar(fam)],
 		['unrestricted', (fam) => isUnrestricted(fam)],
 		['canEquip', (fam) => canEquip(fam)],
-		['desc', (fam) => getExtraFamInfo(fam)?.desc],
-		['extraClass', (fam) => getExtraFamInfo(fam)?.extraClass],
 	],
 	favorites: Object.keys(favoriteFamiliars())
 		.map((famName) => Familiar.get(famName))

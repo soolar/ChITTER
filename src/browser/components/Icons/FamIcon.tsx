@@ -3,10 +3,10 @@ import ChitterIcon from './ChitterIcon';
 import { BrowserFamiliar } from '../../../guidelines';
 import { pluralize } from '../../../utils';
 import { Text, Tooltip, VStack } from '@chakra-ui/react';
-import { getWeirdoDivContents } from '../../familiarHelpers';
+import { getExtraFamInfo, getWeirdoDivContents } from '../../familiarHelpers';
 
 interface FamIconArgs {
-	fam: BrowserFamiliar | undefined;
+	fam?: BrowserFamiliar;
 	isBjorn?: boolean;
 	tooltipOverride?: React.ReactNode;
 }
@@ -23,6 +23,7 @@ export default function FamIcon({
 		const dropName = fam.drop
 			? pluralize(fam.drop, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft);
+		const extraInfo = getExtraFamInfo(fam);
 		const tooltip = tooltipOverride || (
 			<VStack spacing="none">
 				<Text>{fam.name}</Text>
@@ -34,7 +35,7 @@ export default function FamIcon({
 						{dropsLeft} ${dropName}
 					</Text>
 				)}
-				{fam.desc && <Text>{fam.desc}</Text>}
+				{extraInfo?.desc && <Text>{extraInfo?.desc}</Text>}
 			</VStack>
 		);
 		const weirdoDivContents = getWeirdoDivContents(fam);
@@ -48,7 +49,7 @@ export default function FamIcon({
 				image={fam.image}
 				tooltip={tooltip}
 				borderType={allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'}
-				extraClass={fam.extraClass}
+				extraClass={extraInfo?.extraClass}
 			/>
 		);
 	} else {
