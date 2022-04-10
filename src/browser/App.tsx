@@ -1,5 +1,6 @@
 import { ChakraProvider, Container } from '@chakra-ui/react';
 import * as React from 'react';
+import CharacterBrick from './components/Brick/CharacterBrick';
 import EffectsBrick from './components/Brick/EffectsBrick';
 import FamiliarBrick from './components/Brick/FamiliarBrick';
 import StatsBrick from './components/Brick/StatsBrick';
@@ -9,6 +10,7 @@ export default function App() {
 	return (
 		<ChakraProvider theme={theme}>
 			<Container maxW="full" p="2px">
+				<CharacterBrick />
 				<StatsBrick />
 				<EffectsBrick />
 				<FamiliarBrick />

@@ -1,5 +1,9 @@
 import { myBuffedstat } from 'kolmafia';
+import { myLevel } from 'kolmafia';
 import { myBasestat } from 'kolmafia';
+import { myMeat } from 'kolmafia';
+import { pvpAttacksLeft } from 'kolmafia';
+import { myAdventures } from 'kolmafia';
 import {
 	fullnessLimit,
 	getClanName,
@@ -34,6 +38,7 @@ import { CurrMax, FieldValue, fieldValueToJSString, StatValues } from './utils';
 export interface BrowserCharacter {
 	name: string;
 	class: BrowserClass;
+	level: number;
 	clan: string;
 	pathName: string;
 	pathId: number;
@@ -53,11 +58,15 @@ export interface BrowserCharacter {
 	workshedItem: BrowserItem;
 	bjornFam: BrowserFamiliar;
 	crownFam: BrowserFamiliar;
+	meat: number;
+	advs: number;
+	fites: number;
 }
 
 const characterValues: [string, FieldValue][] = [
 	['name', myName()],
 	['class', myClass()],
+	['level', myLevel()],
 	['clan', getClanName()],
 	['pathName', myPath()],
 	['pathId', myPathId()],
@@ -135,6 +144,9 @@ const characterValues: [string, FieldValue][] = [
 	['workshedItem', getWorkshed()],
 	['bjornFam', myBjornedFamiliar()],
 	['crownFam', myEnthronedFamiliar()],
+	['meat', myMeat()],
+	['advs', myAdventures()],
+	['fites', pvpAttacksLeft()],
 ];
 
 export const buildCharacter = () => {

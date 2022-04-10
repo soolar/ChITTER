@@ -7,7 +7,8 @@ type BorderType =
 	| 'all-drops'
 	| 'good'
 	| 'warning'
-	| 'danger';
+	| 'danger'
+	| 'none';
 
 interface ChitterIconArgs {
 	image: string;
@@ -15,6 +16,7 @@ interface ChitterIconArgs {
 	borderType?: BorderType;
 	specialPath?: boolean;
 	extraClass?: string;
+	small?: boolean;
 }
 
 export default function ChitterIcon({
@@ -23,15 +25,18 @@ export default function ChitterIcon({
 	borderType = 'normal',
 	specialPath = false,
 	extraClass = '',
+	small,
 }: ChitterIconArgs) {
 	return (
 		<Tooltip label={tooltip}>
 			<Image
 				src={specialPath ? image : `/images/itemimages/${image}`}
-				className={`chit-icon ${borderType}${
+				className={`chit-icon${borderType !== 'none' ? ` ${borderType}` : ''}${
 					extraClass ? ` ${extraClass}` : ''
 				}`}
 				alt={image}
+				maxWidth={small ? '15px' : undefined}
+				maxHeight={small ? '15px' : undefined}
 			/>
 		</Tooltip>
 	);
