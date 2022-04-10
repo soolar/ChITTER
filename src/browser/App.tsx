@@ -8,7 +8,7 @@ import theme from './theme';
 export default function App() {
 	return (
 		<ChakraProvider theme={theme}>
-			<Container maxW="full">
+			<Container maxW="full" p="2px">
 				<StatsBrick />
 				<EffectsBrick />
 				<FamiliarBrick />
