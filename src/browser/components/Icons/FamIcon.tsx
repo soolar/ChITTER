@@ -13,8 +13,8 @@ interface FamIconArgs {
 
 export default function FamIcon({
 	fam,
-	isBjorn = false,
-	tooltipOverride = null,
+	isBjorn,
+	tooltipOverride,
 }: FamIconArgs) {
 	if (fam) {
 		const dropsLeft = fam.dropsLimit - fam.dropsToday;
@@ -32,10 +32,10 @@ export default function FamIcon({
 				</Text>
 				{dropName && hasDrops && (
 					<Text>
-						{dropsLeft} ${dropName}
+						{dropsLeft} {dropName}
 					</Text>
 				)}
-				{extraInfo?.desc && <Text>{extraInfo?.desc}</Text>}
+				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
 			</VStack>
 		);
 		const weirdoDivContents = getWeirdoDivContents(fam);
@@ -49,7 +49,7 @@ export default function FamIcon({
 				image={fam.image}
 				tooltip={tooltip}
 				borderType={allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'}
-				extraClass={extraInfo?.extraClass}
+				extraClass={extraInfo.extraClass}
 			/>
 		);
 	} else {

@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { BrowserFamiliar } from '../guidelines';
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
-import * as React from 'react';
 import { BrowserMafiaProperties } from '../properties';
 import ProgressBar from './components/ProgressBar';
 
@@ -21,7 +21,10 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 	switch (fam.type) {
 		case 'Melodramedary':
 			return (
-				<HStack className={`chit-icon ${fam.extraClass}`} spacing="0">
+				<HStack
+					className={`chit-icon ${getExtraFamInfo(fam)?.extraClass}`}
+					spacing="0"
+				>
 					<Image src="/images/otherimages/camelfam_left.gif" border={0} />
 					{Array(Math.floor(fam.weight / 5)).fill(
 						<Image src="/images/otherimages/camelfam_middle.gif" border={0} />
@@ -34,7 +37,12 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 	return null;
 }
 
-export function getExtraFamInfo(fam: BrowserFamiliar) {
+interface ExtraFamInfo {
+	desc?: React.ReactNode;
+	extraClass?: string;
+}
+
+export function getExtraFamInfo(fam: BrowserFamiliar): ExtraFamInfo {
 	switch (fam.type) {
 		case 'Melodramedary': {
 			const spit = mafiaProperties.camelSpit as number;
@@ -53,5 +61,5 @@ export function getExtraFamInfo(fam: BrowserFamiliar) {
 		}
 	}
 
-	return null;
+	return {};
 }

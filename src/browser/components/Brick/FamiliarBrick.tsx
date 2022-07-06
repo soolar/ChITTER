@@ -7,7 +7,16 @@ import ItemIcon from '../Icons/ItemIcon';
 import PickerLauncher from '../Picker/PickerLauncher';
 import ProgressBar from '../ProgressBar';
 import Brick from './Brick';
-import { Flex, Heading, Spacer, Text, Tooltip, VStack } from '@chakra-ui/react';
+import {
+	Flex,
+	Heading,
+	HStack,
+	Spacer,
+	Text,
+	Tooltip,
+	useBreakpointValue,
+	VStack,
+} from '@chakra-ui/react';
 import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers';
 import FamiliarEquipmentPicker from '../Picker/FamiliarEquipPicker';
 
@@ -20,6 +29,53 @@ export default function FamiliarBrick() {
 	if (currFam) {
 		const nextInfo = nextLevelInfo(currFam);
 		const extraInfo = getExtraFamInfo(currFam);
+
+		const famIcon = (
+			<PickerLauncher
+				WrappedPicker={FamiliarPicker}
+				pickerProps={{
+					type: 'default' as const,
+				}}
+			>
+				<FamIcon fam={currFam} tooltipOverride="Pick a Familiar" />
+			</PickerLauncher>
+		);
+
+		const famInfo = (
+			<VStack spacing="none">
+				<Tooltip label="Click for Familiar Haiku">
+					<Heading onClick={() => showFam(currFam.id)}>{currFam.type}</Heading>
+				</Tooltip>
+				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
+			</VStack>
+		);
+
+		const famEquip = (
+			<PickerLauncher WrappedPicker={FamiliarEquipmentPicker} pickerProps={{}}>
+				<ItemIcon item={slots.byName.familiar.equipped} />
+			</PickerLauncher>
+		);
+
+		const layout = useBreakpointValue({
+			base: (
+				<VStack>
+					<HStack>
+						{famIcon}
+						{famEquip}
+					</HStack>
+					{famInfo}
+				</VStack>
+			),
+			sm: (
+				<Flex>
+					{famIcon}
+					<Spacer />
+					{famInfo}
+					<Spacer />
+					{famEquip}
+				</Flex>
+			),
+		});
 
 		return (
 			<Brick
@@ -46,32 +102,7 @@ export default function FamiliarBrick() {
 					/>
 				}
 			>
-				<Flex>
-					<PickerLauncher
-						WrappedPicker={FamiliarPicker}
-						pickerProps={{
-							type: 'default' as const,
-						}}
-					>
-						<FamIcon fam={currFam} tooltipOverride="Pick a Familiar" />
-					</PickerLauncher>
-					<Spacer />
-					<VStack spacing="none">
-						<Tooltip label="Click for Familiar Haiku">
-							<Heading onClick={() => showFam(currFam.id)}>
-								{currFam.type}
-							</Heading>
-						</Tooltip>
-						{extraInfo?.desc && <Text>{extraInfo?.desc}</Text>}
-					</VStack>
-					<Spacer />
-					<PickerLauncher
-						WrappedPicker={FamiliarEquipmentPicker}
-						pickerProps={{}}
-					>
-						<ItemIcon item={slots.byName.familiar.equipped} />
-					</PickerLauncher>
-				</Flex>
+				{layout}
 			</Brick>
 		);
 	} else {

@@ -1,3 +1,4 @@
+import { visitUrl } from 'kolmafia';
 import { write } from 'kolmafia';
 import { buildCharacter } from '../character';
 import {
@@ -10,9 +11,12 @@ import {
 	slotGuidelines,
 	thrallGuidelines,
 } from '../guidelines';
+import parseCharpaneData from '../parseCharpaneData';
 import { buildProperties } from '../properties';
 
 export function main(): void {
+	const baseCharpane = visitUrl('charpane.php', false);
+
 	write(`<!DOCTYPE html>
 <html lang="">
 	<head>
@@ -28,6 +32,7 @@ ${buildStringFromGuidelines(thrallGuidelines)}
 ${buildStringFromGuidelines(classGuidelines)}
 ${buildProperties()}
 ${buildCharacter()}
+${parseCharpaneData(baseCharpane)}
 		</script>
 	</head>
 	<body>
