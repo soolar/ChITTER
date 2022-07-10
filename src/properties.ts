@@ -108,6 +108,9 @@ const mafiaProperties = [
 	'relayAddsUpArrowLinks',
 	'_grimstoneMaskDropsCrown',
 	'camelSpit',
+	'_turkeyMuscle',
+	'_turkeyMyst',
+	'_turkeyMoxie',
 ];
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {

@@ -28,7 +28,7 @@ export default function FamiliarBrick() {
 
 	if (currFam) {
 		const nextInfo = nextLevelInfo(currFam);
-		const extraInfo = getExtraFamInfo(currFam);
+		const extraInfo = getExtraFamInfo(currFam, false, false);
 
 		const famIcon = (
 			<PickerLauncher

@@ -17,25 +17,14 @@ export default function FamIcon({
 	tooltipOverride,
 }: FamIconArgs) {
 	if (fam) {
-		const dropsLeft = fam.dropsLimit - fam.dropsToday;
-		const hasDrops = !isBjorn && dropsLeft > 0;
-		const allDrops = hasDrops && fam.dropsToday === 0;
-		const dropName = fam.drop
-			? pluralize(fam.drop, dropsLeft)
-			: pluralize(fam.dropName, dropsLeft);
-		const extraInfo = getExtraFamInfo(fam);
+		const extraInfo = getExtraFamInfo(fam, true, !!isBjorn);
 		const tooltip = tooltipOverride || (
 			<VStack spacing="none">
 				<Text>{fam.name}</Text>
 				<Text>
 					the {fam.weight}lb {fam.type}
 				</Text>
-				{dropName && hasDrops && (
-					<Text>
-						{dropsLeft} {dropName}
-					</Text>
-				)}
-				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
+				{extraInfo.desc}
 			</VStack>
 		);
 		const weirdoDivContents = getWeirdoDivContents(fam);
@@ -48,7 +37,7 @@ export default function FamIcon({
 			<ChitterIcon
 				image={fam.image}
 				tooltip={tooltip}
-				borderType={allDrops ? 'all-drops' : hasDrops ? 'has-drops' : 'normal'}
+				borderType={extraInfo.borderType}
 				extraClass={extraInfo.extraClass}
 			/>
 		);
