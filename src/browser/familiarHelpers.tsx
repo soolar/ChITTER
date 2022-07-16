@@ -98,7 +98,10 @@ export function getExtraFamInfo(fam: BrowserFamiliar, isTooltip: boolean, isBjor
 	if (hasDrops && dropName) {
 		const dropText = `${dropsLeft} ${dropName}`;
 		if (res.desc) {
-			res.desc = <Text>{dropText}, {res.desc}</Text>;
+			res.desc = <>
+				<Text>{dropText}</Text>
+				{res.desc}
+			</>;
 		}
 		else {
 			res.desc = <Text>{dropText}</Text>;
