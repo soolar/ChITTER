@@ -1,4 +1,4 @@
-import { getProperty, propertyExists } from 'kolmafia';
+import { getProperty, Item, propertyExists } from 'kolmafia';
 import { $items, get } from 'libram';
 import { BrowserItem } from './guidelines';
 import { FieldValue, fieldValueToJSString } from './utils';

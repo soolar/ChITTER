@@ -68,8 +68,8 @@ const characterValues: [string, FieldValue][] = [
 	['class', myClass()],
 	['level', myLevel()],
 	['clan', getClanName()],
-	['pathName', myPath()],
-	['pathId', myPathId()],
+	['pathName', myPath().name],
+	['pathId', myPath().id],
 	[
 		'muscle',
 		{

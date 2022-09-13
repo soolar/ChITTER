@@ -1,4 +1,5 @@
 import { BrowserItem } from './guidelines';
+import { Class, Familiar, Item, Skill } from 'kolmafia';
 
 export interface CurrMax {
 	curr: number;
