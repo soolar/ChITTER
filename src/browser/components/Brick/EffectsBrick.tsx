@@ -5,14 +5,14 @@ import {
 	SimpleGrid,
 	Text,
 	VStack,
-} from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserEffect, BrowserList } from '../../../guidelines';
-import { parseMods } from '../../../utils';
-import EffectIcon from '../Icons/EffectIcon';
-import Brick from './Brick';
+} from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserEffect, BrowserList } from '../../../guidelines'
+import { parseMods } from '../../../utils'
+import EffectIcon from '../Icons/EffectIcon'
+import Brick from './Brick'
 
-declare const effects: BrowserList<BrowserEffect>;
+declare const effects: BrowserList<BrowserEffect>
 
 export default function EffectsBrick() {
 	return (
@@ -20,8 +20,8 @@ export default function EffectsBrick() {
 			<SimpleGrid columns={4}>
 				{effects.active
 					.sort((eff1, eff2) => {
-						const turnsDiff = eff1.turnsActive - eff2.turnsActive;
-						return turnsDiff === 0 ? eff1.id - eff2.id : turnsDiff;
+						const turnsDiff = eff1.turnsActive - eff2.turnsActive
+						return turnsDiff === 0 ? eff1.id - eff2.id : turnsDiff
 					})
 					.map((eff) => (
 						<>
@@ -56,5 +56,5 @@ export default function EffectsBrick() {
 					))}
 			</SimpleGrid>
 		</Brick>
-	);
+	)
 }

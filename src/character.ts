@@ -1,9 +1,9 @@
-import { myBuffedstat } from 'kolmafia';
-import { myLevel } from 'kolmafia';
-import { myBasestat } from 'kolmafia';
-import { myMeat } from 'kolmafia';
-import { pvpAttacksLeft } from 'kolmafia';
-import { myAdventures } from 'kolmafia';
+import { myBuffedstat } from 'kolmafia'
+import { myLevel } from 'kolmafia'
+import { myBasestat } from 'kolmafia'
+import { myMeat } from 'kolmafia'
+import { pvpAttacksLeft } from 'kolmafia'
+import { myAdventures } from 'kolmafia'
 import {
 	fullnessLimit,
 	getClanName,
@@ -23,44 +23,44 @@ import {
 	myMp,
 	myName,
 	myPath,
-	myPathId,
 	myRain,
 	mySoulsauce,
 	mySpleenUse,
 	myThunder,
 	spleenLimit,
-} from 'kolmafia';
-import { $stat } from 'libram';
-import { $class, $skill, $skills, have } from 'libram';
-import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines';
-import { CurrMax, FieldValue, fieldValueToJSString, StatValues } from './utils';
+} from 'kolmafia'
+import { $stat } from 'libram'
+import { $class, $skill, $skills, have } from 'libram'
+import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines'
+import { CurrMax, StatValues } from './utils'
+import { FieldValue, fieldValueToJSString } from './fieldValue'
 
 export interface BrowserCharacter {
-	name: string;
-	class: BrowserClass;
-	level: number;
-	clan: string;
-	pathName: string;
-	pathId: number;
-	muscle: StatValues;
-	mysticality: StatValues;
-	moxie: StatValues;
-	hp: CurrMax;
-	mp: CurrMax;
-	soulsauce: CurrMax;
-	lightning: CurrMax;
-	rain: CurrMax;
-	thunder: CurrMax;
-	fury: CurrMax;
-	fullness: CurrMax;
-	inebriety: CurrMax;
-	spleenUse: CurrMax;
-	workshedItem: BrowserItem;
-	bjornFam: BrowserFamiliar;
-	crownFam: BrowserFamiliar;
-	meat: number;
-	advs: number;
-	fites: number;
+	name: string
+	class: BrowserClass
+	level: number
+	clan: string
+	pathName: string
+	pathId: number
+	muscle: StatValues
+	mysticality: StatValues
+	moxie: StatValues
+	hp: CurrMax
+	mp: CurrMax
+	soulsauce: CurrMax
+	lightning: CurrMax
+	rain: CurrMax
+	thunder: CurrMax
+	fury: CurrMax
+	fullness: CurrMax
+	inebriety: CurrMax
+	spleenUse: CurrMax
+	workshedItem: BrowserItem
+	bjornFam: BrowserFamiliar
+	crownFam: BrowserFamiliar
+	meat: number
+	advs: number
+	fites: number
 }
 
 const characterValues: [string, FieldValue][] = [
@@ -147,7 +147,7 @@ const characterValues: [string, FieldValue][] = [
 	['meat', myMeat()],
 	['advs', myAdventures()],
 	['fites', pvpAttacksLeft()],
-];
+]
 
 export const buildCharacter = () => {
 	return `\t\t\tvar my = {
@@ -155,5 +155,5 @@ ${characterValues
 	.filter((pair) => pair[1] !== undefined)
 	.map((pair) => `\t\t\t\t${pair[0]}: ${fieldValueToJSString(pair[1])},`)
 	.join('\n')}
-\t\t\t}`;
-};
+\t\t\t}`
+}

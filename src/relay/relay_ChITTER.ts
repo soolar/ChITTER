@@ -1,6 +1,6 @@
-import { visitUrl } from 'kolmafia';
-import { write } from 'kolmafia';
-import { buildCharacter } from '../character';
+import { visitUrl } from 'kolmafia'
+import { write } from 'kolmafia'
+import { buildCharacter } from '../character'
 import {
 	buildStringFromGuidelines,
 	classGuidelines,
@@ -10,12 +10,12 @@ import {
 	skillGuidelines,
 	slotGuidelines,
 	thrallGuidelines,
-} from '../guidelines';
-import parseCharpaneData from '../parseCharpaneData';
-import { buildProperties } from '../properties';
+} from '../guidelines'
+import parseCharpaneData from '../parseCharpaneData'
+import { buildProperties } from '../properties'
 
 export function main(): void {
-	const baseCharpane = visitUrl('charpane.php', false);
+	const baseCharpane = visitUrl('charpane.php', false)
 
 	write(`<!DOCTYPE html>
 <html lang="">
@@ -39,5 +39,5 @@ ${parseCharpaneData(baseCharpane)}
 		<div id="root"></div>
 		<script src="./ChITTER/ChITTER.js"></script>
 	</body>
-</html>`);
+</html>`)
 }

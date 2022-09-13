@@ -1,6 +1,6 @@
-import { HStack, Image } from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserFamiliar } from '../guidelines';
+import { HStack, Image } from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserFamiliar } from '../guidelines'
 
 export function getWeirdoDivContents(fam: BrowserFamiliar) {
 	switch (fam.type) {
@@ -13,8 +13,8 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 					)}
 					<Image src="/images/otherimages/camelfam_right.gif" border={0} />
 				</HStack>
-			);
+			)
 	}
 
-	return null;
+	return null
 }

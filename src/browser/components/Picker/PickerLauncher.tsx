@@ -5,15 +5,15 @@ import {
 	PopoverCloseButton,
 	PopoverContent,
 	PopoverTrigger,
-} from '@chakra-ui/react';
-import * as React from 'react';
+} from '@chakra-ui/react'
+import * as React from 'react'
 
-type ParamsBase = Record<string, unknown>;
+type ParamsBase = Record<string, unknown>
 
 interface PickerLauncherArgs<Params extends ParamsBase> {
-	children: React.ReactNode;
-	WrappedPicker: React.ComponentType<Params>;
-	pickerProps: Params;
+	children: React.ReactNode
+	WrappedPicker: React.ComponentType<Params>
+	pickerProps: Params
 }
 
 export default function PickerLauncher<Params extends ParamsBase>({
@@ -32,5 +32,5 @@ export default function PickerLauncher<Params extends ParamsBase>({
 				<WrappedPicker {...pickerProps} />
 			</PopoverContent>
 		</Popover>
-	);
+	)
 }

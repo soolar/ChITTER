@@ -35,7 +35,7 @@ import {
 	toInt,
 	toSlot,
 	weightAdjustment,
-} from 'kolmafia';
+} from 'kolmafia'
 import {
 	$classes,
 	$effects,
@@ -44,15 +44,15 @@ import {
 	$skills,
 	$slots,
 	$thralls,
-} from 'libram';
-import { FieldData, FieldValue, fieldValueToJSString } from './utils';
+} from 'libram'
+import { FieldData, FieldValue, fieldValueToJSString } from './fieldValue'
 
 interface Guidelines<T extends MafiaClass> {
-	name: string;
-	all: T[];
-	fields: FieldData<T>[];
-	favorites: T[];
-	active: T[];
+	name: string
+	all: T[]
+	fields: FieldData<T>[]
+	favorites: T[]
+	active: T[]
 }
 
 // maybe some day I'll figure out a way to do this without any, maybe not...
@@ -60,32 +60,32 @@ interface Guidelines<T extends MafiaClass> {
 export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 	guidelines: Guidelines<T>
 ) => {
-	const res = [`\t\t\tvar ${guidelines.name} = {\n\t\t\t\tbyName: {\n`];
+	const res = [`\t\t\tvar ${guidelines.name} = {\n\t\t\t\tbyName: {\n`]
 	res.push(
 		...guidelines.all.map((thing) => {
-			const res = [`\t\t\t\t\t"${thing.toString()}": {`];
+			const res = [`\t\t\t\t\t"${thing.toString()}": {`]
 			res.push(
 				guidelines.fields
 					.map((fieldData) => {
 						const fieldName =
-							typeof fieldData === 'string' ? fieldData : fieldData[0];
+							typeof fieldData === 'string' ? fieldData : fieldData[0]
 						const fieldValue: FieldValue =
 							typeof fieldData === 'string'
 								? thing[fieldData]
-								: fieldData[1](thing);
+								: fieldData[1](thing)
 						if (fieldValue === undefined) {
-							return undefined;
+							return undefined
 						}
-						return `${fieldName}: ${fieldValueToJSString(fieldValue)}`;
+						return `${fieldName}: ${fieldValueToJSString(fieldValue)}`
 					})
 					.filter((fieldStr) => fieldStr !== undefined)
 					.join(', ')
-			);
-			res.push('},\n');
-			return res.join('');
+			)
+			res.push('},\n')
+			return res.join('')
 		})
-	);
-	res.push('\t\t\t\t}\n\t\t\t};\n');
+	)
+	res.push('\t\t\t\t}\n\t\t\t};\n')
 	const addList = (list: T[], listName: string) => {
 		res.push(
 			`\t\t\t${guidelines.name}.${listName} = [\n${list
@@ -96,41 +96,41 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 						}"]`
 				)
 				.join(',\n')}\n\t\t\t];\n`
-		);
-	};
-	addList(guidelines.all, 'all');
+		)
+	}
+	addList(guidelines.all, 'all')
 	if (guidelines.favorites) {
-		addList(guidelines.favorites, 'favorites');
+		addList(guidelines.favorites, 'favorites')
 	}
 	if (guidelines.active) {
-		addList(guidelines.active, 'active');
+		addList(guidelines.active, 'active')
 	}
-	return res.join('');
-};
+	return res.join('')
+}
 
 export interface BrowserList<T> {
-	all: T[];
-	favorites: T[];
-	active: T[];
-	byName: { [key: string]: T };
+	all: T[]
+	favorites: T[]
+	active: T[]
+	byName: { [key: string]: T }
 }
 
 // BEGIN ACTUAL GUIDELINES
 
 // Begin Effects
 export interface BrowserEffect {
-	name: string;
-	default: string;
-	image: string;
-	id: number;
-	descid: string;
-	quality: string;
-	song: boolean;
-	turnsActive: number;
-	mods: string;
+	name: string
+	default: string
+	image: string
+	id: number
+	descid: string
+	quality: string
+	song: boolean
+	turnsActive: number
+	mods: string
 }
 
-export declare const effects: BrowserList<BrowserEffect>;
+export declare const effects: BrowserList<BrowserEffect>
 
 export const effectGuidelines: Guidelines<Effect> = {
 	name: 'effects',
@@ -148,25 +148,25 @@ export const effectGuidelines: Guidelines<Effect> = {
 	],
 	active: $effects``.filter((eff) => haveEffect(eff) !== 0),
 	favorites: [],
-};
+}
 // End Effects
 
 // Begin Items
 export interface BrowserItem {
-	name: string;
-	image: string;
-	id: number;
-	plural: string;
-	inInventory: number;
-	inCloset: number;
-	inStorage: number;
-	equippedAmount: number;
-	unrestricted: boolean;
-	canEquip: boolean;
-	slotStr: string;
+	name: string
+	image: string
+	id: number
+	plural: string
+	inInventory: number
+	inCloset: number
+	inStorage: number
+	equippedAmount: number
+	unrestricted: boolean
+	canEquip: boolean
+	slotStr: string
 }
 
-export declare const items: BrowserList<BrowserItem>;
+export declare const items: BrowserList<BrowserItem>
 
 export const itemGuidelines: Guidelines<Item> = {
 	name: 'items',
@@ -189,28 +189,28 @@ export const itemGuidelines: Guidelines<Item> = {
 		.map((itemName) => Item.get(itemName))
 		.sort((a, b) => toInt(a) - toInt(b)),
 	active: [],
-};
+}
 // End Items
 
 // Begin Familiars
 export interface BrowserFamiliar {
-	type: string;
-	image: string;
-	id: number;
-	name: string;
-	experience: number;
-	weight: number;
-	buffedWeight: number;
-	drop?: BrowserItem;
-	dropsLimit: number;
-	dropsToday: number;
-	dropName: string;
-	owned: boolean;
-	unrestricted: boolean;
-	canEquip: boolean;
+	type: string
+	image: string
+	id: number
+	name: string
+	experience: number
+	weight: number
+	buffedWeight: number
+	drop?: BrowserItem
+	dropsLimit: number
+	dropsToday: number
+	dropName: string
+	owned: boolean
+	unrestricted: boolean
+	canEquip: boolean
 }
 
-export declare const familiars: BrowserList<BrowserFamiliar>;
+export declare const familiars: BrowserList<BrowserFamiliar>
 
 export const familiarGuidelines: Guidelines<Familiar> = {
 	name: 'familiars',
@@ -235,29 +235,29 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		.map((famName) => Familiar.get(famName))
 		.sort((a, b) => toInt(a) - toInt(b)),
 	active: [myFamiliar()],
-};
+}
 // End Familiars
 
 // Begin Skills
 export interface BrowserSkill {
-	name: string;
-	image: string;
-	id: number;
-	have: boolean;
-	dailylimit: number;
-	timescast: number;
-	advCost: number;
-	fuelCost: number;
-	mpCost: number;
-	hpCost: number;
-	lightningCost: number;
-	rainCost: number;
-	thunderCost: number;
-	soulsauceCost: number;
-	unrestricted: boolean;
+	name: string
+	image: string
+	id: number
+	have: boolean
+	dailylimit: number
+	timescast: number
+	advCost: number
+	fuelCost: number
+	mpCost: number
+	hpCost: number
+	lightningCost: number
+	rainCost: number
+	thunderCost: number
+	soulsauceCost: number
+	unrestricted: boolean
 }
 
-export declare const skills: BrowserList<BrowserSkill>;
+export declare const skills: BrowserList<BrowserSkill>
 
 export const skillGuidelines: Guidelines<Skill> = {
 	name: 'skills',
@@ -281,16 +281,16 @@ export const skillGuidelines: Guidelines<Skill> = {
 	],
 	active: [],
 	favorites: [],
-};
+}
 // End Skills
 
 // Begin Slots
 export interface BrowserSlot {
-	name: string;
-	equipped: BrowserItem;
+	name: string
+	equipped: BrowserItem
 }
 
-export declare const slots: BrowserList<BrowserSlot>;
+export declare const slots: BrowserList<BrowserSlot>
 
 export const slotGuidelines: Guidelines<Slot> = {
 	name: 'slots',
@@ -301,21 +301,21 @@ export const slotGuidelines: Guidelines<Slot> = {
 	],
 	active: [], // TODO: Put relevant slots here
 	favorites: $slots`hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3`,
-};
+}
 // End Slots
 
 // Begin Thralls
 export interface BrowserThrall {
-	type: string;
-	name: string;
-	id: number;
-	level: number;
-	image: string;
-	tinyimage: string;
-	skill: BrowserSkill;
+	type: string
+	name: string
+	id: number
+	level: number
+	image: string
+	tinyimage: string
+	skill: BrowserSkill
 }
 
-export declare const thralls: BrowserList<BrowserThrall>;
+export declare const thralls: BrowserList<BrowserThrall>
 
 export const thrallGuidelines: Guidelines<Thrall> = {
 	name: 'thralls',
@@ -331,17 +331,17 @@ export const thrallGuidelines: Guidelines<Thrall> = {
 	],
 	favorites: [],
 	active: [myThrall()],
-};
+}
 // End Thralls
 
 // Begin Classes
 export interface BrowserClass {
-	name: string;
-	id: number;
-	mainstat: string;
+	name: string
+	id: number
+	mainstat: string
 }
 
-export declare const classes: BrowserList<BrowserClass>;
+export declare const classes: BrowserList<BrowserClass>
 
 export const classGuidelines: Guidelines<Class> = {
 	name: 'classes',
@@ -353,5 +353,5 @@ export const classGuidelines: Guidelines<Class> = {
 	],
 	favorites: [],
 	active: [myClass()],
-};
+}
 //End Classes

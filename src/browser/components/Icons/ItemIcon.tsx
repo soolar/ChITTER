@@ -1,10 +1,10 @@
-import * as React from 'react';
-import ChitterIcon from './ChitterIcon';
-import { BrowserItem } from '../../../guidelines';
+import * as React from 'react'
+import ChitterIcon from './ChitterIcon'
+import { BrowserItem } from '../../../guidelines'
 
 interface ItemIconArgs {
-	item?: BrowserItem;
-	small?: boolean;
+	item?: BrowserItem
+	small?: boolean
 }
 
 export default function ItemIcon({ item, small }: ItemIconArgs) {
@@ -16,7 +16,7 @@ export default function ItemIcon({ item, small }: ItemIconArgs) {
 				borderType="normal"
 				small={small}
 			/>
-		);
+		)
 	} else {
 		return (
 			<ChitterIcon
@@ -24,6 +24,6 @@ export default function ItemIcon({ item, small }: ItemIconArgs) {
 				tooltip="No item here..."
 				small={small}
 			/>
-		);
+		)
 	}
 }

@@ -1,94 +1,35 @@
-import { BrowserItem } from './guidelines';
-import { Class, Familiar, Item, Skill } from 'kolmafia';
+import { BrowserItem } from './guidelines'
 
 export interface CurrMax {
-	curr: number;
-	max: number;
+	curr: number
+	max: number
 }
 
 export interface StatValues {
-	base: number;
-	buffed: number;
-	substats: number;
+	base: number
+	buffed: number
+	substats: number
 }
-
-export type FieldValueBase =
-	| string
-	| number
-	| boolean
-	| null
-	| undefined
-	| Item
-	| Skill
-	| Class
-	| Familiar
-	| CurrMax
-	| StatValues;
-export type FieldValue = FieldValueBase | FieldValueBase[];
-export type FieldData<T> = [string, (thing: T) => FieldValue] | string;
-
-export const fieldValueToJSString: (value: FieldValue) => string = (
-	value: FieldValue
-) => {
-	if (Array.isArray(value)) {
-		return `[${value
-			.map((subValue) => fieldValueToJSString(subValue))
-			.join(', ')}]`;
-	}
-	if (value === undefined) {
-		throw new TypeError(
-			'Filter out undefined before calling fieldValueToJSString'
-		);
-	}
-	if (value === null) {
-		return 'null';
-	}
-	if (typeof value === 'boolean' || typeof value === 'number') {
-		return value.toString();
-	}
-	if (typeof value === 'string') {
-		return `"${value.replace(/"/g, '\\"')}"`;
-	}
-	if (value instanceof Item) {
-		return `items.byName["${value.toString()}"]`;
-	}
-	if (value instanceof Skill) {
-		return `skills.byName["${value.toString()}"]`;
-	}
-	if (value instanceof Class) {
-		return `classes.byName["${value.toString()}"]`;
-	}
-	if (value instanceof Familiar) {
-		return `familiars.byName["${value.toString()}"]`;
-	}
-	if ('curr' in value && 'max' in value) {
-		return `{ curr: ${value.curr}, max: ${value.max} }`;
-	}
-	if ('base' in value && 'buffed' in value && 'substats' in value) {
-		return `{ base: ${value.base}, buffed: ${value.buffed}, substats: ${value.substats} }`;
-	}
-	throw new TypeError('Unhandled type in fieldValueToJSString');
-};
 
 export const pluralize = (thing: string | BrowserItem, amount: number) => {
 	if (typeof thing === 'string') {
 		if (thing.slice(-1) === 's') {
-			return amount === 1 ? thing.slice(0, -1) : thing;
+			return amount === 1 ? thing.slice(0, -1) : thing
 		}
 		if (amount === 1) {
-			return thing;
+			return thing
 		}
 		if (thing.slice(-1) === 'y') {
-			return `${thing.slice(0, -1)}ies`;
+			return `${thing.slice(0, -1)}ies`
 		}
-		return `${thing}s`;
+		return `${thing}s`
 	}
-	return amount === 1 ? thing.name : thing.plural;
-};
+	return amount === 1 ? thing.name : thing.plural
+}
 
 interface ModCombinationInfo {
-	mods: string[];
-	fuseName: string;
+	mods: string[]
+	fuseName: string
 }
 
 const modCombinations: ModCombinationInfo[] = [
@@ -108,9 +49,9 @@ const modCombinations: ModCombinationInfo[] = [
 		mods: ['Weapon Damage', 'Spell Damage'],
 		fuseName: 'All Damage',
 	},
-];
+]
 
-type ModShorthand = [RegExp, string];
+type ModShorthand = [RegExp, string]
 
 const modShorthands: ModShorthand[] = [
 	[/ Percent/g, '%'],
@@ -154,87 +95,87 @@ const modShorthands: ModShorthand[] = [
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
 	[/ (\d+)([^-\d]|$)/g, ' +$1$2'],
-];
+]
 
 export const parseMods = (mods: string) => {
 	// Capitalize all words
-	mods = mods.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+	mods = mods.replace(/\b[a-z]/g, (letter) => letter.toUpperCase())
 	// Move parenthesized segments to start
 	// ie "Experience (Moxie): +5" -> "Moxie Experience: +5"
 	mods = mods.replace(/(, ?|^)([^,(]*?) \(([^)]+)\)/g, (match, ...groups) => {
-		void match;
-		return `${groups[0]}${groups[2]} ${groups[1]}`;
-	});
+		void match
+		return `${groups[0]}${groups[2]} ${groups[1]}`
+	})
 
 	const fiddle = (modComboInfo: ModCombinationInfo) => {
-		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)\\d+`;
-		const regexp = new RegExp(initialPattern, 'g');
-		let matchInfo;
+		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)\\d+`
+		const regexp = new RegExp(initialPattern, 'g')
+		let matchInfo
 		while ((matchInfo = regexp.exec(mods)) !== null) {
-			const initialMatch = matchInfo[0];
+			const initialMatch = matchInfo[0]
 			const confirmMatch = () => {
 				for (let i = 1; i < modComboInfo.mods.length; ++i) {
 					const thisFind = initialMatch.replace(
 						modComboInfo.mods[0],
 						modComboInfo.mods[i]
-					);
+					)
 					if (mods.indexOf(thisFind) < 0) {
-						return false;
+						return false
 					}
 				}
-				return true;
-			};
+				return true
+			}
 			if (confirmMatch()) {
 				// replace the first and strip the rest
 				const replacement = initialMatch.replace(
 					modComboInfo.mods[0],
 					modComboInfo.fuseName
-				);
-				mods = mods.replace(initialMatch, replacement);
+				)
+				mods = mods.replace(initialMatch, replacement)
 				for (let i = 1; i < modComboInfo.mods.length; ++i) {
 					const thisRemoval = initialMatch.replace(
 						modComboInfo.mods[0],
 						modComboInfo.mods[i]
-					);
-					mods = mods.replace(`, ${thisRemoval}`, '');
+					)
+					mods = mods.replace(`, ${thisRemoval}`, '')
 					// in case it was at the beginning
 					const beginningRemoval = new RegExp(
 						`^${thisRemoval.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(, |$)`
-					);
-					mods = mods.replace(beginningRemoval, '');
+					)
+					mods = mods.replace(beginningRemoval, '')
 				}
 			}
 		}
-	};
+	}
 
-	modCombinations.forEach((modComboInfo) => fiddle(modComboInfo));
+	modCombinations.forEach((modComboInfo) => fiddle(modComboInfo))
 
 	modShorthands.forEach((modShorthand) => {
-		mods = mods.replace(modShorthand[0], modShorthand[1]);
-	});
+		mods = mods.replace(modShorthand[0], modShorthand[1])
+	})
 
 	// Prismatize
 	mods = mods.replace(
 		/( |^)([^,]*Prismatic[^,]*)(,|$)/g,
 		(sub: string, ...args: string[]) => {
-			void sub;
-			const elementOrder = ['Hot', 'Sleaze', 'Stench', 'Cold', 'Spooky'];
-			let currElement = -1;
+			void sub
+			const elementOrder = ['Hot', 'Sleaze', 'Stench', 'Cold', 'Spooky']
+			let currElement = -1
 			return `${args[0]}${args[1].replace(/..?/g, (chars: string) => {
-				currElement = (currElement + 1) % elementOrder.length;
-				return `<span class="mod${elementOrder[currElement]}">${chars}</span>`;
-			})}${args[2]}`;
+				currElement = (currElement + 1) % elementOrder.length
+				return `<span class="mod${elementOrder[currElement]}">${chars}</span>`
+			})}${args[2]}`
 		}
-	);
+	)
 
-	return mods;
-};
+	return mods
+}
 
 export function showFam(famNum: number) {
 	const wind = window.open(
 		`desc_familiar.php?which=${famNum}`,
 		'familiar',
 		'height=200,width=400'
-	);
-	wind?.focus();
+	)
+	wind?.focus()
 }

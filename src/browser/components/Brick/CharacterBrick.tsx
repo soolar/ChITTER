@@ -1,12 +1,12 @@
-import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserCharacter } from '../../../character';
-import { BrowserItem, BrowserList } from '../../../guidelines';
-import CurrencyReadout from '../CurrencyReadout';
-import Brick from './Brick';
+import { Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserCharacter } from '../../../character'
+import { BrowserItem, BrowserList } from '../../../guidelines'
+import CurrencyReadout from '../CurrencyReadout'
+import Brick from './Brick'
 
-declare const my: BrowserCharacter;
-declare const items: BrowserList<BrowserItem>;
+declare const my: BrowserCharacter
+declare const items: BrowserList<BrowserItem>
 
 export default function CharacterBrick() {
 	return (
@@ -34,5 +34,5 @@ export default function CharacterBrick() {
 				</VStack>
 			</HStack>
 		</Brick>
-	);
+	)
 }

@@ -1,21 +1,21 @@
 /* eslint-env node */
 
 module.exports = function (api) {
-	api.cache(true);
+	api.cache(true)
 	return {
 		exclude: [],
 		presets: [
-			"@babel/preset-typescript",
+			'@babel/preset-typescript',
 			[
-				"@babel/preset-env",
+				'@babel/preset-env',
 				{
-					targets: { rhino: "1.7.13" },
+					targets: { rhino: '1.7.13' },
 				},
 			],
 		],
 		plugins: [
-			"@babel/plugin-proposal-class-properties",
-			"@babel/plugin-proposal-object-rest-spread",
+			'@babel/plugin-proposal-class-properties',
+			'@babel/plugin-proposal-object-rest-spread',
 		],
-	};
-};
+	}
+}

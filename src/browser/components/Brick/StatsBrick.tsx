@@ -1,16 +1,16 @@
-import { Divider, GridItem, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserCharacter } from '../../../character';
-import { CurrMax, StatValues } from '../../../utils';
-import ProgressBar from '../ProgressBar';
-import Brick from './Brick';
+import { Divider, GridItem, Heading, SimpleGrid, Text } from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserCharacter } from '../../../character'
+import { CurrMax, StatValues } from '../../../utils'
+import ProgressBar from '../ProgressBar'
+import Brick from './Brick'
 
-declare const my: BrowserCharacter;
+declare const my: BrowserCharacter
 
 interface ResourceRowArgs {
-	name: string;
-	valueStr: string;
-	value: CurrMax;
+	name: string
+	valueStr: string
+	value: CurrMax
 }
 
 function ResourceRow({ name, valueStr, value }: ResourceRowArgs) {
@@ -26,12 +26,12 @@ function ResourceRow({ name, valueStr, value }: ResourceRowArgs) {
 				<ProgressBar value={value.curr} max={value.max} desc={name} />
 			</GridItem>
 		</>
-	);
+	)
 }
 
 interface SimpleResourceRowArgs {
-	name: string;
-	value: CurrMax;
+	name: string
+	value: CurrMax
 }
 
 function SimpleResourceRow({ name, value }: SimpleResourceRowArgs) {
@@ -41,12 +41,12 @@ function SimpleResourceRow({ name, value }: SimpleResourceRowArgs) {
 			valueStr={`${value.curr} / ${value.max}`}
 			value={value}
 		/>
-	);
+	)
 }
 
 interface StatRowArgs {
-	name: string;
-	statValues: StatValues;
+	name: string
+	statValues: StatValues
 }
 
 function StatRow({ name, statValues }: StatRowArgs) {
@@ -57,11 +57,11 @@ function StatRow({ name, statValues }: StatRowArgs) {
 			<Text>
 				<Text as="span">{statValues.buffed}</Text> ({statValues.base})
 			</Text>
-		);
-	const lower = statValues.base ** 2;
-	const upper = (statValues.base + 1) ** 2;
-	const forLevel = upper - lower;
-	const soFarLevel = statValues.substats - lower;
+		)
+	const lower = statValues.base ** 2
+	const upper = (statValues.base + 1) ** 2
+	const forLevel = upper - lower
+	const soFarLevel = statValues.substats - lower
 
 	return (
 		<>
@@ -77,7 +77,7 @@ function StatRow({ name, statValues }: StatRowArgs) {
 				/>
 			</GridItem>
 		</>
-	);
+	)
 }
 
 export default function StatsBrick() {
@@ -100,5 +100,5 @@ export default function StatsBrick() {
 				<SimpleResourceRow name="Spleen" value={my.spleenUse} />
 			</SimpleGrid>
 		</Brick>
-	);
+	)
 }

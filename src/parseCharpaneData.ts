@@ -1,24 +1,24 @@
-import { print } from 'kolmafia';
+import { print } from 'kolmafia'
 
 interface BrowserCharpaneData {
-	avatar: string; // TODO: Make this handle You, Robot properly
-	title: string;
+	avatar: string // TODO: Make this handle You, Robot properly
+	title: string
 }
 
 export default function parseCharpaneData(source: string) {
-	const sections: Record<string, string> = {};
+	const sections: Record<string, string> = {}
 
 	const findSection = (sectionName: string, patterns: RegExp[]) => {
 		// for some reason for (const pattern in patterns) gives me pattern as a string??
 		for (let i = 0; i < patterns.length; ++i) {
-			const pattern = patterns[i];
-			const matches = source.match(pattern);
+			const pattern = patterns[i]
+			const matches = source.match(pattern)
 			if (matches) {
-				sections[sectionName] = matches[0];
-				break;
+				sections[sectionName] = matches[0]
+				break
 			}
 		}
-	};
+	}
 
 	findSection('familiar', [
 		/<p><span class=small><b>Familiar:.+?>none<\/a>\)<\/span>/, // familiar: none
@@ -29,7 +29,7 @@ export default function parseCharpaneData(source: string) {
 		/<p><font size=2><b>Servant:<\/b>.*?<\/p>/, // Actually Ed the Undying
 		/<b><a href="famteam.php".*?Manage Team<\/a>/, // Pocket Familiars
 		/<p><font size=2><b>Ensorcelee:<\/b><br><img src=.*?<\/b>/, // Darke Gyffte
-	]);
+	])
 
-	return '';
+	return ''
 }

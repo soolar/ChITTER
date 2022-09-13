@@ -6,34 +6,34 @@ import {
 	Spacer,
 	Wrap,
 	WrapItem,
-} from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserCharacter } from '../../../character';
-import { BrowserFamiliar, BrowserList } from '../../../guidelines';
-import FamIcon from '../Icons/FamIcon';
-import ChitterIcon from '../Icons/ChitterIcon';
-import Picker from './Picker';
+} from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserCharacter } from '../../../character'
+import { BrowserFamiliar, BrowserList } from '../../../guidelines'
+import FamIcon from '../Icons/FamIcon'
+import ChitterIcon from '../Icons/ChitterIcon'
+import Picker from './Picker'
 
-declare const familiars: BrowserList<BrowserFamiliar>;
-declare const my: BrowserCharacter;
+declare const familiars: BrowserList<BrowserFamiliar>
+declare const my: BrowserCharacter
 
-export type FamiliarPickerType = 'default' | 'bjorn' | 'crown';
+export type FamiliarPickerType = 'default' | 'bjorn' | 'crown'
 
 interface FamiliarPickerArgs {
-	type?: FamiliarPickerType;
+	type?: FamiliarPickerType
 }
 
 export default function FamiliarPicker({
 	type = 'default',
 }: FamiliarPickerArgs) {
-	const [favoritesOnly, setFavoritesOnly] = React.useState(true);
+	const [favoritesOnly, setFavoritesOnly] = React.useState(true)
 	const activeFam =
 		type === 'default'
 			? familiars.active[0]
 			: type === 'bjorn'
 			? my.bjornFam
-			: my.crownFam;
-	const famsToShow = favoritesOnly ? familiars.favorites : familiars.all;
+			: my.crownFam
+	const famsToShow = favoritesOnly ? familiars.favorites : familiars.all
 
 	return (
 		<Picker
@@ -71,5 +71,5 @@ export default function FamiliarPicker({
 				</Wrap>
 			</ButtonGroup>
 		</Picker>
-	);
+	)
 }

@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { BrowserFamiliar, BrowserList, BrowserSlot } from '../../../guidelines';
-import { showFam } from '../../../utils';
-import FamIcon from '../Icons/FamIcon';
-import FamiliarPicker from '../Picker/FamiliarPicker';
-import ItemIcon from '../Icons/ItemIcon';
-import PickerLauncher from '../Picker/PickerLauncher';
-import ProgressBar from '../ProgressBar';
-import Brick from './Brick';
+import * as React from 'react'
+import { BrowserFamiliar, BrowserList, BrowserSlot } from '../../../guidelines'
+import { showFam } from '../../../utils'
+import FamIcon from '../Icons/FamIcon'
+import FamiliarPicker from '../Picker/FamiliarPicker'
+import ItemIcon from '../Icons/ItemIcon'
+import PickerLauncher from '../Picker/PickerLauncher'
+import ProgressBar from '../ProgressBar'
+import Brick from './Brick'
 import {
 	Flex,
 	Heading,
@@ -16,19 +16,19 @@ import {
 	Tooltip,
 	useBreakpointValue,
 	VStack,
-} from '@chakra-ui/react';
-import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers';
-import FamiliarEquipmentPicker from '../Picker/FamiliarEquipPicker';
+} from '@chakra-ui/react'
+import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
+import FamiliarEquipmentPicker from '../Picker/FamiliarEquipPicker'
 
-declare const familiars: BrowserList<BrowserFamiliar>;
-declare const slots: BrowserList<BrowserSlot>;
+declare const familiars: BrowserList<BrowserFamiliar>
+declare const slots: BrowserList<BrowserSlot>
 
 export default function FamiliarBrick() {
-	const currFam = familiars.active[0];
+	const currFam = familiars.active[0]
 
 	if (currFam) {
-		const nextInfo = nextLevelInfo(currFam);
-		const extraInfo = getExtraFamInfo(currFam, false, false);
+		const nextInfo = nextLevelInfo(currFam)
+		const extraInfo = getExtraFamInfo(currFam, false, false)
 
 		const famIcon = (
 			<PickerLauncher
@@ -39,7 +39,7 @@ export default function FamiliarBrick() {
 			>
 				<FamIcon fam={currFam} tooltipOverride="Pick a Familiar" />
 			</PickerLauncher>
-		);
+		)
 
 		const famInfo = (
 			<VStack spacing="none">
@@ -48,13 +48,13 @@ export default function FamiliarBrick() {
 				</Tooltip>
 				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
 			</VStack>
-		);
+		)
 
 		const famEquip = (
 			<PickerLauncher WrappedPicker={FamiliarEquipmentPicker} pickerProps={{}}>
 				<ItemIcon item={slots.byName.familiar.equipped} />
 			</PickerLauncher>
-		);
+		)
 
 		const layout = useBreakpointValue({
 			base: (
@@ -75,7 +75,7 @@ export default function FamiliarBrick() {
 					{famEquip}
 				</Flex>
 			),
-		});
+		})
 
 		return (
 			<Brick
@@ -104,7 +104,7 @@ export default function FamiliarBrick() {
 			>
 				{layout}
 			</Brick>
-		);
+		)
 	} else {
 		return (
 			<Brick name="familiar" header={<Heading>Familiar</Heading>}>
@@ -120,6 +120,6 @@ export default function FamiliarBrick() {
 					<Spacer />
 				</Flex>
 			</Brick>
-		);
+		)
 	}
 }

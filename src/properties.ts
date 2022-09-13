@@ -1,9 +1,9 @@
-import { getProperty, Item, propertyExists } from 'kolmafia';
-import { $items, get } from 'libram';
-import { BrowserItem } from './guidelines';
-import { FieldValue, fieldValueToJSString } from './utils';
+import { getProperty, Item, propertyExists } from 'kolmafia'
+import { $items, get } from 'libram'
+import { FieldValue, fieldValueToJSString } from './fieldValue'
+import { BrowserItem } from './guidelines'
 
-type ChitPropertyInfo = [string, FieldValue];
+type ChitPropertyInfo = [string, FieldValue]
 
 const chitProperties: ChitPropertyInfo[] = [
 	['autoscroll', true],
@@ -102,7 +102,7 @@ const chitProperties: ChitPropertyInfo[] = [
 	['stats.showbars', true],
 	['thrall.showname', false],
 	['toolbar.moods', 'true'], // do not change to boolean, 'bonus' is also valid
-];
+]
 
 const mafiaProperties = [
 	'relayAddsUpArrowLinks',
@@ -111,68 +111,72 @@ const mafiaProperties = [
 	'_turkeyMuscle',
 	'_turkeyMyst',
 	'_turkeyMoxie',
-];
+	'_cheerleaderSteam',
+	'slimelingFullness',
+	'slimelingStacksDue',
+	'slimelingStacksDue',
+]
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {
 	if (propStr.startsWith('DEFAULT')) {
 		if (Array.isArray(defaultValue) && defaultValue[0]?.toString() === 'none') {
-			return [];
+			return []
 		}
-		return defaultValue;
+		return defaultValue
 	}
 	if (Array.isArray(defaultValue)) {
 		if (defaultValue[0] instanceof Item) {
-			return propStr.split('|').map((itemName) => Item.get(itemName));
+			return propStr.split('|').map((itemName) => Item.get(itemName))
 		}
 		if (typeof defaultValue[0] === 'string') {
-			return propStr.split(/, ?/);
+			return propStr.split(/, ?/)
 		}
 		// probably shouldn't ever get here?
-		return [];
+		return []
 	}
 	switch (typeof defaultValue) {
 		case 'string':
-			return propStr;
+			return propStr
 		case 'boolean':
-			return propStr === 'true';
+			return propStr === 'true'
 		case 'number':
-			return Number(propStr);
+			return Number(propStr)
 		// this shouldn't happen
 		default:
-			return null;
+			return null
 	}
-};
+}
 
-type BrowserChitProperty = string | string[] | boolean | BrowserItem[];
+type BrowserChitProperty = string | string[] | boolean | BrowserItem[]
 
 export interface BrowserChitProperties {
-	[key: string]: BrowserChitProperty;
+	[key: string]: BrowserChitProperty
 }
 
 export interface BrowserMafiaProperties {
-	[key: string]: FieldValue;
+	[key: string]: FieldValue
 }
 
 export const buildProperties = () => {
-	const res = ['\t\t\tvar chitProperties = {\n'];
+	const res = ['\t\t\tvar chitProperties = {\n']
 	res.push(
 		...chitProperties.map((propInfo) => {
-			const propName = `chit.${propInfo[0]}`;
+			const propName = `chit.${propInfo[0]}`
 			if (propertyExists(propName)) {
-				const propStr = getProperty(propName);
-				const propVal = getPropVal(propStr, propInfo[1]);
-				return `\t\t\t\t"${propInfo[0]}": ${fieldValueToJSString(propVal)},\n`;
+				const propStr = getProperty(propName)
+				const propVal = getPropVal(propStr, propInfo[1])
+				return `\t\t\t\t"${propInfo[0]}": ${fieldValueToJSString(propVal)},\n`
 			}
-			return '';
+			return ''
 		})
-	);
-	res.push('\t\t\t}\n\n\t\t\tvar mafiaProperties = {\n');
+	)
+	res.push('\t\t\t}\n\n\t\t\tvar mafiaProperties = {\n')
 	res.push(
 		...mafiaProperties.map(
 			(propName) =>
 				`\t\t\t\t"${propName}": ${fieldValueToJSString(get(propName))},\n`
 		)
-	);
-	res.push('\t\t\t}\n');
-	return res.join('');
-};
+	)
+	res.push('\t\t\t}\n')
+	return res.join('')
+}

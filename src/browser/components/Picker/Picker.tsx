@@ -1,10 +1,10 @@
-import { PopoverBody, PopoverFooter, PopoverHeader } from '@chakra-ui/react';
-import * as React from 'react';
+import { PopoverBody, PopoverFooter, PopoverHeader } from '@chakra-ui/react'
+import * as React from 'react'
 
 interface PickerArgs {
-	header: React.ReactNode;
-	children: React.ReactNode;
-	footer?: React.ReactNode;
+	header: React.ReactNode
+	children: React.ReactNode
+	footer?: React.ReactNode
 }
 
 export default function Picker({
@@ -18,5 +18,5 @@ export default function Picker({
 			<PopoverBody>{children}</PopoverBody>
 			{footer && <PopoverFooter>{footer}</PopoverFooter>}
 		</>
-	);
+	)
 }

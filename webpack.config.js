@@ -1,9 +1,9 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { merge } = require('webpack-merge');
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { merge } = require('webpack-merge')
 
 const sharedConfig = {
 	mode: 'production',
@@ -33,7 +33,7 @@ const sharedConfig = {
 	externals: {
 		kolmafia: 'commonjs kolmafia',
 	},
-};
+}
 
 const otherRelayConfig = merge(
 	{
@@ -53,7 +53,7 @@ const otherRelayConfig = merge(
 		},
 	},
 	sharedConfig
-);
+)
 
 const relayConfig = merge(
 	{
@@ -74,6 +74,6 @@ const relayConfig = merge(
 		},
 	},
 	sharedConfig
-);
+)
 
-module.exports = [otherRelayConfig, relayConfig];
+module.exports = [otherRelayConfig, relayConfig]

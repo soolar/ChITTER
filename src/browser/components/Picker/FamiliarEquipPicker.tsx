@@ -1,10 +1,10 @@
-import { Button, ButtonGroup, Wrap, WrapItem } from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserItem, BrowserList } from '../../../guidelines';
-import ItemIcon from '../Icons/ItemIcon';
-import Picker from './Picker';
+import { Button, ButtonGroup, Wrap, WrapItem } from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserItem, BrowserList } from '../../../guidelines'
+import ItemIcon from '../Icons/ItemIcon'
+import Picker from './Picker'
 
-declare const items: BrowserList<BrowserItem>;
+declare const items: BrowserList<BrowserItem>
 
 export default function FamiliarEquipmentPicker() {
 	return (
@@ -23,5 +23,5 @@ export default function FamiliarEquipmentPicker() {
 				</Wrap>
 			</ButtonGroup>
 		</Picker>
-	);
+	)
 }

@@ -1,4 +1,4 @@
-import { extendTheme, withDefaultSize } from '@chakra-ui/react';
+import { extendTheme, withDefaultSize } from '@chakra-ui/react'
 
 const theme = extendTheme(
 	{
@@ -18,6 +18,6 @@ const theme = extendTheme(
 		size: 's',
 		components: ['Heading'],
 	})
-);
+)
 
-export default theme;
+export default theme

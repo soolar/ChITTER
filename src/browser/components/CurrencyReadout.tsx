@@ -1,15 +1,15 @@
-import { HStack, Text } from '@chakra-ui/react';
-import * as React from 'react';
-import { BrowserCharacter } from '../../character';
-import { BrowserItem } from '../../guidelines';
-import ChitterIcon from './Icons/ChitterIcon';
-import ItemIcon from './Icons/ItemIcon';
+import { HStack, Text } from '@chakra-ui/react'
+import * as React from 'react'
+import { BrowserCharacter } from '../../character'
+import { BrowserItem } from '../../guidelines'
+import ChitterIcon from './Icons/ChitterIcon'
+import ItemIcon from './Icons/ItemIcon'
 
-declare const my: BrowserCharacter;
+declare const my: BrowserCharacter
 
-const SpecialCurrencies = ['meat', 'advs', 'fites'] as const;
+const SpecialCurrencies = ['meat', 'advs', 'fites'] as const
 
-type SpecialCurrency = typeof SpecialCurrencies[number];
+type SpecialCurrency = typeof SpecialCurrencies[number]
 
 const SpecialCurrencyDetails = {
 	meat: { image: 'meat.gif', tooltip: <Text>{my.meat} Meat</Text> },
@@ -21,10 +21,10 @@ const SpecialCurrencyDetails = {
 		image: 'slimpvp.gif',
 		tooltip: <Text>{my.fites} PvP Fights remaining</Text>,
 	},
-};
+}
 
 interface CurrencyReadoutArgs {
-	item: BrowserItem | SpecialCurrency;
+	item: BrowserItem | SpecialCurrency
 }
 
 export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
@@ -39,12 +39,12 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 					small
 				/>
 			</HStack>
-		);
+		)
 	}
 	return (
 		<HStack>
 			<Text>{item.inInventory.toLocaleString()}</Text>
 			<ItemIcon item={item} small />
 		</HStack>
-	);
+	)
 }

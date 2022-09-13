@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { BrowserEffect } from '../../../guidelines';
-import ChitterIcon from './ChitterIcon';
+import * as React from 'react'
+import { BrowserEffect } from '../../../guidelines'
+import ChitterIcon from './ChitterIcon'
 
 interface EffectIconArgs {
-	effect: BrowserEffect;
+	effect: BrowserEffect
 }
 
 export default function EffectIcon({ effect }: EffectIconArgs) {
@@ -13,5 +13,5 @@ export default function EffectIcon({ effect }: EffectIconArgs) {
 			tooltip={effect.name}
 			borderType="normal"
 		/>
-	);
+	)
 }

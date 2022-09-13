@@ -1,5 +1,5 @@
-import { Image, Tooltip } from '@chakra-ui/react';
-import * as React from 'react';
+import { Image, Tooltip } from '@chakra-ui/react'
+import * as React from 'react'
 
 type BorderType =
 	| 'normal'
@@ -8,15 +8,15 @@ type BorderType =
 	| 'good'
 	| 'warning'
 	| 'danger'
-	| 'none';
+	| 'none'
 
 interface ChitterIconArgs {
-	image: string;
-	tooltip: React.ReactNode;
-	borderType?: BorderType;
-	specialPath?: boolean;
-	extraClass?: string;
-	small?: boolean;
+	image: string
+	tooltip: React.ReactNode
+	borderType?: BorderType
+	specialPath?: boolean
+	extraClass?: string
+	small?: boolean
 }
 
 export default function ChitterIcon({
@@ -39,5 +39,5 @@ export default function ChitterIcon({
 				maxHeight={small ? '15px' : undefined}
 			/>
 		</Tooltip>
-	);
+	)
 }
