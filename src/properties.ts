@@ -114,7 +114,7 @@ const mafiaProperties = [
 	'_cheerleaderSteam',
 	'slimelingFullness',
 	'slimelingStacksDue',
-	'slimelingStacksDue',
+	'slimelingStacksDropped',
 ]
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {
