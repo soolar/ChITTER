@@ -1,5 +1,6 @@
 import {
 	advCost,
+	availableAmount,
 	canEquip,
 	Class,
 	closetAmount,
@@ -174,6 +175,7 @@ export interface BrowserItem {
 	inCloset: number
 	inStorage: number
 	equippedAmount: number
+	availableAmount: number
 	unrestricted: boolean
 	canEquip: boolean
 	slotStr: string
@@ -193,6 +195,7 @@ export const itemGuidelines: Guidelines<Item> = {
 		['inCloset', (it) => closetAmount(it)],
 		['inStorage', (it) => storageAmount(it)],
 		['equippedAmount', (it) => equippedAmount(it)],
+		['availableAmount', (it) => availableAmount(it)],
 		['unrestricted', (it) => isUnrestricted(it)],
 		['canEquip', (it) => canEquip(it)],
 		['slotStr', (it) => toSlot(it).toString()],
