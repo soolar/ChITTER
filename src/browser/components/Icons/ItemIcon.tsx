@@ -5,14 +5,19 @@ import { BrowserItem } from '../../../guidelines'
 interface ItemIconArgs {
 	item?: BrowserItem
 	small?: boolean
+	tooltipOverride?: string
 }
 
-export default function ItemIcon({ item, small }: ItemIconArgs) {
+export default function ItemIcon({
+	item,
+	small,
+	tooltipOverride,
+}: ItemIconArgs) {
 	if (item) {
 		return (
 			<ChitterIcon
 				image={item.image}
-				tooltip={item.name}
+				tooltip={tooltipOverride || item.name}
 				borderType="normal"
 				small={small}
 			/>
@@ -21,7 +26,7 @@ export default function ItemIcon({ item, small }: ItemIconArgs) {
 		return (
 			<ChitterIcon
 				image="antianti.gif"
-				tooltip="No item here..."
+				tooltip={tooltipOverride || 'No item here...'}
 				small={small}
 			/>
 		)
