@@ -1,5 +1,10 @@
 import * as React from 'react'
-import { BrowserFamiliar, BrowserItem, BrowserList } from '../guidelines'
+import {
+	BrowserEffect,
+	BrowserFamiliar,
+	BrowserItem,
+	BrowserList,
+} from '../guidelines'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
 import { pluralize } from '../utils'
@@ -7,6 +12,7 @@ import ProgressBar from './components/ProgressBar'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const items: BrowserList<BrowserItem>
+declare const effects: BrowserList<BrowserEffect>
 
 export const nextLevelInfo = (fam: BrowserFamiliar) => {
 	for (let i = 2; i <= 20; ++i) {
@@ -146,6 +152,23 @@ export function getExtraFamInfo(
 					</>
 				)
 				res.extraClass = 'all-drops'
+			}
+			break
+		}
+		case 'crimbo shrub': {
+			const gifts = mafiaProperties.shrubGifts
+			const readyToFire =
+				gifts === 'yellow'
+					? effects.byName['everything looks yellow'].turnsActive === 0
+					: gifts === 'meat' &&
+					  effects.byName['everything looks red'].turnsActive === 0
+			res.extraClass = 'all-drops'
+			if (readyToFire) {
+				res.desc = <Text>Ready to fire!</Text>
+			} else if (gifts === '') {
+				res.desc = <Text>Needs to be decorated!</Text>
+			} else {
+				res.extraClass = undefined
 			}
 			break
 		}
