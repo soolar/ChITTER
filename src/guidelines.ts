@@ -86,6 +86,19 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 		})
 	)
 	res.push('\t\t\t\t}\n\t\t\t};\n')
+	res.push(
+		...guidelines.all
+			.filter((thing) => {
+				const name = thing ? thing.toString() : 'none'
+				return name !== name.toLowerCase()
+			})
+			.map((thing) => {
+				const name = thing ? thing.toString() : 'none'
+				return `\t\t\t${guidelines.name}.byName["${name.toLowerCase()}"] = ${
+					guidelines.name
+				}.byName["${name}"];\n`
+			})
+	)
 	const addList = (list: T[], listName: string) => {
 		res.push(
 			`\t\t\t${guidelines.name}.${listName} = [\n${list
