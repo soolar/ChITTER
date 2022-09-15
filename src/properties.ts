@@ -115,6 +115,7 @@ const mafiaProperties = [
 	'slimelingFullness',
 	'slimelingStacksDue',
 	'slimelingStacksDropped',
+	'cubelingProgress',
 ]
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {

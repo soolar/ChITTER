@@ -1,11 +1,12 @@
 import * as React from 'react'
-import { BrowserFamiliar } from '../guidelines'
+import { BrowserFamiliar, BrowserItem, BrowserList } from '../guidelines'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
 import { pluralize } from '../utils'
 import ProgressBar from './components/ProgressBar'
 
 declare const mafiaProperties: BrowserMafiaProperties
+declare const items: BrowserList<BrowserItem>
 
 export const nextLevelInfo = (fam: BrowserFamiliar) => {
 	for (let i = 2; i <= 20; ++i) {
@@ -125,6 +126,26 @@ export function getExtraFamInfo(
 			}
 			if (hasStacksToDrop) {
 				res.extraClass = stacksDropped === 0 ? 'all-drops' : 'has-drops'
+			}
+			break
+		}
+		case 'gelatinous cubeling': {
+			res.desc = (
+				<Text>{mafiaProperties.cubelingProgress as number}/12 to drop</Text>
+			)
+			const needs = [
+				{ name: 'Pole', item: items.byName['eleven-foot pole'] },
+				{ name: 'Ring', item: items.byName['ring of detect boring doors'] },
+				{ name: 'Pick', item: items.byName['pick-o-matic lockpicks'] },
+			].filter((need) => need.item.availableAmount < 1)
+			if (needs.length > 0) {
+				res.desc = (
+					<>
+						{res.desc}
+						<Text>Need {needs.map((need) => need.name).join(', ')}</Text>
+					</>
+				)
+				res.extraClass = 'all-drops'
 			}
 			break
 		}
