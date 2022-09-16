@@ -82,7 +82,7 @@ function StatRow({ name, statValues }: StatRowArgs) {
 
 export default function StatsBrick() {
 	return (
-		<Brick name="stats" header={<Heading>My Stats</Heading>}>
+		<Brick name="stats" header="My Stats">
 			<SimpleGrid columns={3}>
 				<SimpleResourceRow name="HP" value={my.hp} />
 				<SimpleResourceRow name="MP" value={my.mp} />

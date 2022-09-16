@@ -1,11 +1,4 @@
-import {
-	Divider,
-	GridItem,
-	Heading,
-	SimpleGrid,
-	Text,
-	VStack,
-} from '@chakra-ui/react'
+import { Divider, GridItem, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import * as React from 'react'
 import { BrowserEffect, BrowserList } from '../../../guidelines'
 import { parseMods } from '../../../utils'
@@ -16,7 +9,7 @@ declare const effects: BrowserList<BrowserEffect>
 
 export default function EffectsBrick() {
 	return (
-		<Brick name="Effects" header={<Heading>Effects</Heading>}>
+		<Brick name="Effects" header="Effects">
 			<SimpleGrid columns={4}>
 				{effects.active
 					.sort((eff1, eff2) => {

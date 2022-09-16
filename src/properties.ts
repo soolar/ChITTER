@@ -117,6 +117,11 @@ const mafiaProperties = [
 	'slimelingStacksDropped',
 	'cubelingProgress',
 	'shrubGifts',
+	'_juneCleaverFightsLeft',
+	'sweat',
+	'_sweatOutSomeBoozeUsed',
+	'_pantsgivingCrumbs',
+	'_pantsgivingBanish',
 ]
 
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {

@@ -1,4 +1,4 @@
-import { Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { HStack, Text, VStack } from '@chakra-ui/react'
 import * as React from 'react'
 import { BrowserCharacter } from '../../../character'
 import { BrowserItem, BrowserList } from '../../../guidelines'
@@ -10,7 +10,7 @@ declare const items: BrowserList<BrowserItem>
 
 export default function CharacterBrick() {
 	return (
-		<Brick name="Character" header={<Heading>{my.name}</Heading>}>
+		<Brick name="Character" header={my.name}>
 			<HStack>
 				{/* Character avatar here */}
 				<VStack>
