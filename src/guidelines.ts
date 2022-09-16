@@ -4,6 +4,7 @@ import {
 	canEquip,
 	Class,
 	closetAmount,
+	creatableAmount,
 	Effect,
 	equippedAmount,
 	equippedItem,
@@ -12,6 +13,7 @@ import {
 	favoriteFamiliars,
 	fuelCost,
 	getProperty,
+	getRelated,
 	haveEffect,
 	haveFamiliar,
 	haveSkill,
@@ -34,6 +36,7 @@ import {
 	Thrall,
 	thunderCost,
 	toInt,
+	toItem,
 	toSlot,
 	weightAdjustment,
 } from 'kolmafia'
@@ -174,11 +177,14 @@ export interface BrowserItem {
 	inInventory: number
 	inCloset: number
 	inStorage: number
-	equippedAmount: number
-	availableAmount: number
+	foldable: number
+	creatable: number
+	onBody: number
+	available: number
 	unrestricted: boolean
 	canEquip: boolean
 	slotStr: string
+	modifiers: string
 }
 
 export declare const items: BrowserList<BrowserItem>
@@ -194,11 +200,24 @@ export const itemGuidelines: Guidelines<Item> = {
 		['inInventory', (it) => itemAmount(it)],
 		['inCloset', (it) => closetAmount(it)],
 		['inStorage', (it) => storageAmount(it)],
-		['equippedAmount', (it) => equippedAmount(it)],
-		['availableAmount', (it) => availableAmount(it)],
+		[
+			'foldable',
+			(it) =>
+				Object.keys(getRelated(it, 'fold'))
+					.filter((foldableName) => toItem(foldableName) !== it)
+					.reduce(
+						(partial, foldableName) =>
+							partial + availableAmount(toItem(foldableName)),
+						0
+					),
+		],
+		['creatable', (it) => creatableAmount(it)],
+		['onBody', (it) => equippedAmount(it)],
+		['available', (it) => availableAmount(it)],
 		['unrestricted', (it) => isUnrestricted(it)],
 		['canEquip', (it) => canEquip(it)],
 		['slotStr', (it) => toSlot(it).toString()],
+		['modifiers', (it) => stringModifier(it, 'Modifiers')],
 	],
 	favorites: getProperty('chit.gear.favorites')
 		.split('|')

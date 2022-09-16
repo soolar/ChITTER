@@ -143,7 +143,7 @@ export function getExtraFamInfo(
 				{ name: 'Pole', item: items.byName['eleven-foot pole'] },
 				{ name: 'Ring', item: items.byName['ring of detect boring doors'] },
 				{ name: 'Pick', item: items.byName['pick-o-matic lockpicks'] },
-			].filter((need) => need.item.availableAmount < 1)
+			].filter((need) => need.item.available < 1)
 			if (needs.length > 0) {
 				res.desc = (
 					<>
