@@ -1,5 +1,12 @@
 import { getProperty, Item, propertyExists } from 'kolmafia'
 import { $items, get } from 'libram'
+import {
+	booleanProperties,
+	familiarProperties,
+	numericOrStringProperties,
+	numericProperties,
+	stringProperties,
+} from 'libram/dist/propertyTypes'
 import { FieldValue, fieldValueToJSString } from './fieldValue'
 import { BrowserItem } from './guidelines'
 
@@ -104,26 +111,6 @@ const chitProperties: ChitPropertyInfo[] = [
 	['toolbar.moods', 'true'], // do not change to boolean, 'bonus' is also valid
 ]
 
-const mafiaProperties = [
-	'relayAddsUpArrowLinks',
-	'_grimstoneMaskDropsCrown',
-	'camelSpit',
-	'_turkeyMuscle',
-	'_turkeyMyst',
-	'_turkeyMoxie',
-	'_cheerleaderSteam',
-	'slimelingFullness',
-	'slimelingStacksDue',
-	'slimelingStacksDropped',
-	'cubelingProgress',
-	'shrubGifts',
-	'_juneCleaverFightsLeft',
-	'sweat',
-	'_sweatOutSomeBoozeUsed',
-	'_pantsgivingCrumbs',
-	'_pantsgivingBanish',
-]
-
 const getPropVal = (propStr: string, defaultValue: FieldValue) => {
 	if (propStr.startsWith('DEFAULT')) {
 		if (Array.isArray(defaultValue) && defaultValue[0]?.toString() === 'none') {
@@ -178,12 +165,22 @@ export const buildProperties = () => {
 		})
 	)
 	res.push('\t\t\t}\n\n\t\t\tvar mafiaProperties = {\n')
-	res.push(
-		...mafiaProperties.map(
-			(propName) =>
-				`\t\t\t\t"${propName}": ${fieldValueToJSString(get(propName))},\n`
+	function addProps<T>(propList: T) {
+		res.push(
+			...(propList as string[]).map(
+				(propName) =>
+					`\t\t\t\t"${propName}": ${fieldValueToJSString(get(propName))},\n`
+			)
 		)
-	)
+	}
+	// Missing, will require implementation of underlying type:
+	// monsterProperties, locationProperties, phylumProperties,
+	// statProperties
+	addProps(booleanProperties)
+	addProps(numericProperties)
+	addProps(stringProperties)
+	addProps(numericOrStringProperties)
+	addProps(familiarProperties)
 	res.push('\t\t\t}\n')
 	return res.join('')
 }
