@@ -1,4 +1,4 @@
-import { Class, Familiar, Item, Skill } from 'kolmafia'
+import { Class, Familiar, Item, Skill, Stat } from 'kolmafia'
 import { CurrMax, StatValues } from './utils'
 
 export type FieldValueBase =
@@ -36,7 +36,10 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 		return value.toString()
 	}
 	if (typeof value === 'string') {
-		return `"${value.replace(/"/g, '\\"')}"`
+		return `"${value
+			.replace(/\\/g, '\\\\')
+			.replace(/"/g, '\\"')
+			.replace(/\n/g, '\\n')}"`
 	}
 	if (value instanceof Item) {
 		return `items.byName["${value.toString()}"]`
