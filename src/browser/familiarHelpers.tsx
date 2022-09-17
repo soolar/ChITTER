@@ -9,7 +9,7 @@ import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
 import { pluralize } from '../utils'
 import ProgressBar from './components/ProgressBar'
-import {BorderType} from './components/Icons/ChitterIcon'
+import { BorderType } from './components/Icons/ChitterIcon'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const items: BrowserList<BrowserItem>

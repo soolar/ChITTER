@@ -8,13 +8,12 @@ interface GearOptionArgs {
 	children: React.ReactNode
 }
 
-export default function GearOption({
-	item,
-	children
-}: GearOptionArgs) {
-	return <Flex>
-		<ItemIcon item={item} />
-		<Spacer />
-		{children}
-	</Flex>
+export default function GearOption({ item, children }: GearOptionArgs) {
+	return (
+		<Flex>
+			<ItemIcon item={item} />
+			<Spacer />
+			{children}
+		</Flex>
+	)
 }

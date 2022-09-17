@@ -29,8 +29,7 @@ export default function GearPicker({ slotName }: GearPickerArgs) {
 		{
 			name: 'favorites',
 			items: items.favorites.filter(
-				(item) =>
-					item.slotStr === functionalSlotName && equipped !== item
+				(item) => item.slotStr === functionalSlotName && equipped !== item
 			),
 		},
 	]

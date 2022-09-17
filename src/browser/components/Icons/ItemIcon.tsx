@@ -11,18 +11,18 @@ interface ItemIconArgs {
 }
 
 export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
-		const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
-		return (
-			<ChitterIcon
-				image={extraInfo.image}
-				tooltip={
-					<VStack spacing="none">
-						<Text>{extraInfo.displayName}</Text>
-						{extraInfo.desc}
-					</VStack>
-				}
-				borderType={extraInfo.borderType}
-				small={small}
-			/>
-		)
+	const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
+	return (
+		<ChitterIcon
+			image={extraInfo.image}
+			tooltip={
+				<VStack spacing="none">
+					<Text>{extraInfo.displayName}</Text>
+					{extraInfo.desc}
+				</VStack>
+			}
+			borderType={extraInfo.borderType}
+			small={small}
+		/>
+	)
 }
