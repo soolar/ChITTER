@@ -7,37 +7,22 @@ import { Text, VStack } from '@chakra-ui/react'
 interface ItemIconArgs {
 	item?: BrowserItem
 	small?: boolean
-	tooltipOverride?: string
+	tooltipPrefix?: string
 }
 
-export default function ItemIcon({
-	item,
-	small,
-	tooltipOverride,
-}: ItemIconArgs) {
-	if (item) {
-		const extraInfo = getExtraItemInfo(item)
-		const defaultTooltip = (
-			<VStack spacing="none">
-				<Text>{item.name}</Text>
-				{extraInfo.desc}
-			</VStack>
-		)
+export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
+		const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
 		return (
 			<ChitterIcon
-				image={item.image}
-				tooltip={tooltipOverride || defaultTooltip}
-				borderType="normal"
+				image={extraInfo.image}
+				tooltip={
+					<VStack spacing="none">
+						<Text>{extraInfo.displayName}</Text>
+						{extraInfo.desc}
+					</VStack>
+				}
+				borderType={extraInfo.borderType}
 				small={small}
 			/>
 		)
-	} else {
-		return (
-			<ChitterIcon
-				image="antianti.gif"
-				tooltip={tooltipOverride || 'No item here...'}
-				small={small}
-			/>
-		)
-	}
 }

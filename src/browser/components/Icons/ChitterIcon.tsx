@@ -1,7 +1,7 @@
 import { Image, Tooltip } from '@chakra-ui/react'
 import * as React from 'react'
 
-type BorderType =
+export type BorderType =
 	| 'normal'
 	| 'has-drops'
 	| 'all-drops'

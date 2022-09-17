@@ -20,9 +20,7 @@ export default function GearBrick() {
 						>
 							<ItemIcon
 								item={slot.equipped}
-								tooltipOverride={`${slot.name}: ${
-									slot.equipped ? slot.equipped.name : 'empty'
-								}`}
+								tooltipPrefix={`${slot.name}: `}
 							/>
 						</PickerLauncher>
 					)

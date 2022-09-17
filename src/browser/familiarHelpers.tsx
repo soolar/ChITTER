@@ -9,6 +9,7 @@ import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
 import { pluralize } from '../utils'
 import ProgressBar from './components/ProgressBar'
+import {BorderType} from './components/Icons/ChitterIcon'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const items: BrowserList<BrowserItem>
@@ -50,7 +51,7 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 interface ExtraFamInfo {
 	desc?: React.ReactNode
 	extraClass?: string
-	borderType: 'all-drops' | 'has-drops' | 'normal'
+	borderType: BorderType
 }
 
 export function getExtraFamInfo(

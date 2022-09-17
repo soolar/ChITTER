@@ -4,23 +4,41 @@ import { BrowserMafiaProperties } from '../properties'
 import { Text } from '@chakra-ui/react'
 import PickerLauncher from './components/Picker/PickerLauncher'
 import SweatpantsPicker from './components/Picker/SweatpantsPicker'
+import { BorderType } from './components/Icons/ChitterIcon'
 
 declare const mafiaProperties: BrowserMafiaProperties
 
 type DescItem = string | React.ReactNode
 
 interface ExtraItemInfo {
+	displayName: string
 	desc: DescItem[]
 	extraOptions: React.ReactNode[]
+	image: string
 	extraClass?: string
-	borderType: 'normal' | 'caution' | 'danger' | 'good'
+	borderType: BorderType
 }
 
-export function getExtraItemInfo(item: BrowserItem): ExtraItemInfo {
+interface GetExtraItemInfoOptionalArgs {
+	namePrefix?: string
+	iconOverride?: string
+}
+
+export function getExtraItemInfo(
+	item?: BrowserItem,
+	optionals: GetExtraItemInfoOptionalArgs = {}
+): ExtraItemInfo {
+	const name = item ? item.name : 'empty'
 	const res: ExtraItemInfo = {
+		displayName: optionals.namePrefix ? `${optionals.namePrefix}${name}` : name,
 		desc: [],
 		extraOptions: [],
+		image: optionals.iconOverride || (item ? item.image : 'blank.gif'),
 		borderType: 'normal',
+	}
+
+	if (item === undefined) {
+		return res
 	}
 
 	switch (item.name.toLowerCase()) {
@@ -54,7 +72,6 @@ export function getExtraItemInfo(item: BrowserItem): ExtraItemInfo {
 		case 'pantsgiving': {
 			const crumbs = 10 - (mafiaProperties._pantsgivingCrumbs as number)
 			const banishes = 5 - (mafiaProperties._pantsgivingBanish as number)
-			console.log(`butts ${crumbs} ${banishes}`)
 			if (crumbs > 0) {
 				res.desc.push(<Text>{crumbs} crumbs left</Text>)
 			}
