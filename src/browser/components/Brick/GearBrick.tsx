@@ -16,7 +16,7 @@ export default function GearBrick() {
 					return (
 						<PickerLauncher
 							WrappedPicker={GearPicker}
-							pickerProps={{ slotName: slot.name }}
+							pickerProps={{ slot: slot }}
 						>
 							<ItemIcon item={slot.equipped} tooltipPrefix={`${slot.name}: `} />
 						</PickerLauncher>

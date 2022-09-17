@@ -3,6 +3,8 @@ import {
 	Button,
 	ButtonGroup,
 	Heading,
+	HStack,
+	Text,
 	VStack,
 	Wrap,
 	WrapItem,
@@ -14,16 +16,14 @@ import { getExtraItemInfo } from '../../itemHelpers'
 import GearOption from '../GearOption'
 
 interface GearPickerArgs {
-	slotName: string
+	slot: BrowserSlot
 }
 
 declare const items: BrowserList<BrowserItem>
-declare const slots: BrowserList<BrowserSlot>
 
-export default function GearPicker({ slotName }: GearPickerArgs) {
+export default function GearPicker({ slot }: GearPickerArgs) {
 	const functionalSlotName =
-		slotName === 'acc2' || slotName === 'acc3' ? 'acc1' : slotName
-	const slot = slots.byName[slotName]
+		slot.name === 'acc2' || slot.name === 'acc3' ? 'acc1' : slot.name
 	const equipped = slot.equipped
 	const categories = [
 		{
@@ -35,7 +35,7 @@ export default function GearPicker({ slotName }: GearPickerArgs) {
 	]
 	const extraInfo = getExtraItemInfo(equipped)
 	return (
-		<Picker header={`Change ${slotName}`}>
+		<Picker header={`Change ${slot.name}`}>
 			{extraInfo.extraOptions.map((option) => {
 				return <GearOption item={equipped}>{option}</GearOption>
 			})}
@@ -49,7 +49,10 @@ export default function GearPicker({ slotName }: GearPickerArgs) {
 									return (
 										<WrapItem>
 											<Button>
-												<ItemIcon item={item} />
+												<HStack>
+													<ItemIcon item={item} />
+													<Text fontSize="xs">{item.name}</Text>
+												</HStack>
 											</Button>
 										</WrapItem>
 									)
