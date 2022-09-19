@@ -3,8 +3,6 @@ import {
 	Button,
 	ButtonGroup,
 	Heading,
-	HStack,
-	Text,
 	VStack,
 	Wrap,
 	WrapItem,
@@ -13,7 +11,7 @@ import Picker from './Picker'
 import { BrowserItem, BrowserList, BrowserSlot } from '../../../guidelines'
 import ItemIcon from '../Icons/ItemIcon'
 import { getExtraItemInfo } from '../../itemHelpers'
-import GearOption from '../GearOption'
+import SimpleOption from '../Option/SimpleOption'
 
 interface GearPickerArgs {
 	slot: BrowserSlot
@@ -36,9 +34,14 @@ export default function GearPicker({ slot }: GearPickerArgs) {
 	const extraInfo = getExtraItemInfo(equipped)
 	return (
 		<Picker header={`Change ${slot.name}`}>
-			{extraInfo.extraOptions.map((option) => {
-				return <GearOption item={equipped}>{option}</GearOption>
-			})}
+			{equipped && (
+				<SimpleOption
+					icon={<ItemIcon item={equipped} />}
+					verb="unequip"
+					subject={equipped.name}
+				/>
+			)}
+			{extraInfo.extraOptions}
 			{categories.map((category) => {
 				return (
 					<VStack>
@@ -49,10 +52,7 @@ export default function GearPicker({ slot }: GearPickerArgs) {
 									return (
 										<WrapItem>
 											<Button>
-												<HStack>
-													<ItemIcon item={item} />
-													<Text fontSize="xs">{item.name}</Text>
-												</HStack>
+												<ItemIcon item={item} />
 											</Button>
 										</WrapItem>
 									)

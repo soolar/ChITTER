@@ -2,17 +2,16 @@ import * as React from 'react'
 import { BrowserItem } from '../guidelines'
 import { BrowserMafiaProperties } from '../properties'
 import { Text } from '@chakra-ui/react'
-import PickerLauncher from './components/Picker/PickerLauncher'
 import SweatpantsPicker from './components/Picker/SweatpantsPicker'
 import { BorderType } from './components/Icons/ChitterIcon'
+import PickerOption from './components/Option/PickerOption'
+import ItemIcon from './components/Icons/ItemIcon'
 
 declare const mafiaProperties: BrowserMafiaProperties
 
-type DescItem = string | React.ReactNode
-
 interface ExtraItemInfo {
 	displayName: string
-	desc: DescItem[]
+	desc: React.ReactNode[]
 	extraOptions: React.ReactNode[]
 	image: string
 	extraClass?: string
@@ -45,10 +44,10 @@ export function getExtraItemInfo(
 		case 'june cleaver': {
 			const fightsLeft = mafiaProperties._juneCleaverFightsLeft as number
 			if (fightsLeft === 0) {
-				res.desc.push('noncom now!')
+				res.desc.push(<Text>noncom now!</Text>)
 				res.borderType = 'good'
 			} else {
-				res.desc.push(`${fightsLeft} to noncom`)
+				res.desc.push(<Text>{fightsLeft} to noncom</Text>)
 			}
 			break
 		}
@@ -56,16 +55,12 @@ export function getExtraItemInfo(
 			const sweat = Math.max(Math.min(100, mafiaProperties.sweat as number), 0)
 			const sweatBoozeLeft =
 				3 - (mafiaProperties._sweatOutSomeBoozeUsed as number)
-			res.desc.push(`${sweat}% sweaty`)
+			res.desc.push(<Text>{sweat}% sweaty</Text>)
 			if (sweatBoozeLeft > 0) {
-				res.desc.push(`${sweatBoozeLeft} booze sweats`)
+				res.desc.push(<Text>{sweatBoozeLeft} booze sweats</Text>)
 			}
 			res.extraOptions.push(
-				<PickerLauncher WrappedPicker={SweatpantsPicker} pickerProps={{}}>
-					<Text>
-						<Text as="span">Use</Text> some sweat
-					</Text>
-				</PickerLauncher>
+				<PickerOption icon={<ItemIcon item={item} />} WrappedPicker={SweatpantsPicker} pickerProps={{}} verb="use" subject="some sweat"/>
 			)
 			break
 		}
@@ -77,6 +72,47 @@ export function getExtraItemInfo(
 			}
 			if (banishes > 0) {
 				res.desc.push(<Text>{banishes} banishes</Text>)
+			}
+			break
+		}
+		case 'v for vivala mask': {
+			const advsGainable = 10 - (mafiaProperties._vmaskAdv as number)
+			if (advsGainable > 0) {
+				res.desc.push(<Text>{advsGainable} adv gainable</Text>)
+				res.borderType = 'has-drops'
+			}
+			break
+		}
+		case 'mayfly bait necklace': {
+			const fliesLeft = 30 - (mafiaProperties._mayflySummons as number)
+			if (fliesLeft > 0) {
+				res.desc.push(<Text>{fliesLeft} summons left</Text>)
+				res.borderType = 'has-drops'
+			}
+			break
+		}
+		// @ts-expect-error intentional fallthrough
+		case 'stinky cheese eye': {
+			if (!(mafiaProperties._stinkyCheeseBanisherUsed as boolean)) {
+				res.desc.push(<Text>banish available</Text>)
+			}
+			// intentional fallthrough to automatically get stinkiness
+		}
+		// eslint-disable-next-line no-fallthrough
+		case 'stinky cheese sword':
+		case 'stinky cheese diaper':
+		case 'stinky cheese wheel':
+		case 'staff of queso escusado': {
+			const stinkiness = mafiaProperties._stinkyCheeseCount as number
+			if (stinkiness < 100) {
+				res.desc.push(
+					<Text>
+						{mafiaProperties._stinkyCheeseCount as number}/100 stinkiness
+					</Text>
+				)
+				res.borderType = 'has-drops'
+			} else {
+				res.desc.push(<Text>fully stinky</Text>)
 			}
 			break
 		}
