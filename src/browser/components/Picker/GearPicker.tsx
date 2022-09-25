@@ -3,6 +3,8 @@ import {
 	Button,
 	ButtonGroup,
 	Heading,
+	Switch,
+	Text,
 	VStack,
 	Wrap,
 	WrapItem,
@@ -23,14 +25,17 @@ export default function GearPicker({ slot }: GearPickerArgs) {
 	const functionalSlotName =
 		slot.name === 'acc2' || slot.name === 'acc3' ? 'acc1' : slot.name
 	const equipped = slot.equipped
+	const baseFilter = (item: BrowserItem) =>
+		item.slotStr === functionalSlotName &&
+		equipped !== item &&
+		item.available > 0
 	const categories = [
 		{
 			name: 'favorites',
-			items: items.favorites.filter(
-				(item) => item.slotStr === functionalSlotName && equipped !== item
-			),
+			items: items.favorites.filter(baseFilter),
 		},
 	]
+
 	const extraInfo = getExtraItemInfo(equipped)
 	return (
 		<Picker header={`Change ${slot.name}`}>
