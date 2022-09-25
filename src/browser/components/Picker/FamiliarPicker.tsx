@@ -1,9 +1,10 @@
 import {
 	Button,
 	ButtonGroup,
-	Checkbox,
 	Flex,
 	Spacer,
+	Switch,
+	Text,
 	Wrap,
 	WrapItem,
 } from '@chakra-ui/react'
@@ -44,12 +45,11 @@ export default function FamiliarPicker({
 						<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
 					</Button>
 					<Spacer />
-					<Checkbox
+					<Switch
 						isChecked={favoritesOnly}
 						onChange={(e) => setFavoritesOnly(e.target.checked)}
-					>
-						Favorites Only
-					</Checkbox>
+					/>
+					<Text>Favorites Only</Text>
 					<Spacer />
 					<Button variant="link">
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
