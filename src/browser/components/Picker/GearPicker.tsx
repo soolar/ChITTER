@@ -39,6 +39,7 @@ export default function GearPicker({ slot }: GearPickerArgs) {
 	const extraInfo = getExtraItemInfo(equipped)
 	return (
 		<Picker header={`Change ${slot.name}`}>
+			{extraInfo.extraOptions}
 			{equipped && (
 				<SimpleOption
 					icon={<ItemIcon item={equipped} />}
@@ -46,7 +47,6 @@ export default function GearPicker({ slot }: GearPickerArgs) {
 					subject={equipped.name}
 				/>
 			)}
-			{extraInfo.extraOptions}
 			{categories.map((category) => {
 				return (
 					<VStack>
