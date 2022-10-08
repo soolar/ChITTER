@@ -2,6 +2,7 @@ import * as React from 'react'
 import ChitterOption from './ChitterOption'
 import PickerLauncher, { PickerParamsBase } from '../Picker/PickerLauncher'
 import { Button, Text } from '@chakra-ui/react'
+import OptionText from './OptionText'
 
 interface PickerOptionArgs<Params extends PickerParamsBase> {
 	icon: React.ReactNode
@@ -22,9 +23,7 @@ export default function PickerOption<Params extends PickerParamsBase>({
 		<ChitterOption icon={icon}>
 			<PickerLauncher WrappedPicker={WrappedPicker} pickerProps={pickerProps}>
 				<Button variant="link">
-					<Text>
-						<Text as="b">{verb}</Text>&nbsp;{subject}
-					</Text>
+					<OptionText verb={verb} subject={subject} />
 				</Button>
 			</PickerLauncher>
 		</ChitterOption>
