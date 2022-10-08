@@ -290,6 +290,7 @@ export interface BrowserSkill {
 	thunderCost: number
 	soulsauceCost: number
 	unrestricted: boolean
+	combat: boolean
 }
 
 export declare const skills: BrowserList<BrowserSkill>
@@ -313,6 +314,7 @@ export const skillGuidelines: Guidelines<Skill> = {
 		['thunderCost', (skill) => thunderCost(skill)],
 		['soulsauceCost', (skill) => soulsauceCost(skill)],
 		['unrestricted', (skill) => isUnrestricted(skill)],
+		['combat', (skill) => skill.combat],
 	],
 	active: [],
 	favorites: [],
