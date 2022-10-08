@@ -107,7 +107,7 @@ export function getExtraItemInfo(
 			if (stinkiness < 100) {
 				res.desc.push(
 					<Text>
-						{mafiaProperties._stinkyCheeseCount as number}/100 stinkiness
+						{stinkiness}/100 stinkiness
 					</Text>
 				)
 				res.borderType = 'has-drops'
