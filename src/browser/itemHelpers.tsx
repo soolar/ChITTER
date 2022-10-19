@@ -116,6 +116,18 @@ export function getExtraItemInfo(
 			}
 			break
 		}
+		case 'buddy bjorn': {
+			if (my.bjornFam) {
+				res.image = my.bjornFam.image
+			}
+			break
+		}
+		case 'crown of thrones': {
+			if (my.crownFam) {
+				res.image = my.crownFam.image
+			}
+			break
+		}
 	}
 
 	return res

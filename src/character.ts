@@ -56,8 +56,8 @@ export interface BrowserCharacter {
 	inebriety: CurrMax
 	spleenUse: CurrMax
 	workshedItem: BrowserItem
-	bjornFam: BrowserFamiliar
-	crownFam: BrowserFamiliar
+	bjornFam?: BrowserFamiliar
+	crownFam?: BrowserFamiliar
 	meat: number
 	advs: number
 	fites: number
