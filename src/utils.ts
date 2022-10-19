@@ -11,7 +11,7 @@ export interface StatValues {
 	substats: number
 }
 
-export const pluralize = (thing: string | BrowserItem, amount: number) => {
+export function pluralize(thing: string | BrowserItem, amount: number) {
 	if (typeof thing === 'string') {
 		if (thing.slice(-1) === 's') {
 			return amount === 1 ? thing.slice(0, -1) : thing
@@ -72,16 +72,16 @@ const modShorthands: ModShorthand[] = [
 	[/Smithsness/g, 'Smith'],
 	[/Critical/g, 'Crit'],
 	// Make it so that pickpocket will get a +X% later
-	[/Pickpocket Chance:/g, 'Pickpocket %:'],
+	[/Pickpocket Chance:/g, 'PP %:'],
 	[/Fishing Skill/g, 'Fishing'],
 	[/Adventures/g, 'Adv'],
 	[/PvP Fights/g, 'Fites'],
 	// Combine regen min and max in to a range
-	[/([HM]P Regen )Min: (\d+), \1Max: (\d+)/g, '$1$2-$3'],
+	[/((HP|MP|HP\/MP) Regen )Min: (\d+), \1Max: (\d+)/g, '$1$3-$4'],
 	// simplify regen ranges that are identical
 	[/(\d+)-\1/g, '$1'],
-	// Exp%: +5 -> Exp +5%
-	[/%: ((\+|-)\d+)/g, ' $1%'],
+	// Exp%: +5 -> Exp +5% (there is sometimes no : for some reason)
+	[/%:? ((\+|-)?\d+)/g, ' $1%'],
 	// Wpn +5% looks too weird, extend it back to Weapon +5% for the drops case
 	[/Wpn Drop/g, 'Weapon Drop'],
 	// Item Drop: +5 -> Item +5% and such
@@ -95,6 +95,22 @@ const modShorthands: ModShorthand[] = [
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
 	[/ (\d+)([^-\d]|$)/g, ' +$1$2'],
+	// Reformat rollover effects. Hopefully this really is always at the end, and in this order
+	[
+		/Rollover Effect "([^"]+)", Rollover Effect Duration \+(\d+)/,
+		'$2 Rollover Turns $1',
+	],
+	// class name shorthands
+	[/Seal Clubber/g, 'SC'],
+	[/Turtle Tamer/g, 'TT'],
+	[/Sauceror/g, 'S'],
+	[/Pastamancer/g, 'PM'],
+	[/Disco Bandit/g, 'DB'],
+	[/Accordion Thief/g, 'AT'],
+	// Rearrange class restriction
+	[/Class "([^"]+)"/g, '$1 Only'],
+	// shorthand watches
+	[/Nonstackable Watch/, 'Watch'],
 ]
 
 export const parseMods = (mods: string) => {
