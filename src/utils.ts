@@ -113,22 +113,35 @@ const modShorthands: ModShorthand[] = [
 	[/Nonstackable Watch/, 'Watch'],
 ]
 
-export const parseMods = (mods: string) => {
+export function parseMods(mods: string, verbose = false) {
+	const verbosePrint = verbose
+		? (msg: string) => console.log(msg)
+		: (msg: string) => void msg
+
+	verbosePrint(`Pre-parsed: ${mods}`)
+
 	// Capitalize all words
 	mods = mods.replace(/\b[a-z]/g, (letter) => letter.toUpperCase())
+	verbosePrint(`Capitalized: ${mods}`)
+	// Uncapitalize after apostrophes
+	mods = mods.replace(/'[A-Z]/g, (letter) => letter.toLowerCase())
+	verbosePrint(`Uncapped after apostrophes: ${mods}`)
 	// Move parenthesized segments to start
 	// ie "Experience (Moxie): +5" -> "Moxie Experience: +5"
 	mods = mods.replace(/(, ?|^)([^,(]*?) \(([^)]+)\)/g, (match, ...groups) => {
 		void match
 		return `${groups[0]}${groups[2]} ${groups[1]}`
 	})
+	verbosePrint(`Rearranged: ${mods}`)
 
-	const fiddle = (modComboInfo: ModCombinationInfo) => {
-		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)\\d+`
+	modCombinations.forEach((modComboInfo) => {
+		verbosePrint(`Checking mod combo starting with ${modComboInfo.mods[0]}`)
+		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)?\\d+`
 		const regexp = new RegExp(initialPattern, 'g')
 		let matchInfo
 		while ((matchInfo = regexp.exec(mods)) !== null) {
 			const initialMatch = matchInfo[0]
+			verbosePrint(`Found ${initialMatch}`)
 			const confirmMatch = () => {
 				for (let i = 1; i < modComboInfo.mods.length; ++i) {
 					const thisFind = initialMatch.replace(
@@ -136,38 +149,45 @@ export const parseMods = (mods: string) => {
 						modComboInfo.mods[i]
 					)
 					if (mods.indexOf(thisFind) < 0) {
+						verbosePrint(`Did not find ${thisFind}`)
 						return false
 					}
+					verbosePrint(`Found ${thisFind}`)
 				}
 				return true
 			}
 			if (confirmMatch()) {
+				verbosePrint('Confirmed combination presence')
 				// replace the first and strip the rest
 				const replacement = initialMatch.replace(
 					modComboInfo.mods[0],
 					modComboInfo.fuseName
 				)
 				mods = mods.replace(initialMatch, replacement)
+				verbosePrint(`After initial combo replace: ${mods}`)
 				for (let i = 1; i < modComboInfo.mods.length; ++i) {
 					const thisRemoval = initialMatch.replace(
 						modComboInfo.mods[0],
 						modComboInfo.mods[i]
 					)
 					mods = mods.replace(`, ${thisRemoval}`, '')
+					verbosePrint(`After removal of ${thisRemoval}: ${mods}`)
 					// in case it was at the beginning
 					const beginningRemoval = new RegExp(
 						`^${thisRemoval.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(, |$)`
 					)
 					mods = mods.replace(beginningRemoval, '')
+					verbosePrint(`After beginning removal: ${mods}`)
 				}
 			}
 		}
-	}
-
-	modCombinations.forEach((modComboInfo) => fiddle(modComboInfo))
+	})
 
 	modShorthands.forEach((modShorthand) => {
 		mods = mods.replace(modShorthand[0], modShorthand[1])
+		verbosePrint(
+			`After shorthanding ${modShorthand[0]} to ${modShorthand[1]}: ${mods}`
+		)
 	})
 
 	// Prismatize
@@ -183,6 +203,7 @@ export const parseMods = (mods: string) => {
 			})}${args[2]}`
 		}
 	)
+	verbosePrint(`After prismatizing: ${mods}`)
 
 	return mods
 }
