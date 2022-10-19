@@ -14,10 +14,19 @@ interface SweatOptionArgs {
 }
 
 function SweatOption({ skill, desc, sweatCost }: SweatOptionArgs) {
-	//const sweat = mafiaProperties.sweat as number
-	//const canUse = sweat >= sweatCost
-	//const enabled = canUse && !skill.combat
-	return <SkillOption skill={skill} desc={desc} append={`${sweatCost} sweat`} />
+	const sweat = mafiaProperties.sweat as number
+	const canUse = sweat >= sweatCost
+	const enabled =
+		canUse && (!skill.combat || skill.name.toLowerCase() === 'sweat sip')
+
+	return (
+		<SkillOption
+			skill={skill}
+			desc={desc}
+			append={`${sweatCost} sweat`}
+			enabled={enabled}
+		/>
+	)
 }
 
 export default function PickerSweatpants() {

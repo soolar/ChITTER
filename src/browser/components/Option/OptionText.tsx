@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Text, VStack } from '@chakra-ui/react'
 
 interface OptionTextArgs {
-	verb: string
+	verb?: string
 	subject: string
 	append?: string
 	descline?: string
@@ -15,9 +15,14 @@ export default function OptionText({
 	descline,
 }: OptionTextArgs) {
 	return (
-		<VStack>
+		<VStack spacing={0}>
 			<Text>
-				<Text as="b">{verb}</Text>&nbsp;{subject}
+				{verb && (
+					<>
+						<Text as="b">{verb}</Text>&nbsp;
+					</>
+				)}
+				{subject}
 				{append && ` (${append})`}
 			</Text>
 			{descline && <Text>{descline}</Text>}

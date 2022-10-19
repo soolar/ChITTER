@@ -6,8 +6,10 @@ import SweatpantsPicker from './components/Picker/SweatpantsPicker'
 import { BorderType } from './components/Icons/ChitterIcon'
 import PickerOption from './components/Option/PickerOption'
 import ItemIcon from './components/Icons/ItemIcon'
+import { BrowserCharacter } from '../character'
 
 declare const mafiaProperties: BrowserMafiaProperties
+declare const my: BrowserCharacter
 
 interface ExtraItemInfo {
 	displayName: string
@@ -60,7 +62,13 @@ export function getExtraItemInfo(
 				res.desc.push(<Text>{sweatBoozeLeft} booze sweats</Text>)
 			}
 			res.extraOptions.push(
-				<PickerOption icon={<ItemIcon item={item} />} WrappedPicker={SweatpantsPicker} pickerProps={{}} verb="use" subject="some sweat"/>
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={SweatpantsPicker}
+					pickerProps={{}}
+					verb="use"
+					subject="some sweat"
+				/>
 			)
 			break
 		}
@@ -105,11 +113,7 @@ export function getExtraItemInfo(
 		case 'staff of queso escusado': {
 			const stinkiness = mafiaProperties._stinkyCheeseCount as number
 			if (stinkiness < 100) {
-				res.desc.push(
-					<Text>
-						{stinkiness}/100 stinkiness
-					</Text>
-				)
+				res.desc.push(<Text>{stinkiness}/100 stinkiness</Text>)
 				res.borderType = 'has-drops'
 			} else {
 				res.desc.push(<Text>fully stinky</Text>)

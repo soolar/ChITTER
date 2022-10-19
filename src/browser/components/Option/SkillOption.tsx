@@ -9,14 +9,23 @@ interface SkillOptionArgs {
 	skill: BrowserSkill
 	desc: string
 	append?: string
+	enabled?: boolean
 }
 
-export default function SkillOption({ skill, desc, append }: SkillOptionArgs) {
+export default function SkillOption({
+	skill,
+	desc,
+	append,
+	enabled,
+}: SkillOptionArgs) {
+	const realEnabled = enabled === undefined ? true : enabled
+	const verb = realEnabled ? 'Cast' : undefined
+
 	return (
-		<ChitterOption icon={<SkillIcon skill={skill} />}>
+		<ChitterOption icon={<SkillIcon skill={skill} />} enabled={realEnabled}>
 			<Button variant="link">
 				<OptionText
-					verb="Cast"
+					verb={verb}
 					subject={skill.name}
 					append={append}
 					descline={desc}
