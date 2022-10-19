@@ -195,3 +195,12 @@ export function showFam(famNum: number) {
 	)
 	wind?.focus()
 }
+
+export function showItem(descId: number) {
+	const wind = window.open(
+		`desc_item.php?whichitem=${descId}`,
+		'item',
+		'height=200,width=400'
+	)
+	wind?.focus()
+}
