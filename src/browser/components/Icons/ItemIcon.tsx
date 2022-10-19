@@ -20,6 +20,12 @@ export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
 				<VStack spacing="none">
 					<Text>{extraInfo.displayName}</Text>
 					{extraInfo.desc}
+					{item && (
+						<Text
+							className="popup-desc-line"
+							dangerouslySetInnerHTML={{ __html: parseMods(item.mods) }}
+						/>
+					)}
 				</VStack>
 			}
 			borderType={extraInfo.borderType}

@@ -173,6 +173,7 @@ export interface BrowserItem {
 	name: string
 	image: string
 	id: number
+	descId: number
 	plural: string
 	inInventory: number
 	inCloset: number
@@ -184,7 +185,7 @@ export interface BrowserItem {
 	unrestricted: boolean
 	canEquip: boolean
 	slotStr: string
-	modifiers: string
+	mods: string
 }
 
 export declare const items: BrowserList<BrowserItem>
@@ -196,6 +197,7 @@ export const itemGuidelines: Guidelines<Item> = {
 		['name', (it) => it.toString()],
 		'image',
 		['id', (it) => toInt(it)],
+		['descId', (it) => it.descid],
 		'plural',
 		['inInventory', (it) => itemAmount(it)],
 		['inCloset', (it) => closetAmount(it)],
@@ -217,7 +219,7 @@ export const itemGuidelines: Guidelines<Item> = {
 		['unrestricted', (it) => isUnrestricted(it)],
 		['canEquip', (it) => canEquip(it)],
 		['slotStr', (it) => toSlot(it).toString()],
-		['modifiers', (it) => stringModifier(it, 'Modifiers')],
+		['mods', (it) => stringModifier(it, 'Evaluated Modifiers')],
 	],
 	favorites: getProperty('chit.gear.favorites')
 		.split('|')
