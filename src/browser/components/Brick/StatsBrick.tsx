@@ -38,7 +38,7 @@ function SimpleResourceRow({ name, value }: SimpleResourceRowArgs) {
 	return (
 		<ResourceRow
 			name={name}
-			valueStr={`${value.curr} / ${value.max}`}
+			valueStr={`${value.curr.toLocaleString()} / ${value.max.toLocaleString()}`}
 			value={value}
 		/>
 	)
@@ -52,10 +52,11 @@ interface StatRowArgs {
 function StatRow({ name, statValues }: StatRowArgs) {
 	const valueBit =
 		statValues.base === statValues.buffed ? (
-			<Text>{statValues.base}</Text>
+			<Text>{statValues.base.toLocaleString()}</Text>
 		) : (
 			<Text>
-				<Text as="span">{statValues.buffed}</Text> ({statValues.base})
+				<Text as="span">{statValues.buffed.toLocaleString()}</Text> (
+				{statValues.base.toLocaleString()})
 			</Text>
 		)
 	const lower = statValues.base ** 2
