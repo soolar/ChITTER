@@ -17,6 +17,7 @@ interface ChitterIconArgs {
 	specialPath?: boolean
 	extraClass?: string
 	small?: boolean
+	onClick?: React.MouseEventHandler<HTMLImageElement>
 }
 
 export default function ChitterIcon({
@@ -26,6 +27,7 @@ export default function ChitterIcon({
 	specialPath = false,
 	extraClass = '',
 	small,
+	onClick,
 }: ChitterIconArgs) {
 	return (
 		<Tooltip label={tooltip}>
@@ -37,6 +39,7 @@ export default function ChitterIcon({
 				alt={image}
 				maxWidth={small ? '15px' : undefined}
 				maxHeight={small ? '15px' : undefined}
+				onClick={onClick}
 			/>
 		</Tooltip>
 	)

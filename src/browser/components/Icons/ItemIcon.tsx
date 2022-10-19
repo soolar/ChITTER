@@ -3,6 +3,7 @@ import ChitterIcon from './ChitterIcon'
 import { BrowserItem } from '../../../guidelines'
 import { getExtraItemInfo } from '../../itemHelpers'
 import { Text, VStack } from '@chakra-ui/react'
+import { parseMods, showItem } from '../../../utils'
 
 interface ItemIconArgs {
 	item?: BrowserItem
@@ -23,6 +24,14 @@ export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
 			}
 			borderType={extraInfo.borderType}
 			small={small}
+			onClick={
+				item &&
+				((ev) => {
+					if (ev.shiftKey) {
+						showItem(item.descId)
+					}
+				})
+			}
 		/>
 	)
 }
