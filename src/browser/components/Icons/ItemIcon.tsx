@@ -23,7 +23,7 @@ export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
 					{item && (
 						<Text
 							className="popup-desc-line"
-							dangerouslySetInnerHTML={{ __html: parseMods(item.mods) }}
+							dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
 						/>
 					)}
 				</VStack>

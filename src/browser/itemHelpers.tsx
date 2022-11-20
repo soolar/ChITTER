@@ -7,6 +7,7 @@ import { BorderType } from './components/Icons/ChitterIcon'
 import PickerOption from './components/Option/PickerOption'
 import ItemIcon from './components/Icons/ItemIcon'
 import { BrowserCharacter } from '../character'
+import { parseMods } from '../utils'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
@@ -14,6 +15,7 @@ declare const my: BrowserCharacter
 interface ExtraItemInfo {
 	displayName: string
 	desc: React.ReactNode[]
+	mods: string
 	extraOptions: React.ReactNode[]
 	image: string
 	extraClass?: string
@@ -33,6 +35,7 @@ export function getExtraItemInfo(
 	const res: ExtraItemInfo = {
 		displayName: optionals.namePrefix ? `${optionals.namePrefix}${name}` : name,
 		desc: [],
+		mods: item?.mods || '',
 		extraOptions: [],
 		image: optionals.iconOverride || (item ? item.image : 'blank.gif'),
 		borderType: 'normal',
@@ -123,16 +126,25 @@ export function getExtraItemInfo(
 		case 'buddy bjorn': {
 			if (my.bjornFam) {
 				res.image = my.bjornFam.image
+				res.mods += `, ${my.bjornMods}`
 			}
 			break
 		}
 		case 'crown of thrones': {
 			if (my.crownFam) {
 				res.image = my.crownFam.image
+				res.mods += `, ${my.crownMods}`
 			}
 			break
 		}
+		case "scratch 'n' sniff sword":
+		case "scratch 'n' sniff crossbow": {
+			res.mods = `${my.stickerMods}, Breakable`
+			break
+		}
 	}
+
+	res.mods = parseMods(res.mods)
 
 	return res
 }

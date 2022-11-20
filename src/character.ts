@@ -1,4 +1,4 @@
-import { myBuffedstat } from 'kolmafia'
+import { equippedItem, Item, myBuffedstat, stringModifier } from 'kolmafia'
 import { myLevel } from 'kolmafia'
 import { myBasestat } from 'kolmafia'
 import { myMeat } from 'kolmafia'
@@ -29,7 +29,7 @@ import {
 	myThunder,
 	spleenLimit,
 } from 'kolmafia'
-import { $stat } from 'libram'
+import { $item, $slot, $slots, $stat, get } from 'libram'
 import { $class, $skill, $skills, have } from 'libram'
 import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines'
 import { CurrMax, StatValues } from './utils'
@@ -56,11 +56,82 @@ export interface BrowserCharacter {
 	inebriety: CurrMax
 	spleenUse: CurrMax
 	workshedItem: BrowserItem
-	bjornFam?: BrowserFamiliar
-	crownFam?: BrowserFamiliar
+	bjornFam: BrowserFamiliar
+	crownFam: BrowserFamiliar
 	meat: number
 	advs: number
 	fites: number
+
+	bjornMods: string
+	crownMods: string
+	edpieceMods: string
+	folderMods: string
+	stickerMods: string
+	cardMods: string
+	bootMods: string
+}
+
+function evaluatedModifiers(type: string) {
+	return stringModifier(type, 'Evaluated Modifiers')
+}
+
+interface StickerDetails {
+	amount: number
+	value: number
+	pre?: string
+	post?: string
+}
+
+function stickerMods() {
+	const stickerAmount = (sticker: Item) =>
+		$slots`sticker1, sticker2, sticker3`.reduce(
+			(acc, slot) => acc + (equippedItem(slot) === sticker ? 1 : 0),
+			0
+		)
+	const stickers: StickerDetails[] = [
+		{
+			amount: stickerAmount($item`scratch 'n' sniff unicorn sticker`),
+			value: 25,
+			pre: 'Item +',
+		},
+		{
+			amount: stickerAmount($item`scratch 'n' sniff apple sticker`),
+			value: 2,
+			pre: '+',
+			post: ' exp',
+		},
+		{
+			amount: stickerAmount($item`scratch 'n' sniff UPC sticker`),
+			value: 25,
+			pre: 'Meat +',
+		},
+		{
+			amount: stickerAmount($item`scratch 'n' sniff wrestler sticker`),
+			value: 10,
+			pre: 'Stats +',
+			post: '%',
+		},
+		{
+			amount: stickerAmount($item`scratch 'n' sniff dragon sticker`),
+			value: 3,
+			pre: 'Prismatic Dmg +',
+		},
+		{
+			amount: stickerAmount($item`scratch 'n' sniff rock band sticker`),
+			value: 20,
+			pre: 'All Dmg +',
+		},
+	]
+
+	return stickers
+		.filter((sticker) => sticker.amount > 0)
+		.map(
+			(sticker) =>
+				`${sticker.pre || ''}${sticker.amount * sticker.value}${
+					sticker.post || ''
+				}`
+		)
+		.join(', ')
 }
 
 const characterValues: [string, FieldValue][] = [
@@ -147,6 +218,30 @@ const characterValues: [string, FieldValue][] = [
 	['meat', myMeat()],
 	['advs', myAdventures()],
 	['fites', pvpAttacksLeft()],
+
+	['bjornMods', evaluatedModifiers(`Throne:${myBjornedFamiliar()}`)],
+	['crownMods', evaluatedModifiers(`Throne:${myEnthronedFamiliar()}`)],
+	['edpieceMods', evaluatedModifiers(`Edpiece:${get('edPiece')}`)],
+	[
+		'folderMods',
+		`${evaluatedModifiers(
+			`Item:${equippedItem($slot`folder1`)}`
+		)}, ${evaluatedModifiers(
+			`Item:${equippedItem($slot`folder2`)}`
+		)}, ${evaluatedModifiers(
+			`Item:${equippedItem($slot`folder3`)}`
+		)}, ${evaluatedModifiers(
+			`Item:${equippedItem($slot`folder4`)}`
+		)}, ${evaluatedModifiers(`Item:${equippedItem($slot`folder5`)}`)}`,
+	],
+	['stickerMods', stickerMods()],
+	['cardMods', evaluatedModifiers(`Item:${equippedItem($slot`card-sleeve`)}`)],
+	[
+		'bootMods',
+		`${evaluatedModifiers(
+			`Item:${equippedItem($slot`bootskin`)}`
+		)}, ${evaluatedModifiers(`Item:${equippedItem($slot`bootspur`)}`)}`,
+	],
 ]
 
 export const buildCharacter = () => {

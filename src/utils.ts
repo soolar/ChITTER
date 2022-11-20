@@ -64,11 +64,11 @@ const modShorthands: ModShorthand[] = [
 	// simplify regen ranges that are identical
 	[/(\d+)-\1/g, '$1'],
 	// Exp%: +5 -> Exp +5% (there is sometimes no : for some reason)
-	[/%:? ((\+|-)?\d+)/g, ' $1%'],
+	[/%:? ([+-]?\d+)/g, ' $1%'],
 	// Wpn +5% looks too weird, extend it back to Weapon +5% for the drops case
 	[/Wpn Drop/g, 'Weapon Drop'],
 	// Item Drop: +5 -> Item +5% and such
-	[/Drop: ((\+|-)\d+)/g, ' $1%'],
+	[/Drop: ([+-]\d+)/g, ' $1%'],
 	// remove colons
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
@@ -91,8 +91,15 @@ const modShorthands: ModShorthand[] = [
 	[/Nonstackable Watch/, 'Watch'],
 	// sometimes there's a True after boolean properties
 	[/ True(,|$)/g, '$1'],
-	// strip trailing comma
-	[/, ?$/, ''],
+	// rephrase familiar weight
+	[/Fam Weight ([+-]?\d+)(,|$)/g, 'Fam $1lbs'],
+]
+
+// these shorthands are called repeatedly until nothing changes
+const cleanupShorthands: ModShorthand[] = [
+	[/, *,/g, ','],
+	[/^ *, */, ''],
+	[/, *$/, ''],
 ]
 
 interface ModCombinationInfo {
@@ -220,15 +227,17 @@ export function parseMods(mods: string, verbose = false) {
 	])
 
 	// strip excess commas (repeatedly in case of multiple in a row)
-	let keepGoing
-	do {
-		keepGoing = false
-		const newMods = mods.replace(/, *,/g, ',')
-		if (newMods !== mods) {
-			keepGoing = true
-			mods = newMods
-		}
-	} while (keepGoing)
+	cleanupShorthands.forEach((shorthand) => {
+		let keepGoing
+		do {
+			keepGoing = false
+			const oldMods = mods
+			handleShorthand(shorthand)
+			if (mods !== oldMods) {
+				keepGoing = true
+			}
+		} while (keepGoing)
+	})
 
 	return mods
 }
