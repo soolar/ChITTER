@@ -27,33 +27,16 @@ export function pluralize(thing: string | BrowserItem, amount: number) {
 	return amount === 1 ? thing.name : thing.plural
 }
 
-interface ModCombinationInfo {
-	mods: string[]
-	fuseName: string
-}
-
-const modCombinations: ModCombinationInfo[] = [
-	{
-		mods: ['Muscle', 'Mysticality', 'Moxie'],
-		fuseName: 'Stats',
-	},
-	{
-		mods: ['Hot', 'Cold', 'Spooky', 'Stench', 'Sleaze'],
-		fuseName: 'Prismatic',
-	},
-	{
-		mods: ['HP', 'MP'],
-		fuseName: 'HP/MP',
-	},
-	{
-		mods: ['Weapon Damage', 'Spell Damage'],
-		fuseName: 'All Damage',
-	},
-]
-
 type ModShorthand = [RegExp, string]
 
 const modShorthands: ModShorthand[] = [
+	// remove "Familiar Effects" (info about what they do on pants/shirt fams
+	[/Familiar Effect: "[^"]+"/, ''],
+	// remove softcore only because it's not relevant here
+	[/Softcore Only/, ''],
+	// same with free pull
+	[/Free Pull/, ''],
+	[/Lasts Until Rollover(: true)?/, 'Melts'],
 	[/ Percent/g, '%'],
 	[/Muscle/g, 'Mus'],
 	[/Mysticality/g, 'Mys'],
@@ -86,11 +69,6 @@ const modShorthands: ModShorthand[] = [
 	[/Wpn Drop/g, 'Weapon Drop'],
 	// Item Drop: +5 -> Item +5% and such
 	[/Drop: ((\+|-)\d+)/g, ' $1%'],
-	// Decorate non-prismatic elements simply (prismatic below)
-	[
-		/([^,]*(Hot|Cold|Spooky|Stench|Sleaze)[^,]*)(,|$)/g,
-		'<span class="mod$2">$1</span>$3',
-	],
 	// remove colons
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
@@ -111,6 +89,34 @@ const modShorthands: ModShorthand[] = [
 	[/Class "([^"]+)"/g, '$1 Only'],
 	// shorthand watches
 	[/Nonstackable Watch/, 'Watch'],
+	// sometimes there's a True after boolean properties
+	[/ True(,|$)/g, '$1'],
+	// strip trailing comma
+	[/, ?$/, ''],
+]
+
+interface ModCombinationInfo {
+	mods: string[]
+	fuseName: string
+}
+
+const modCombinations: ModCombinationInfo[] = [
+	{
+		mods: ['Mus', 'Mys', 'Mox'],
+		fuseName: 'Stats',
+	},
+	{
+		mods: ['Hot', 'Cold', 'Spooky', 'Stench', 'Sleaze'],
+		fuseName: 'Prismatic',
+	},
+	{
+		mods: ['HP', 'MP'],
+		fuseName: 'HP/MP',
+	},
+	{
+		mods: ['Weapon Damage', 'Spell Damage'],
+		fuseName: 'All Damage',
+	},
 ]
 
 export function parseMods(mods: string, verbose = false) {
@@ -134,9 +140,18 @@ export function parseMods(mods: string, verbose = false) {
 	})
 	verbosePrint(`Rearranged: ${mods}`)
 
+	const handleShorthand = (modShorthand: ModShorthand) => {
+		mods = mods.replace(modShorthand[0], modShorthand[1])
+		verbosePrint(
+			`After shorthanding ${modShorthand[0]} to ${modShorthand[1]}: ${mods}`
+		)
+	}
+
+	modShorthands.forEach(handleShorthand)
+
 	modCombinations.forEach((modComboInfo) => {
 		verbosePrint(`Checking mod combo starting with ${modComboInfo.mods[0]}`)
-		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^:]*: (\\+|-)?\\d+`
+		const initialPattern = `\\b[^,]*${modComboInfo.mods[0]}[^+-\\d]* (\\+|-)?\\d+(-\\d+)?%?`
 		const regexp = new RegExp(initialPattern, 'g')
 		let matchInfo
 		while ((matchInfo = regexp.exec(mods)) !== null) {
@@ -183,13 +198,6 @@ export function parseMods(mods: string, verbose = false) {
 		}
 	})
 
-	modShorthands.forEach((modShorthand) => {
-		mods = mods.replace(modShorthand[0], modShorthand[1])
-		verbosePrint(
-			`After shorthanding ${modShorthand[0]} to ${modShorthand[1]}: ${mods}`
-		)
-	})
-
 	// Prismatize
 	mods = mods.replace(
 		/( |^)([^,]*Prismatic[^,]*)(,|$)/g,
@@ -204,6 +212,23 @@ export function parseMods(mods: string, verbose = false) {
 		}
 	)
 	verbosePrint(`After prismatizing: ${mods}`)
+
+	// Decorate non-prismatic elements simply (prismatic below)
+	handleShorthand([
+		/([^,]*(Hot|Cold|Spooky|Stench|Sleaze)[^,]*)(,|$)/g,
+		'<span class="mod$2">$1</span>$3',
+	])
+
+	// strip excess commas (repeatedly in case of multiple in a row)
+	let keepGoing
+	do {
+		keepGoing = false
+		const newMods = mods.replace(/, *,/g, ',')
+		if (newMods !== mods) {
+			keepGoing = true
+			mods = newMods
+		}
+	} while (keepGoing)
 
 	return mods
 }
