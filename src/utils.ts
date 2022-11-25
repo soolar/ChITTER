@@ -122,8 +122,8 @@ const modCombinations: ModCombinationInfo[] = [
 		fuseName: 'HP/MP',
 	},
 	{
-		mods: ['Weapon Damage', 'Spell Damage'],
-		fuseName: 'All Damage',
+		mods: ['Wpn Dmg', 'Spell Dmg'],
+		fuseName: 'All Dmg',
 	},
 ]
 
