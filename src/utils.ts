@@ -92,7 +92,7 @@ const modShorthands: ModShorthand[] = [
 	// sometimes there's a True after boolean properties
 	[/ True(,|$)/g, '$1'],
 	// rephrase familiar weight
-	[/Fam Weight ([+-]?\d+)(,|$)/g, 'Fam $1lbs'],
+	[/Fam Weight ([+-]?\d+)(,|$)/g, 'Fam $1lbs$2'],
 ]
 
 // these shorthands are called repeatedly until nothing changes
