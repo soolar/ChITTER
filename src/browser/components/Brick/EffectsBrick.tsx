@@ -1,7 +1,7 @@
 import { Divider, GridItem, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import * as React from 'react'
 import { BrowserEffect, BrowserList } from '../../../guidelines'
-import { parseMods } from '../../../utils'
+import { getExtraEffectInfo } from '../../effectHelpers'
 import EffectIcon from '../Icons/EffectIcon'
 import Brick from './Brick'
 
@@ -16,37 +16,40 @@ export default function EffectsBrick() {
 						const turnsDiff = eff1.turnsActive - eff2.turnsActive
 						return turnsDiff === 0 ? eff1.id - eff2.id : turnsDiff
 					})
-					.map((eff) => (
-						<>
-							<GridItem>
-								<EffectIcon effect={eff} />
-							</GridItem>
-							<GridItem>
-								<VStack spacing={0}>
-									<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
-									<Text
-										className="desc-line"
-										dangerouslySetInnerHTML={{ __html: parseMods(eff.mods) }}
-									/>
-								</VStack>
-							</GridItem>
-							<GridItem>
-								<Text>
-									{eff.turnsActive === 2147483647 ? (
-										<>&infin;</>
-									) : (
-										eff.turnsActive
-									)}
-								</Text>
-							</GridItem>
-							<GridItem>
-								<Text>^</Text>
-							</GridItem>
-							<GridItem colSpan={4}>
-								<Divider />
-							</GridItem>
-						</>
-					))}
+					.map((eff) => {
+						const extraInfo = getExtraEffectInfo(eff)
+						return (
+							<>
+								<GridItem>
+									<EffectIcon effect={eff} />
+								</GridItem>
+								<GridItem>
+									<VStack spacing={0}>
+										<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
+										<Text
+											className="desc-line"
+											dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
+										/>
+									</VStack>
+								</GridItem>
+								<GridItem>
+									<Text>
+										{eff.turnsActive === 2147483647 ? (
+											<>&infin;</>
+										) : (
+											eff.turnsActive
+										)}
+									</Text>
+								</GridItem>
+								<GridItem>
+									<Text>^</Text>
+								</GridItem>
+								<GridItem colSpan={4}>
+									<Divider />
+								</GridItem>
+							</>
+						)
+					})}
 			</SimpleGrid>
 		</Brick>
 	)
