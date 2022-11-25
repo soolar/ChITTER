@@ -52,6 +52,7 @@ const modShorthands: ModShorthand[] = [
 	[/Weapon/g, 'Wpn'],
 	[/Initiative/g, 'Init'],
 	[/Hobo Power/g, 'Hobo'],
+	[/Pool Skill/g, 'Pool'],
 	[/Smithsness/g, 'Smith'],
 	[/Critical/g, 'Crit'],
 	// Make it so that pickpocket will get a +X% later
