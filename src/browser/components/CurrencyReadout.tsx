@@ -12,14 +12,17 @@ const SpecialCurrencies = ['meat', 'advs', 'fites'] as const
 type SpecialCurrency = typeof SpecialCurrencies[number]
 
 const SpecialCurrencyDetails = {
-	meat: { image: 'meat.gif', tooltip: <Text>{my.meat} Meat</Text> },
+	meat: {
+		image: 'meat.gif',
+		tooltip: <Text>{my.meat.toLocaleString()} Meat</Text>,
+	},
 	advs: {
 		image: 'slimhourglass.gif',
-		tooltip: <Text>{my.advs} Adventures remaining</Text>,
+		tooltip: <Text>{my.advs.toLocaleString()} Adventures remaining</Text>,
 	},
 	fites: {
 		image: 'slimpvp.gif',
-		tooltip: <Text>{my.fites} PvP Fights remaining</Text>,
+		tooltip: <Text>{my.fites.toLocaleString()} PvP Fights remaining</Text>,
 	},
 }
 
