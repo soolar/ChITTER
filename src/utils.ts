@@ -69,7 +69,7 @@ const modShorthands: ModShorthand[] = [
 	// Wpn +5% looks too weird, extend it back to Weapon +5% for the drops case
 	[/Wpn Drop/g, 'Weapon Drop'],
 	// Item Drop: +5 -> Item +5% and such
-	[/Drop: ([+-]\d+)/g, ' $1%'],
+	[/Drop: ([+-]?\d+)/g, ' $1%'],
 	// remove colons
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
