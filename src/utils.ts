@@ -125,6 +125,14 @@ const modCombinations: ModCombinationInfo[] = [
 		mods: ['Wpn Dmg', 'Spell Dmg'],
 		fuseName: 'All Dmg',
 	},
+	...['Hot', 'Cold', 'Spooky', 'Stench', 'Sleaze', 'Prismatic'].map(
+		(name): ModCombinationInfo => {
+			return {
+				mods: [`${name} Dmg`, `${name} Spell Dmg`],
+				fuseName: `All ${name} Dmg`,
+			}
+		}
+	),
 ]
 
 export function parseMods(mods: string, verbose = false) {
