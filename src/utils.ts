@@ -1,4 +1,6 @@
-import { BrowserItem } from './guidelines'
+import { BrowserEffect, BrowserItem, BrowserList } from './guidelines'
+
+declare const effects: BrowserList<BrowserEffect>
 
 export interface CurrMax {
 	curr: number
@@ -247,6 +249,15 @@ export function parseMods(mods: string, verbose = false) {
 			}
 		} while (keepGoing)
 	})
+
+	// Add details of Rollover effects
+	const rolloverEffect = mods.match(/\d+ Rollover Turns ([^,]+)(?:,|$)/)
+	if (rolloverEffect) {
+		const rolloverEffectName = rolloverEffect[1]
+		verbosePrint(`Found rollover effect ${rolloverEffectName}`)
+		mods += ` [${parseMods(effects.byName[rolloverEffectName].mods)}]`
+		verbosePrint(`After adding rollover effect details: ${mods}`)
+	}
 
 	return mods
 }
