@@ -142,6 +142,11 @@ export function getExtraItemInfo(
 			res.mods = `${my.stickerMods}, Breakable`
 			break
 		}
+		case 'mafia thumb ring': {
+			const thumbAdvs = mafiaProperties._mafiaThumbRingAdvs as number
+			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
+			break
+		}
 	}
 
 	res.mods = parseMods(res.mods)
