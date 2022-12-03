@@ -25,7 +25,12 @@ export default function OptionText({
 				{subject}
 				{append && ` (${append})`}
 			</Text>
-			{descline && <Text>{descline}</Text>}
+			{descline && (
+				<Text
+					dangerouslySetInnerHTML={{ __html: descline }}
+					className="desc-line"
+				/>
+			)}
 		</VStack>
 	)
 }

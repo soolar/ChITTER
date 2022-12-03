@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BrowserItem } from '../guidelines'
+import { BrowserEffect, BrowserItem, BrowserList } from '../guidelines'
 import { BrowserMafiaProperties } from '../properties'
 import { Text } from '@chakra-ui/react'
 import SweatpantsPicker from './components/Picker/SweatpantsPicker'
@@ -8,9 +8,12 @@ import PickerOption from './components/Option/PickerOption'
 import ItemIcon from './components/Icons/ItemIcon'
 import { BrowserCharacter } from '../character'
 import { parseMods } from '../utils'
+import EffectListPseudoPicker from './components/Picker/EffectListPseudoPicker'
+import LinkOption from './components/Option/LinkOption'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
+declare const effects: BrowserList<BrowserEffect>
 
 interface ExtraItemInfo {
 	displayName: string
@@ -145,6 +148,69 @@ export function getExtraItemInfo(
 		case 'mafia thumb ring': {
 			const thumbAdvs = mafiaProperties._mafiaThumbRingAdvs as number
 			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
+			break
+		}
+		case 'daylight shavings helmet': {
+			const beards = [
+				effects.byName['spectacle moustache'],
+				effects.byName['toiletbrush moustache'],
+				effects.byName['barbell moustache'],
+				effects.byName['grizzly beard'],
+				effects.byName["surrealist's moustache"],
+				effects.byName["musician's musician's moustache"],
+				effects.byName['gull-wing moustache'],
+				effects.byName["space warlord's beard"],
+				effects.byName['pointy wizard beard'],
+				effects.byName['cowboy stache'],
+				effects.byName['friendly chops'],
+			]
+			const beardOrder: BrowserEffect[] = []
+			const classId = my.class.id
+			const classIdMod = (classId <= 6 ? classId : classId + 1) % 6
+			const lastBeardId = mafiaProperties.lastBeardBuff as number
+			const lastBeard = beards.find((beard) => beard.id === lastBeardId)
+			const currBeard = beards.find((beard) => beard.turnsActive > 0)
+			const beardOffset = currBeard
+				? beards.indexOf(currBeard)
+				: lastBeard
+				? beards.indexOf(lastBeard) + 1
+				: 1
+			for (let i = 0; i < 11; ++i) {
+				beardOrder[i] = beards[(classIdMod * i + beardOffset) % 11]
+			}
+			const nextBeard = beardOrder[currBeard ? 1 : 0]
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={EffectListPseudoPicker}
+					pickerProps={{
+						effects: beardOrder,
+						enabled: (eff: BrowserEffect) => eff !== currBeard,
+					}}
+					verb="check"
+					subject="upcoming beards"
+				/>
+			)
+			res.extraOptions.push(
+				<LinkOption
+					icon={<ItemIcon item={item} />}
+					verb="adjust"
+					subject="your facial hair"
+					link="/account_facialhair.php"
+				/>
+			)
+			res.desc.push(
+				<Text
+					dangerouslySetInnerHTML={{
+						__html: `${nextBeard.name} [${parseMods(nextBeard.mods)}] due ${
+							currBeard ? `in ${currBeard.turnsActive} turns` : 'now'
+						}`,
+					}}
+				/>
+			)
+			if (!currBeard) {
+				res.borderType = 'good'
+			}
 			break
 		}
 	}
