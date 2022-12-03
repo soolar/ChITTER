@@ -19,7 +19,9 @@ export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
 			tooltip={
 				<VStack spacing="none">
 					<Text>{extraInfo.displayName}</Text>
-					{extraInfo.desc}
+					{extraInfo.desc.map((node) => (
+						<span className="popup-desc-line">{node}</span>
+					))}
 					{item && (
 						<Text
 							className="popup-desc-line"
