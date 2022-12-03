@@ -18,7 +18,7 @@ export default function SkillOption({
 	append,
 	enabled,
 }: SkillOptionArgs) {
-	const realEnabled = enabled === undefined ? true : enabled
+	const realEnabled = enabled ?? true
 	const verb = realEnabled ? 'Cast' : undefined
 
 	return (
