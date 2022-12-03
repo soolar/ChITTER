@@ -15,8 +15,8 @@ export default function ChitterOption({
 	const realEnabled = enabled === undefined ? true : enabled
 
 	return (
-		<Flex className={realEnabled ? undefined : 'option-disabled'}>
-			{icon}
+		<Flex className={realEnabled ? 'option-enabled' : 'option-disabled'}>
+			<Box className="option-icon">{icon}</Box>
 			<Spacer />
 			<Box className="option-body">{children}</Box>
 		</Flex>

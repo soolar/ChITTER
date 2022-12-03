@@ -27,8 +27,8 @@ export default function PickerLauncher<Params extends PickerParamsBase>({
 				<Button variant="link">{children}</Button>
 			</PopoverTrigger>
 			<PopoverContent>
-				<PopoverArrow />
-				<PopoverCloseButton />
+				<PopoverArrow bg="blue" />
+				<PopoverCloseButton className="picker-close" />
 				<WrappedPicker {...pickerProps} />
 			</PopoverContent>
 		</Popover>

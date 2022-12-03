@@ -120,10 +120,37 @@ table.chit-picker {
 	color: #aaaaaa;
 }
 
+.option-icon {
+	/* this doesn't seem to work? */
+	vertical-align: middle;
+}
+
 .option-body {
 	text-align: center;
 }
 
+.option-enabled {
+	border-bottom: 1px solid white;
+}
+
 .option-disabled {
 	background-color: #e2e2e2;
+	border-bottom: 1px solid white;
+}
+
+.picker-arrow {
+	background-color: blue;
+}
+
+.picker-header {
+	background-color: blue;
+	color: white;
+}
+
+.picker-body {
+	background-color: #f8f8f8;
+}
+
+.picker-footer {
+	background-color: #f8f8f8;
 }

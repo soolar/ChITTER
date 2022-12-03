@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { BrowserEffect } from '../guidelines'
-import {parseMods} from '../utils'
+import { parseMods } from '../utils'
 
 interface ExtraEffectInfo {
 	mods: string
