@@ -37,8 +37,8 @@ export default function ChitterIcon({
 					extraClass ? ` ${extraClass}` : ''
 				}`}
 				alt={image}
-				maxWidth={small ? '15px' : undefined}
-				maxHeight={small ? '15px' : undefined}
+				maxWidth={small ? '16px' : '32px'}
+				maxHeight={small ? '16px' : '32px'}
 				onClick={onClick}
 			/>
 		</Tooltip>
