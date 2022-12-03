@@ -16,7 +16,7 @@ export default function CharacterBrick() {
 				<VStack>
 					{/* Character title here */}
 					{/* Restrictions here */}
-					<Text>{my.pathName}</Text>
+					{my.pathName !== 'none' && <Text>{my.pathName}</Text>}
 					<HStack>
 						{[
 							'meat' as const,
