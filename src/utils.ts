@@ -63,7 +63,7 @@ const modShorthands: ModShorthand[] = [
 	[/Adventures/g, 'Adv'],
 	[/PvP Fights/g, 'Fites'],
 	// Combine regen min and max in to a range
-	[/((HP|MP|HP\/MP) Regen )Min: (\d+), \1Max: (\d+)/g, '$1$3-$4'],
+	[/((HP|MP|HP\/MP) Regen )Min: ([+-]?\d+), \1Max: \+?(-?\d+)/g, '$1$3-$4'],
 	// simplify regen ranges that are identical
 	[/(\d+)-\1/g, '$1'],
 	// Exp%: +5 -> Exp +5% (there is sometimes no : for some reason)
