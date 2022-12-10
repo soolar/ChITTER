@@ -145,6 +145,22 @@ export function getExtraItemInfo(
 			res.mods = `${my.stickerMods}, Breakable`
 			break
 		}
+		case 'the crown of ed the undying': {
+			res.mods += `, ${my.edpieceMods}`
+			break
+		}
+		case 'card sleeve': {
+			res.mods += `, ${my.cardMods}`
+			break
+		}
+		case 'over-the-shoulder folder holder': {
+			res.mods += `, ${my.folderMods}`
+			break
+		}
+		case 'your cowboy boots': {
+			res.mods += `, ${my.bootMods}`
+			break
+		}
 		case 'mafia thumb ring': {
 			const thumbAdvs = mafiaProperties._mafiaThumbRingAdvs as number
 			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
