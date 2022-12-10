@@ -8,10 +8,6 @@ $kol-color: blue;
 $kol-color-fg: white;
 $picker-bg: #f8f8f8;
 
-body {
-	font-family: Arial, Helvetica, sans-serif;
-}
-
 .modCold {
 	color: blue;
 }
@@ -55,26 +51,39 @@ body {
 .chit-icon {
 	border: 1px solid $icon-border-normal;
 	margin: 1px;
+	max-width: 32px;
+	max-height: 32px;
 }
 
-.chit-icon.has-drops {
+.chit-icon.border-has-drops {
 	border-color: $icon-border-has-drops;
 }
 
-.chit-icon.all-drops {
+.chit-icon.border-all-drops {
 	border-color: $icon-border-all-drops;
 }
 
-.chit-icon.good {
+.chit-icon.border-good {
 	border-color: $icon-border-good;
 }
 
-.chit-icon.warning {
+.chit-icon.border-warning {
 	border-color: $icon-border-warning;
 }
 
-.chit-icon.danger {
+.chit-icon.border-danger {
 	border-color: $icon-border-danger;
+}
+
+.chit-icon.border-none {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.chit-icon.small {
+	max-width: 16px;
+	max-height: 16px;
 }
 
 table.chit-picker {

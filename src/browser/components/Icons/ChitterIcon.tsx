@@ -29,16 +29,23 @@ export default function ChitterIcon({
 	small,
 	onClick,
 }: ChitterIconArgs) {
+	const classes = ['chit-icon']
+	if (borderType !== 'normal') {
+		classes.push(`border-${borderType}`)
+	}
+	if (small) {
+		classes.push('small')
+	}
+	if (extraClass) {
+		classes.push(extraClass)
+	}
+
 	return (
 		<Tooltip label={tooltip}>
 			<Image
 				src={specialPath ? image : `/images/itemimages/${image}`}
-				className={`chit-icon${borderType !== 'none' ? ` ${borderType}` : ''}${
-					extraClass ? ` ${extraClass}` : ''
-				}`}
+				className={classes.join(' ')}
 				alt={image}
-				maxWidth={small ? '16px' : '32px'}
-				maxHeight={small ? '16px' : '32px'}
 				onClick={onClick}
 			/>
 		</Tooltip>
