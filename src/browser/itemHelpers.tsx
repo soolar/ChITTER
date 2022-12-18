@@ -10,6 +10,8 @@ import { BrowserCharacter } from '../character'
 import { parseMods } from '../utils'
 import EffectListPseudoPicker from './components/Picker/EffectListPseudoPicker'
 import LinkOption from './components/Option/LinkOption'
+import FamiliarPicker from './components/Picker/FamiliarPicker'
+import { getExtraFamInfo } from './familiarHelpers'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
@@ -130,14 +132,36 @@ export function getExtraItemInfo(
 			if (my.bjornFam) {
 				res.image = my.bjornFam.image
 				res.mods += `, ${my.bjornMods}`
+				const bjornInfo = getExtraFamInfo(my.bjornFam, true, true)
+				res.desc.push(...bjornInfo.desc)
 			}
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={FamiliarPicker}
+					pickerProps={{ type: 'bjorn' }}
+					verb="pick"
+					subject="a rider"
+				/>
+			)
 			break
 		}
 		case 'crown of thrones': {
 			if (my.crownFam) {
 				res.image = my.crownFam.image
 				res.mods += `, ${my.crownMods}`
+				const crownInfo = getExtraFamInfo(my.crownFam, true, true)
+				res.desc.push(...crownInfo.desc)
 			}
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={FamiliarPicker}
+					pickerProps={{ type: 'crown' }}
+					verb="pick"
+					subject="a rider"
+				/>
+			)
 			break
 		}
 		case "scratch 'n' sniff sword":

@@ -64,7 +64,7 @@ export default function FamiliarPicker({
 						.map((fam) => (
 							<WrapItem>
 								<Button>
-									<FamIcon fam={fam} />
+									<FamIcon fam={fam} isBjorn={type !== 'default'} />
 								</Button>
 							</WrapItem>
 						))}
