@@ -4,33 +4,36 @@ import OptionText from './OptionText'
 import { BrowserSkill } from '../../../guidelines'
 import { Button } from '@chakra-ui/react'
 import SkillIcon from '../Icons/SkillIcon'
+import { getExtraSkillInfo } from '../../skillHelpers'
 
 interface SkillOptionArgs {
 	skill: BrowserSkill
-	desc: string
-	append?: string
-	enabled?: boolean
 }
 
-export default function SkillOption({
-	skill,
-	desc,
-	append,
-	enabled,
-}: SkillOptionArgs) {
-	const realEnabled = enabled ?? true
-	const verb = realEnabled ? 'Cast' : undefined
+export default function SkillOption({ skill }: SkillOptionArgs) {
+	const extraInfo = getExtraSkillInfo(skill)
 
 	return (
-		<ChitterOption icon={<SkillIcon skill={skill} />} enabled={realEnabled}>
-			<Button variant="link">
+		<ChitterOption
+			icon={<SkillIcon skill={skill} />}
+			enabled={extraInfo.usable}
+		>
+			{extraInfo.usable ? (
+				<Button variant="link">
+					<OptionText
+						verb="Cast"
+						subject={skill.name}
+						append={extraInfo.append}
+						desc={extraInfo.desc}
+					/>
+				</Button>
+			) : (
 				<OptionText
-					verb={verb}
 					subject={skill.name}
-					append={append}
-					descline={desc}
+					append={extraInfo.append}
+					desc={extraInfo.desc}
 				/>
-			</Button>
+			)}
 		</ChitterOption>
 	)
 }

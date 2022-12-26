@@ -16,7 +16,7 @@ export default function EffectOption({ effect, enabled }: EffectOptionArgs) {
 			icon={<EffectIcon effect={effect} />}
 			enabled={enabled ?? true}
 		>
-			<OptionText subject={effect.name} descline={parseMods(effect.mods)} />
+			<OptionText subject={effect.name} desc={parseMods(effect.mods)} />
 		</ChitterOption>
 	)
 }

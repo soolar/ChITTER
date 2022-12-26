@@ -5,14 +5,14 @@ interface OptionTextArgs {
 	verb?: string
 	subject: string
 	append?: string
-	descline?: string
+	desc?: React.ReactNode[] | string
 }
 
 export default function OptionText({
 	verb,
 	subject,
 	append,
-	descline,
+	desc,
 }: OptionTextArgs) {
 	return (
 		<VStack spacing={0}>
@@ -25,12 +25,15 @@ export default function OptionText({
 				{subject}
 				{append && ` (${append})`}
 			</Text>
-			{descline && (
-				<Text
-					dangerouslySetInnerHTML={{ __html: descline }}
-					className="desc-line"
-				/>
-			)}
+			{desc &&
+				(typeof desc === 'string' ? (
+					<Text
+						dangerouslySetInnerHTML={{ __html: desc }}
+						className="desc-line"
+					/>
+				) : (
+					<VStack>{desc}</VStack>
+				))}
 		</VStack>
 	)
 }
