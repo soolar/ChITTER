@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { BrowserFamiliar, BrowserList, BrowserSlot } from '../../../guidelines'
+import {
+	BrowserFamiliar,
+	BrowserItem,
+	BrowserList,
+	BrowserSlot,
+	MummeryCharacter,
+} from '../../../guidelines'
 import { showFam } from '../../../utils'
 import FamIcon from '../Icons/FamIcon'
 import FamiliarPicker from '../Picker/FamiliarPicker'
@@ -19,9 +25,21 @@ import {
 } from '@chakra-ui/react'
 import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
 import FamiliarEquipmentPicker from '../Picker/FamiliarEquipPicker'
+import ChitterIcon from '../Icons/ChitterIcon'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const slots: BrowserList<BrowserSlot>
+declare const items: BrowserList<BrowserItem>
+
+const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
+	['The Captain']: 'mummericon1.gif',
+	Beelzebub: 'mummericon2.gif',
+	['Saint Patrick']: 'mummericon3.gif',
+	['Prince George']: 'mummericon4.gif',
+	['Oliver Cromwell']: 'mummericon5.gif',
+	['The Doctor']: 'mummericon6.gif',
+	['Miss Funny']: 'mummericon7.gif',
+}
 
 export default function FamiliarBrick() {
 	const currFam = familiars.active[0]
@@ -44,7 +62,7 @@ export default function FamiliarBrick() {
 		const famInfo = (
 			<VStack spacing="none">
 				<Tooltip label="Click for Familiar Haiku">
-					<Heading onClick={() => showFam(currFam.id)}>{currFam.type}</Heading>
+					<Heading onClick={() => showFam(currFam.id)}>{currFam.name}</Heading>
 				</Tooltip>
 				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
 			</VStack>
@@ -77,20 +95,41 @@ export default function FamiliarBrick() {
 			),
 		})
 
+		const mummery = (
+			<VStack spacing="none">
+				<Text>Pick a Mummer's Costume</Text>
+				{currFam.mummeryCharacter && (
+					<Text>Currently {currFam.mummeryCharacter}</Text>
+				)}
+			</VStack>
+		)
+
 		return (
 			<Brick
 				name="familiar"
 				header={
 					<Flex>
-						<Tooltip
-							label={`Buffed Weight (Base Weight: ${currFam.weight} lb)`}
-						>
-							<Heading style={{ color: 'blue' }}>
-								{currFam.buffedWeight}
-							</Heading>
-						</Tooltip>
+						{items.byName['mumming trunk'].inInventory > 0 && (
+							<ChitterIcon
+								image={
+									currFam.mummeryCharacter
+										? mummeryCharacterToIconMap[currFam.mummeryCharacter]
+										: 'mummericon0.gif'
+								}
+								tooltip={mummery}
+								borderType="none"
+								small
+							/>
+						)}
 						<Spacer />
-						<Heading>{currFam.name}</Heading>
+						<Heading>
+							<Tooltip
+								label={`Buffed Weight (Base Weight: ${currFam.weight}lb)`}
+							>
+								<span style={{ color: 'blue' }}>{currFam.buffedWeight}lb</span>
+							</Tooltip>{' '}
+							{currFam.type}
+						</Heading>
 						<Spacer />
 					</Flex>
 				}

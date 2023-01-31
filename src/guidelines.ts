@@ -27,6 +27,7 @@ import {
 	myClass,
 	myFamiliar,
 	myThrall,
+	print,
 	rainCost,
 	Skill,
 	Slot,
@@ -35,6 +36,7 @@ import {
 	stringModifier,
 	Thrall,
 	thunderCost,
+	toFamiliar,
 	toInt,
 	toItem,
 	toSlot,
@@ -48,7 +50,9 @@ import {
 	$skills,
 	$slots,
 	$thralls,
+	get,
 } from 'libram'
+import { currentCostumes } from 'libram/dist/resources/2017/MummingTrunk'
 import { FieldData, FieldValue, fieldValueToJSString } from './fieldValue'
 
 interface Guidelines<T extends MafiaClass> {
@@ -230,6 +234,17 @@ export const itemGuidelines: Guidelines<Item> = {
 // End Items
 
 // Begin Familiars
+const mummeryCharacters = [
+	'The Captain',
+	'Beelzebub',
+	'Saint Patrick',
+	'Prince George',
+	'Oliver Cromwell',
+	'The Doctor',
+	'Miss Funny',
+]
+export type MummeryCharacter = typeof mummeryCharacters[number]
+
 export interface BrowserFamiliar {
 	type: string
 	image: string
@@ -245,9 +260,32 @@ export interface BrowserFamiliar {
 	owned: boolean
 	unrestricted: boolean
 	canEquip: boolean
+	mummeryCharacter?: MummeryCharacter
 }
 
 export declare const familiars: BrowserList<BrowserFamiliar>
+
+const mummeryMap: { [mod: string]: MummeryCharacter } = {
+	['MP Regen Min']: 'Beelzebub',
+	['Item Drop']: 'Prince George',
+	['HP Regen Min']: 'The Doctor',
+	['Experience (Muscle)']: 'Saint Patrick',
+	['Experience (Mysticality)']: 'Oliver Cromwell',
+	['Experience (Moxie)']: 'Miss Funny',
+	['Meat Drop']: 'The Captain',
+}
+
+function getMummeryCharacter(fam: Familiar) {
+	const entries = get('_mummeryMods').split(',')
+	const regExp = /([^:]+): \[\d+\*fam\(([^)]+)\)\]/
+	for (const entry of entries) {
+		const matcher = entry.match(regExp)
+		if (matcher && toFamiliar(matcher[2]) === fam && mummeryMap[matcher[1]]) {
+			return mummeryMap[matcher[1]]
+		}
+	}
+	return undefined
+}
 
 export const familiarGuidelines: Guidelines<Familiar> = {
 	name: 'familiars',
@@ -267,6 +305,7 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		['owned', (fam) => haveFamiliar(fam)],
 		['unrestricted', (fam) => isUnrestricted(fam)],
 		['canEquip', (fam) => canEquip(fam)],
+		['mummeryCharacter', (fam) => getMummeryCharacter(fam)],
 	],
 	favorites: Object.keys(favoriteFamiliars())
 		.map((famName) => Familiar.get(famName))

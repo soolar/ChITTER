@@ -1,4 +1,9 @@
-import { equippedItem, Item, myBuffedstat, stringModifier } from 'kolmafia'
+import {
+	equippedItem,
+	Item,
+	myBuffedstat,
+	stringModifier,
+} from 'kolmafia'
 import { myLevel } from 'kolmafia'
 import { myBasestat } from 'kolmafia'
 import { myMeat } from 'kolmafia'
@@ -29,8 +34,17 @@ import {
 	myThunder,
 	spleenLimit,
 } from 'kolmafia'
-import { $item, $slot, $slots, $stat, get } from 'libram'
-import { $class, $skill, $skills, have } from 'libram'
+import {
+	$class,
+	$item,
+	$skill,
+	$skills,
+	$slot,
+	$slots,
+	$stat,
+	get,
+	have,
+} from 'libram'
 import { BrowserClass, BrowserFamiliar, BrowserItem } from './guidelines'
 import { CurrMax, StatValues } from './utils'
 import { FieldValue, fieldValueToJSString } from './fieldValue'
