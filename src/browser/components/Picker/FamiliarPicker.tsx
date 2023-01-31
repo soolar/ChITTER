@@ -5,6 +5,7 @@ import {
 	Spacer,
 	Switch,
 	Text,
+	VStack,
 	Wrap,
 	WrapItem,
 } from '@chakra-ui/react'
@@ -28,13 +29,16 @@ export default function FamiliarPicker({
 	type = 'default',
 }: FamiliarPickerArgs) {
 	const [favoritesOnly, setFavoritesOnly] = React.useState(true)
+	const [dropsOnly, setDropsOnly] = React.useState(false)
 	const activeFam =
 		type === 'default'
 			? familiars.active[0]
 			: type === 'bjorn'
 			? my.bjornFam
 			: my.crownFam
-	const famsToShow = favoritesOnly ? familiars.favorites : familiars.all
+	const famsToShow = (
+		favoritesOnly ? familiars.favorites : familiars.all
+	).filter((fam) => (dropsOnly ? fam.dropsLimit > fam.dropsToday : true))
 
 	return (
 		<Picker
@@ -45,11 +49,22 @@ export default function FamiliarPicker({
 						<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
 					</Button>
 					<Spacer />
-					<Switch
-						isChecked={favoritesOnly}
-						onChange={(e) => setFavoritesOnly(e.target.checked)}
-					/>
-					<Text>Favorites Only</Text>
+					<VStack>
+						<Flex>
+							<Switch
+								isChecked={favoritesOnly}
+								onChange={(e) => setFavoritesOnly(e.target.checked)}
+							/>
+							<Text>Favorites Only</Text>
+						</Flex>
+						<Flex>
+							<Switch
+								isChecked={dropsOnly}
+								onChange={(e) => setDropsOnly(e.target.checked)}
+							/>
+							<Text>Drops Only</Text>
+						</Flex>
+					</VStack>
 					<Spacer />
 					<Button variant="link">
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
