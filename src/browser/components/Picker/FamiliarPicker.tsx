@@ -15,6 +15,7 @@ import { BrowserFamiliar, BrowserList } from '../../../guidelines'
 import FamIcon from '../Icons/FamIcon'
 import ChitterIcon from '../Icons/ChitterIcon'
 import Picker from './Picker'
+import { getExtraFamInfo } from '../../familiarHelpers'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const my: BrowserCharacter
@@ -38,7 +39,16 @@ export default function FamiliarPicker({
 			: my.crownFam
 	const famsToShow = (
 		favoritesOnly ? familiars.favorites : familiars.all
-	).filter((fam) => (dropsOnly ? fam.dropsLimit > fam.dropsToday : true))
+	).filter((fam) => {
+		if (!dropsOnly) {
+			return true
+		}
+		const extraInfo = getExtraFamInfo(fam, false, type !== 'default')
+		return (
+			extraInfo.dropInfo &&
+			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
+		)
+	})
 
 	return (
 		<Picker

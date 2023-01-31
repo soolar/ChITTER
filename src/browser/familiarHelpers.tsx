@@ -190,10 +190,16 @@ const bjornDrops: { [fam: string]: BjornInfo } = {
 	},
 }
 
+interface DropInfo {
+	drop: BrowserItem | string
+	left?: number
+}
+
 interface ExtraFamInfo {
 	desc: React.ReactNode[]
 	extraClass?: string
 	borderType: BorderType
+	dropInfo?: DropInfo
 }
 
 export function getExtraFamInfo(
@@ -336,6 +342,7 @@ export function getExtraFamInfo(
 		: pluralize(fam.dropName, dropsLeft)
 
 	if (hasDrops && dropName && !isBjorn) {
+		res.dropInfo = { drop: fam.drop ?? dropName, left: dropsLeft }
 		res.desc.unshift(
 			<Text>
 				{dropsLeft} {dropName}
@@ -346,13 +353,14 @@ export function getExtraFamInfo(
 	if (isBjorn) {
 		const info = bjornDrops[fam.type.toLowerCase()]
 		if (info) {
+			const item = items.byName[info.drop]
 			if (info.limit && info.prop) {
 				const left = info.limit - (mafiaProperties[info.prop] as number)
 				if (left > 0) {
 					hasDrops = true
 					allDrops = left === info.limit
-					const item = items.byName[info.drop]
 					const name = item ? (left > 1 ? item.plural : item.name) : info.drop
+					res.dropInfo = { drop: item ?? name, left: left }
 					res.desc.unshift(
 						<Text>
 							{left} {name}
@@ -360,7 +368,8 @@ export function getExtraFamInfo(
 					)
 				}
 			} else {
-				const name = items.byName[info.drop]?.name ?? info.drop
+				const name = item?.name ?? info.drop
+				res.dropInfo = { drop: item ?? name }
 				res.desc.unshift(<Text>drops {name}</Text>)
 			}
 		}
