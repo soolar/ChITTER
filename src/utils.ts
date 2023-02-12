@@ -36,6 +36,8 @@ const modShorthands: ModShorthand[] = [
 	[/Familiar Effect: "[^"]+"/, ''],
 	// remove softcore only because it's not relevant here
 	[/Softcore Only/, ''],
+	// remove 0 modifiers (from things that are conditional when the condition isn't met)
+	[/[^,]+ \+?0(?:,|$)/g, ''],
 	// same with free pull
 	[/Free Pull/, ''],
 	[/Lasts Until Rollover(: true)?/, 'Melts'],
