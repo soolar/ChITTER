@@ -138,6 +138,10 @@ const modCombinations: ModCombinationInfo[] = [
 			}
 		}
 	),
+	{
+		mods: ['Adv', 'Fites'],
+		fuseName: 'Adv/Fites',
+	},
 ]
 
 export function parseMods(mods: string, verbose = false) {
