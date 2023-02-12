@@ -12,6 +12,7 @@ import EffectListPseudoPicker from './components/Picker/EffectListPseudoPicker'
 import LinkOption from './components/Option/LinkOption'
 import FamiliarPicker from './components/Picker/FamiliarPicker'
 import { getExtraFamInfo } from './familiarHelpers'
+import GAPPicker from './components/Picker/GAPPicker'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
@@ -250,6 +251,48 @@ export function getExtraItemInfo(
 			)
 			if (!currBeard) {
 				res.borderType = 'good'
+			}
+			break
+		}
+		case 'bone abacus': {
+			const victories = mafiaProperties.boneAbacusVictories as number
+			if (victories < 1000) {
+				res.desc.push(<Text>{victories}/1000 wins</Text>)
+				res.borderType = 'has-drops'
+			} else {
+				res.desc.push(<Text>You did it!</Text>)
+			}
+			break
+		}
+		// @ts-expect-error intentional fallthrough
+		case 'navel ring of navel gazing': {
+			res.displayName = 'navel ring'
+			// intentional fallthrough to automatically get stinkiness
+		}
+		// eslint-disable-next-line no-fallthrough
+		case 'greatest american pants': {
+			const runsUsed = mafiaProperties._navelRunaways as number
+			const freeChance =
+				runsUsed < 3 ? 100 : runsUsed < 6 ? 80 : runsUsed < 9 ? 50 : 20
+			res.desc.push(<Text>{freeChance}% free run</Text>)
+			if (runsUsed < 3) {
+				res.borderType = 'has-drops'
+			}
+			if (item.name.toLowerCase() === 'greatest american pants') {
+				const buffsUsed = mafiaProperties._gapBuffs as number
+				if (buffsUsed < 5) {
+					res.desc.push(<Text>{5 - buffsUsed} super powers</Text>)
+					res.borderType = 'has-drops'
+					res.extraOptions.push(
+						<PickerOption
+							icon={<ItemIcon item={item} />}
+							verb="activate"
+							subject="super power"
+							WrappedPicker={GAPPicker}
+							pickerProps={{ usesRemaining: 5 - buffsUsed }}
+						/>
+					)
+				}
 			}
 			break
 		}
