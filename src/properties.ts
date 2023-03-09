@@ -111,7 +111,7 @@ const chitProperties: ChitPropertyInfo[] = [
 	['toolbar.moods', 'true'], // do not change to boolean, 'bonus' is also valid
 ]
 
-const getPropVal = (propStr: string, defaultValue: FieldValue) => {
+const interpretPropVal = (propStr: string, defaultValue: FieldValue) => {
 	if (propStr.startsWith('DEFAULT')) {
 		if (Array.isArray(defaultValue) && defaultValue[0]?.toString() === 'none') {
 			return []
@@ -141,6 +141,16 @@ const getPropVal = (propStr: string, defaultValue: FieldValue) => {
 	}
 }
 
+export const getPropVal = (propName: string) => {
+	const propInfo = chitProperties.find((prop) => prop[0] === propName)
+	if (propInfo) {
+		const strVal = getProperty(`chit.${propName}`)
+		const propDefault = propInfo[1]
+		return interpretPropVal(strVal, propDefault)
+	}
+	return undefined
+}
+
 type BrowserChitProperty = string | string[] | boolean | BrowserItem[]
 
 export interface BrowserChitProperties {
@@ -158,7 +168,7 @@ export const buildProperties = () => {
 			const propName = `chit.${propInfo[0]}`
 			if (propertyExists(propName)) {
 				const propStr = getProperty(propName)
-				const propVal = getPropVal(propStr, propInfo[1])
+				const propVal = interpretPropVal(propStr, propInfo[1])
 				return `\t\t\t\t"${propInfo[0]}": ${fieldValueToJSString(propVal)},\n`
 			}
 			return ''
