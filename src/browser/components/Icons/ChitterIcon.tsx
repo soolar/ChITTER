@@ -18,6 +18,7 @@ interface ChitterIconArgs {
 	extraClass?: string
 	small?: boolean
 	onClick?: React.MouseEventHandler<HTMLImageElement>
+	chitImage?: boolean
 }
 
 export default function ChitterIcon({
@@ -28,6 +29,7 @@ export default function ChitterIcon({
 	extraClass = '',
 	small,
 	onClick,
+	chitImage,
 }: ChitterIconArgs) {
 	const classes = ['chit-icon']
 	if (borderType !== 'normal') {
@@ -43,7 +45,13 @@ export default function ChitterIcon({
 	return (
 		<Tooltip label={tooltip}>
 			<Image
-				src={specialPath ? image : `/images/itemimages/${image}`}
+				src={
+					specialPath
+						? image
+						: chitImage
+						? `/images/relayimages/chit/${image}`
+						: `/images/itemimages/${image}`
+				}
 				className={classes.join(' ')}
 				alt={image}
 				onClick={onClick}

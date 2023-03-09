@@ -9,6 +9,7 @@ import {
 	equippedAmount,
 	equippedItem,
 	Familiar,
+	familiarEquipment,
 	familiarWeight,
 	favoriteFamiliars,
 	fuelCost,
@@ -27,7 +28,6 @@ import {
 	myClass,
 	myFamiliar,
 	myThrall,
-	print,
 	rainCost,
 	Skill,
 	Slot,
@@ -52,7 +52,6 @@ import {
 	$thralls,
 	get,
 } from 'libram'
-import { currentCostumes } from 'libram/dist/resources/2017/MummingTrunk'
 import { FieldData, FieldValue, fieldValueToJSString } from './fieldValue'
 
 interface Guidelines<T extends MafiaClass> {
@@ -190,6 +189,7 @@ export interface BrowserItem {
 	canEquip: boolean
 	slotStr: string
 	mods: string
+	foldableNames?: string[]
 }
 
 export declare const items: BrowserList<BrowserItem>
@@ -224,6 +224,19 @@ export const itemGuidelines: Guidelines<Item> = {
 		['canEquip', (it) => canEquip(it)],
 		['slotStr', (it) => toSlot(it).toString()],
 		['mods', (it) => stringModifier(it, 'Evaluated Modifiers')],
+		[
+			'foldableNames',
+			(it) => {
+				const foldables = getRelated(it, 'fold')
+				if (foldables) {
+					const itemNames = Object.keys(foldables)
+					if (itemNames.length > 0) {
+						return itemNames
+					}
+				}
+				return undefined
+			},
+		],
 	],
 	favorites: getProperty('chit.gear.favorites')
 		.split('|')
@@ -260,6 +273,7 @@ export interface BrowserFamiliar {
 	owned: boolean
 	unrestricted: boolean
 	canEquip: boolean
+	uniqueEquipment?: BrowserItem
 	mummeryCharacter?: MummeryCharacter
 }
 
@@ -305,6 +319,16 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 		['owned', (fam) => haveFamiliar(fam)],
 		['unrestricted', (fam) => isUnrestricted(fam)],
 		['canEquip', (fam) => canEquip(fam)],
+		[
+			'uniqueEquipment',
+			(fam) => {
+				const equipment = familiarEquipment(fam)
+				if (equipment !== Item.none) {
+					return equipment
+				}
+				return undefined
+			},
+		],
 		['mummeryCharacter', (fam) => getMummeryCharacter(fam)],
 	],
 	favorites: Object.keys(favoriteFamiliars())

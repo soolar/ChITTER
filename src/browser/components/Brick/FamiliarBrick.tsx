@@ -24,8 +24,9 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
-import FamiliarEquipmentPicker from '../Picker/FamiliarEquipPicker'
 import ChitterIcon from '../Icons/ChitterIcon'
+import MainLink from '../Link/MainLink'
+import GearPicker from '../Picker/GearPicker'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const slots: BrowserList<BrowserSlot>
@@ -69,7 +70,10 @@ export default function FamiliarBrick() {
 		)
 
 		const famEquip = (
-			<PickerLauncher WrappedPicker={FamiliarEquipmentPicker} pickerProps={{}}>
+			<PickerLauncher
+				WrappedPicker={GearPicker}
+				pickerProps={{ slot: slots.byName.familiar, fam: currFam }}
+			>
 				<ItemIcon item={slots.byName.familiar.equipped} />
 			</PickerLauncher>
 		)
@@ -110,16 +114,18 @@ export default function FamiliarBrick() {
 				header={
 					<Flex>
 						{items.byName['mumming trunk'].inInventory > 0 && (
-							<ChitterIcon
-								image={
-									currFam.mummeryCharacter
-										? mummeryCharacterToIconMap[currFam.mummeryCharacter]
-										: 'mummericon0.gif'
-								}
-								tooltip={mummery}
-								borderType="none"
-								small
-							/>
+							<MainLink href="/inv_use.php?whichitem=9592&pwd">
+								<ChitterIcon
+									image={
+										currFam.mummeryCharacter
+											? mummeryCharacterToIconMap[currFam.mummeryCharacter]
+											: 'mummericon0.gif'
+									}
+									tooltip={mummery}
+									borderType="none"
+									small
+								/>
+							</MainLink>
 						)}
 						<Spacer />
 						<Heading>

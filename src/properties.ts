@@ -39,7 +39,7 @@ const chitProperties: ChitPropertyInfo[] = [
 	],
 	[
 		'familiar.weapons',
-		$items`time sword, batblade, Hodgman's whackin' stick, astral mace, Maxwell's Silver Hammer, goatskin umbrella, grassy cutlass, dreadful glove, Stick-Knife of Loathing, Work is a Four Letter Sword`,
+		$items`time sword, Hodgman's whackin' stick, astral mace, goatskin umbrella, dreadful glove, Stick-Knife of Loathing, Work is a Four Letter Sword`,
 	],
 	[
 		'familiar.off-hands',

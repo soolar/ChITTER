@@ -1,30 +1,27 @@
 import {
 	equippedItem,
-	Item,
-	myBuffedstat,
-	stringModifier,
-} from 'kolmafia'
-import { myLevel } from 'kolmafia'
-import { myBasestat } from 'kolmafia'
-import { myMeat } from 'kolmafia'
-import { pvpAttacksLeft } from 'kolmafia'
-import { myAdventures } from 'kolmafia'
-import {
 	fullnessLimit,
 	getClanName,
 	getWorkshed,
 	inebrietyLimit,
+	Item,
+	myAdventures,
+	myBasestat,
 	myBjornedFamiliar,
+	myBuffedstat,
 	myClass,
 	myEnthronedFamiliar,
 	myFullness,
 	myFury,
+	myHash,
 	myHp,
 	myInebriety,
+	myLevel,
 	myLightning,
 	myMaxfury,
 	myMaxhp,
 	myMaxmp,
+	myMeat,
 	myMp,
 	myName,
 	myPath,
@@ -32,7 +29,9 @@ import {
 	mySoulsauce,
 	mySpleenUse,
 	myThunder,
+	pvpAttacksLeft,
 	spleenLimit,
+	stringModifier,
 } from 'kolmafia'
 import {
 	$class,
@@ -75,6 +74,7 @@ export interface BrowserCharacter {
 	meat: number
 	advs: number
 	fites: number
+	hash: string
 
 	bjornMods: string
 	crownMods: string
@@ -232,6 +232,7 @@ const characterValues: [string, FieldValue][] = [
 	['meat', myMeat()],
 	['advs', myAdventures()],
 	['fites', pvpAttacksLeft()],
+	['hash', myHash()],
 
 	['bjornMods', evaluatedModifiers(`Throne:${myBjornedFamiliar()}`)],
 	['crownMods', evaluatedModifiers(`Throne:${myEnthronedFamiliar()}`)],

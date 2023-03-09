@@ -55,6 +55,26 @@ const otherRelayConfig = merge(
 	sharedConfig
 )
 
+const changeFavRelayConfig = merge(
+	{
+		entry: './src/relay/chitter_changeFav.ts',
+		output: {
+			path: path.resolve(__dirname, 'KoLmafia', 'relay'),
+			filename: 'chitter_changeFav.js',
+			libraryTarget: 'commonjs',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.(t|j)sx?$/,
+					loader: 'babel-loader',
+				},
+			],
+		},
+	},
+	sharedConfig
+)
+
 const relayConfig = merge(
 	{
 		entry: './src/browser/index.tsx',
@@ -76,4 +96,4 @@ const relayConfig = merge(
 	sharedConfig
 )
 
-module.exports = [otherRelayConfig, relayConfig]
+module.exports = [otherRelayConfig, changeFavRelayConfig, relayConfig]

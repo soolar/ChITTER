@@ -1,6 +1,5 @@
 import {
 	Button,
-	ButtonGroup,
 	Flex,
 	Spacer,
 	Switch,
@@ -16,6 +15,7 @@ import FamIcon from '../Icons/FamIcon'
 import ChitterIcon from '../Icons/ChitterIcon'
 import Picker from './Picker'
 import { getExtraFamInfo } from '../../familiarHelpers'
+import CommandLink from '../Link/CommandLink'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const my: BrowserCharacter
@@ -82,19 +82,17 @@ export default function FamiliarPicker({
 				</Flex>
 			}
 		>
-			<ButtonGroup variant="link">
-				<Wrap spacing={0}>
-					{famsToShow
-						.filter((fam) => fam !== activeFam && fam.canEquip && fam.owned)
-						.map((fam) => (
-							<WrapItem>
-								<Button>
-									<FamIcon fam={fam} isBjorn={type !== 'default'} />
-								</Button>
-							</WrapItem>
-						))}
-				</Wrap>
-			</ButtonGroup>
+			<Wrap spacing={0}>
+				{famsToShow
+					.filter((fam) => fam !== activeFam && fam.canEquip && fam.owned)
+					.map((fam) => (
+						<WrapItem>
+							<CommandLink cmd={`familiar ${fam.type}`}>
+								<FamIcon fam={fam} isBjorn={type !== 'default'} />
+							</CommandLink>
+						</WrapItem>
+					))}
+			</Wrap>
 		</Picker>
 	)
 }

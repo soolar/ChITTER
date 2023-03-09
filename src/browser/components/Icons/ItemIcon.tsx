@@ -9,25 +9,48 @@ interface ItemIconArgs {
 	item?: BrowserItem
 	small?: boolean
 	tooltipPrefix?: string
+	weirdFam?: boolean
 }
 
-export default function ItemIcon({ item, small, tooltipPrefix }: ItemIconArgs) {
+export default function ItemIcon({
+	item,
+	small,
+	tooltipPrefix,
+	weirdFam,
+}: ItemIconArgs) {
 	const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
+
+	let weirdFamText
+	if (weirdFam && item) {
+		const match = item.mods.match(/Familiar Effect: "([^"]+), cap (\d+)"/)
+		if (match) {
+			weirdFamText = (
+				<Text className="popup-desc-line">
+					{match[1]} (limit {match[2]}lbs)
+				</Text>
+			)
+		}
+	}
+
 	return (
 		<ChitterIcon
 			image={extraInfo.image}
 			tooltip={
 				<VStack spacing="none">
 					<Text>{extraInfo.displayName}</Text>
-					{extraInfo.desc.map((node) => (
-						<span className="popup-desc-line">{node}</span>
-					))}
-					{item && (
-						<Text
-							className="popup-desc-line"
-							dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
-						/>
-					)}
+					{!weirdFam &&
+						extraInfo.desc.map((node) => (
+							<span className="popup-desc-line">{node}</span>
+						))}
+					{item &&
+						(weirdFam ? (
+							weirdFamText
+						) : (
+							<Text
+								className="popup-desc-line"
+								dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
+							/>
+						))}
 				</VStack>
 			}
 			borderType={extraInfo.borderType}
