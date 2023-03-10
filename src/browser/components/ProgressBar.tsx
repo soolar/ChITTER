@@ -8,7 +8,7 @@ interface ProgressBarArgs {
 }
 
 export default function ProgressBar({ value, max, desc }: ProgressBarArgs) {
-	const width = (100 * value) / max
+	const width = (100 * Math.min(value, max)) / max
 	return (
 		<Tooltip
 			label={`${value.toLocaleString()} / ${max.toLocaleString()}${
