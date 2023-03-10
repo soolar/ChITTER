@@ -27,6 +27,7 @@ import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
 import ChitterIcon from '../Icons/ChitterIcon'
 import MainLink from '../Link/MainLink'
 import GearPicker from '../Picker/GearPicker'
+import {$item, $slot} from '../../fakeLibram'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const slots: BrowserList<BrowserSlot>
@@ -72,9 +73,9 @@ export default function FamiliarBrick() {
 		const famEquip = (
 			<PickerLauncher
 				WrappedPicker={GearPicker}
-				pickerProps={{ slot: slots.byName.familiar, fam: currFam }}
+				pickerProps={{ slot: $slot`familiar`, fam: currFam }}
 			>
-				<ItemIcon item={slots.byName.familiar.equipped} />
+				<ItemIcon item={$slot`familiar`.equipped} />
 			</PickerLauncher>
 		)
 
@@ -113,7 +114,7 @@ export default function FamiliarBrick() {
 				name="familiar"
 				header={
 					<Flex>
-						{items.byName['mumming trunk'].inInventory > 0 && (
+						{$item`mumming trunk`.inInventory > 0 && (
 							<MainLink href="/inv_use.php?whichitem=9592&pwd">
 								<ChitterIcon
 									image={

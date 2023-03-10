@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Text } from '@chakra-ui/react'
 import { BrowserSkill } from '../guidelines'
 import { BrowserMafiaProperties } from '../properties'
+import {$skill} from './fakeLibram'
 
 declare const mafiaProperties: BrowserMafiaProperties
 
@@ -22,18 +23,18 @@ export function getExtraSkillInfo(sk: BrowserSkill): ExtraSkillInfo {
 		res.append = `${sweatCost} sweat`
 	}
 
-	switch (sk.name.toLowerCase()) {
-		case 'sip some sweat': {
+	switch (sk.id) {
+		case $skill`Sip Some Sweat`.id: {
 			res.desc.push(<Text>Restore 50 MP</Text>)
 			handleSweat(5)
 			break
 		}
-		case 'drench yourself in sweat': {
+		case $skill`Drench Yourself in Sweat`.id: {
 			res.desc.push(<Text>+100% Init for 5 turns</Text>)
 			handleSweat(15)
 			break
 		}
-		case 'sweat out some booze': {
+		case $skill`Sweat Out Some Booze`.id: {
 			const usesLeft = 3 - (mafiaProperties._sweatOutSomeBoozeUsed as number)
 			res.desc.push(<Text>Cleans 1 liver</Text>)
 			if (usesLeft > 0) {
@@ -45,31 +46,31 @@ export function getExtraSkillInfo(sk: BrowserSkill): ExtraSkillInfo {
 			handleSweat(25)
 			break
 		}
-		case 'make sweat-ade': {
+		case $skill`Make Sweat-Ade`.id: {
 			res.desc.push(
 				<Text>Makes a 4 spleen consumable that grants 5 PvP fights</Text>
 			)
 			handleSweat(50)
 			break
 		}
-		case 'sweat flick': {
+		case $skill`Sweat Flick`.id: {
 			res.desc.push(<Text>Deal sweat sleaze damage</Text>)
 			handleSweat(1)
 			break
 		}
-		case 'sweat spray': {
+		case $skill`Sweat Spray`.id: {
 			res.desc.push(
 				<Text>Deal minor sleaze damage for the rest of combat</Text>
 			)
 			handleSweat(3)
 			break
 		}
-		case 'sweat flood': {
+		case $skill`Sweat Flood`.id: {
 			res.desc.push(<Text>Stun for 5 rounds (reusable)</Text>)
 			handleSweat(5)
 			break
 		}
-		case 'sweat sip': {
+		case $skill`Sweat Sip`.id: {
 			res.desc.push(<Text>Restore 50 MP... in combat</Text>)
 			handleSweat(5)
 			break

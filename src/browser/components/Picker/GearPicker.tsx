@@ -23,6 +23,7 @@ import { BrowserChitProperties } from '../../../properties'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
+import { $familiar } from '../../fakeLibram'
 
 type GearPickerArgs = {
 	slot: BrowserSlot
@@ -38,19 +39,18 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		slot.name === 'acc2' || slot.name === 'acc3'
 			? 'acc1'
 			: slot.name === 'familiar'
-			? fam === familiars.byName['disembodied hand']
+			? fam === $familiar`Disembodied Hand`
 				? 'weapon'
-				: fam === familiars.byName['fancypants scarecrow']
+				: fam === $familiar`Fancypants Scarecrow`
 				? 'pants'
-				: fam === familiars.byName['mad hatrack']
+				: fam === $familiar`Mad Hatrack`
 				? 'hat'
-				: fam === familiars.byName['left-hand man']
+				: fam === $familiar`Left-Hand Man`
 				? 'off-hand'
 				: 'familiar'
 			: slot.name
 	const isWeirdFam =
-		fam === familiars.byName['fancypants scarecrow'] ||
-		fam === familiars.byName['mad hatrack']
+		fam === $familiar`Fancypants Scarecrow` || fam === $familiar`Mad Hatrack`
 	const equipped = slot.equipped
 	const baseFilter = (item: BrowserItem) =>
 		item.slotStr === functionalSlotName &&

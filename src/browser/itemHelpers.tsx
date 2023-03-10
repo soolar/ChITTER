@@ -13,6 +13,7 @@ import LinkOption from './components/Option/LinkOption'
 import FamiliarPicker from './components/Picker/FamiliarPicker'
 import { getExtraFamInfo } from './familiarHelpers'
 import GAPPicker from './components/Picker/GAPPicker'
+import { $effect, $item } from './fakeLibram'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
@@ -51,8 +52,8 @@ export function getExtraItemInfo(
 		return res
 	}
 
-	switch (item.name.toLowerCase()) {
-		case 'june cleaver': {
+	switch (item.id) {
+		case $item`June cleaver`.id: {
 			const fightsLeft = mafiaProperties._juneCleaverFightsLeft as number
 			if (fightsLeft === 0) {
 				res.desc.push(<Text>noncom now!</Text>)
@@ -62,7 +63,7 @@ export function getExtraItemInfo(
 			}
 			break
 		}
-		case 'designer sweatpants': {
+		case $item`designer sweatpants`.id: {
 			const sweat = Math.max(Math.min(100, mafiaProperties.sweat as number), 0)
 			const sweatBoozeLeft =
 				3 - (mafiaProperties._sweatOutSomeBoozeUsed as number)
@@ -81,7 +82,7 @@ export function getExtraItemInfo(
 			)
 			break
 		}
-		case 'pantsgiving': {
+		case $item`Pantsgiving`.id: {
 			const crumbs = 10 - (mafiaProperties._pantsgivingCrumbs as number)
 			const banishes = 5 - (mafiaProperties._pantsgivingBanish as number)
 			if (crumbs > 0) {
@@ -92,7 +93,7 @@ export function getExtraItemInfo(
 			}
 			break
 		}
-		case 'v for vivala mask': {
+		case $item`V for Vivala mask`.id: {
 			const advsGainable = 10 - (mafiaProperties._vmaskAdv as number)
 			if (advsGainable > 0) {
 				res.desc.push(<Text>{advsGainable} adv gainable</Text>)
@@ -100,7 +101,7 @@ export function getExtraItemInfo(
 			}
 			break
 		}
-		case 'mayfly bait necklace': {
+		case $item`mayfly bait necklace`.id: {
 			const fliesLeft = 30 - (mafiaProperties._mayflySummons as number)
 			if (fliesLeft > 0) {
 				res.desc.push(<Text>{fliesLeft} summons left</Text>)
@@ -109,17 +110,17 @@ export function getExtraItemInfo(
 			break
 		}
 		// @ts-expect-error intentional fallthrough
-		case 'stinky cheese eye': {
+		case $item`stinky cheese eye`.id: {
 			if (!(mafiaProperties._stinkyCheeseBanisherUsed as boolean)) {
 				res.desc.push(<Text>banish available</Text>)
 			}
 			// intentional fallthrough to automatically get stinkiness
 		}
 		// eslint-disable-next-line no-fallthrough
-		case 'stinky cheese sword':
-		case 'stinky cheese diaper':
-		case 'stinky cheese wheel':
-		case 'staff of queso escusado': {
+		case $item`stinky cheese sword`.id:
+		case $item`stinky cheese diaper`.id:
+		case $item`stinky cheese wheel`.id:
+		case $item`Staff of Queso Escusado`.id: {
 			const stinkiness = mafiaProperties._stinkyCheeseCount as number
 			if (stinkiness < 100) {
 				res.desc.push(<Text>{stinkiness}/100 stinkiness</Text>)
@@ -129,7 +130,7 @@ export function getExtraItemInfo(
 			}
 			break
 		}
-		case 'buddy bjorn': {
+		case $item`Buddy Bjorn`.id: {
 			if (my.bjornFam) {
 				res.image = my.bjornFam.image
 				res.mods += `, ${my.bjornMods}`
@@ -147,7 +148,7 @@ export function getExtraItemInfo(
 			)
 			break
 		}
-		case 'crown of thrones': {
+		case $item`Crown of Thrones`.id: {
 			if (my.crownFam) {
 				res.image = my.crownFam.image
 				res.mods += `, ${my.crownMods}`
@@ -165,45 +166,45 @@ export function getExtraItemInfo(
 			)
 			break
 		}
-		case "scratch 'n' sniff sword":
-		case "scratch 'n' sniff crossbow": {
+		case $item`scratch 'n' sniff sword`.id:
+		case $item`scratch 'n' sniff crossbow`.id: {
 			res.mods = `${my.stickerMods}, Breakable`
 			break
 		}
-		case 'the crown of ed the undying': {
+		case $item`The Crown of Ed the Undying`.id: {
 			res.mods += `, ${my.edpieceMods}`
 			break
 		}
-		case 'card sleeve': {
+		case $item`card sleeve`.id: {
 			res.mods += `, ${my.cardMods}`
 			break
 		}
-		case 'over-the-shoulder folder holder': {
+		case $item`over-the-shoulder Folder Holder`.id: {
 			res.mods += `, ${my.folderMods}`
 			break
 		}
-		case 'your cowboy boots': {
+		case $item`your cowboy boots`.id: {
 			res.mods += `, ${my.bootMods}`
 			break
 		}
-		case 'mafia thumb ring': {
+		case $item`mafia thumb ring`.id: {
 			const thumbAdvs = mafiaProperties._mafiaThumbRingAdvs as number
 			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
 			break
 		}
-		case 'daylight shavings helmet': {
+		case $item`Daylight Shavings Helmet`.id: {
 			const beards = [
-				effects.byName['spectacle moustache'],
-				effects.byName['toiletbrush moustache'],
-				effects.byName['barbell moustache'],
-				effects.byName['grizzly beard'],
-				effects.byName["surrealist's moustache"],
-				effects.byName["musician's musician's moustache"],
-				effects.byName['gull-wing moustache'],
-				effects.byName["space warlord's beard"],
-				effects.byName['pointy wizard beard'],
-				effects.byName['cowboy stache'],
-				effects.byName['friendly chops'],
+				$effect`Spectacle Moustache`,
+				$effect`Toiletbrush Moustache`,
+				$effect`Barbell Moustache`,
+				$effect`Grizzly Beard`,
+				$effect`Surrealist's Moustache`,
+				$effect`Musician's Musician's Moustache`,
+				$effect`Gull-Wing Moustache`,
+				$effect`Space Warlord's Beard`,
+				$effect`Pointy Wizard Beard`,
+				$effect`Cowboy Stache`,
+				$effect`Friendly Chops`,
 			]
 			const beardOrder: BrowserEffect[] = []
 			const classId = my.class.id
@@ -254,7 +255,7 @@ export function getExtraItemInfo(
 			}
 			break
 		}
-		case 'bone abacus': {
+		case $item`bone abacus`.id: {
 			const victories = mafiaProperties.boneAbacusVictories as number
 			if (victories < 1000) {
 				res.desc.push(<Text>{victories}/1000 wins</Text>)
@@ -265,12 +266,12 @@ export function getExtraItemInfo(
 			break
 		}
 		// @ts-expect-error intentional fallthrough
-		case 'navel ring of navel gazing': {
+		case $item`navel ring of navel gazing`.id: {
 			res.displayName = 'navel ring'
 			// intentional fallthrough to automatically get stinkiness
 		}
 		// eslint-disable-next-line no-fallthrough
-		case 'greatest american pants': {
+		case $item`Greatest American Pants`.id: {
 			const runsUsed = mafiaProperties._navelRunaways as number
 			const freeChance =
 				runsUsed < 3 ? 100 : runsUsed < 6 ? 80 : runsUsed < 9 ? 50 : 20

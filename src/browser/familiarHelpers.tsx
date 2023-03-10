@@ -1,19 +1,14 @@
 import * as React from 'react'
-import {
-	BrowserEffect,
-	BrowserFamiliar,
-	BrowserItem,
-	BrowserList,
-} from '../guidelines'
+import { BrowserFamiliar, BrowserItem, BrowserList } from '../guidelines'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
 import { pluralize } from '../utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
+import { $effect, $familiar, $item } from './fakeLibram'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const items: BrowserList<BrowserItem>
-declare const effects: BrowserList<BrowserEffect>
 
 export const nextLevelInfo = (fam: BrowserFamiliar) => {
 	for (let i = 2; i <= 20; ++i) {
@@ -52,141 +47,141 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 interface BjornInfo {
 	limit?: number
 	prop?: string
-	drop: string // can be an item name or a general descriptor
+	drop: string | BrowserItem // can be an item name or a general descriptor
 }
 
-const bjornDrops: { [fam: string]: BjornInfo } = {
-	'grimstone golem': {
+const bjornDrops: { [fam: number]: BjornInfo } = {
+	[$familiar`Grimstone Golem`.id]: {
 		limit: 1,
 		prop: '_grimstoneMaskDropsCrown',
-		drop: 'grimstone mask',
+		drop: $item`grimstone mask`,
 	},
-	'grim brother': {
+	[$familiar`Grim Brother`.id]: {
 		limit: 2,
 		prop: '_grimFairyTaleDropsCrown',
-		drop: 'grim fairy tale',
+		drop: $item`grim fairy tale`,
 	},
-	'trick-or-treating tot': {
+	[$familiar`Trick-or-Treating Tot`.id]: {
 		limit: 3,
 		prop: '_hoardedCandyDropsCrown',
-		drop: 'hoarded candy wad',
+		drop: $item`hoarded candy wad`,
 	},
-	'optimistic candle': {
+	[$familiar`Optimistic Candle`.id]: {
 		limit: 3,
 		prop: '_optimisticCandleDropsCrown',
-		drop: 'glob of melted wax',
+		drop: $item`glob of melted wax`,
 	},
-	'garbage fire': {
+	[$familiar`Garbage Fire`.id]: {
 		limit: 3,
 		prop: '_garbageFireDropsCrown',
-		drop: 'burning newspaper',
+		drop: $item`burning newspaper`,
 	},
-	'twitching space critter': {
+	[$familiar`Twitching Space Critter`.id]: {
 		limit: 1,
 		prop: '_spaceFurDropsCrown',
-		drop: 'space beast fur',
+		drop: $item`space beast fur`,
 	},
-	'machine elf': {
+	[$familiar`Machine Elf`.id]: {
 		limit: 25,
 		prop: '_abstractionDropsCrown',
 		drop: 'abstractions',
 	},
-	'adventurous spelunker': {
+	[$familiar`Adventurous Spelunker`.id]: {
 		limit: 6,
 		prop: '_oreDropsCrown',
 		drop: 'non-quest ore',
 	},
-	'puck man': {
+	[$familiar`Puck Man`.id]: {
 		limit: 25,
 		prop: '_yellowPixelDropsCrown',
-		drop: 'yellow pixel',
+		drop: $item`yellow pixel`,
 	},
-	'warbear drone': {
-		drop: 'warbear whosit',
+	[$familiar`Warbear Drone`.id]: {
+		drop: $item`warbear whosit`,
 	},
-	"li'l xenomorph": {
-		drop: 'lunar isotope',
+	[$familiar`Li'l Xenomorph`.id]: {
+		drop: $item`lunar isotope`,
 	},
-	'pottery barn own': {
-		drop: 'volcanic ash',
+	[$familiar`Pottery Barn Owl`.id]: {
+		drop: $item`volcanic ash`,
 	},
-	'party mouse': {
+	[$familiar`Party Mouse`.id]: {
 		drop: 'decent-good booze',
 	},
-	'yule hound': {
-		drop: 'candy cane',
+	[$familiar`Yule Hound`.id]: {
+		drop: $item`candy cane`,
 	},
-	'gluttonous green ghost': {
+	[$familiar`Gluttonous Green Ghost`.id]: {
 		drop: 'burritos',
 	},
-	'reassembled blackbird': {
-		drop: 'blackberry',
+	[$familiar`Reassembled Blackbird`.id]: {
+		drop: $item`blackberry`,
 	},
-	'reconstituted crow': {
-		drop: 'blackberry',
+	[$familiar`Reconstituted Crow`.id]: {
+		drop: $item`blackberry`,
 	},
-	'hunchbacked minion': {
+	[$familiar`Hunchbacked Minion`.id]: {
 		drop: 'brain or bone',
 	},
-	'reanimated reanimator': {
+	[$familiar`Reanimated Reanimator`.id]: {
 		drop: 'hot wings or skulls',
 	},
-	'attention-deficit demon': {
+	[$familiar`Attention-Deficit Demon`.id]: {
 		drop: 'some bad food',
 	},
-	'piano cat': {
+	[$familiar`Piano Cat`.id]: {
 		drop: 'some bad booze',
 	},
-	'golden monkey': {
-		drop: 'gold nuggets',
+	[$familiar`Golden Monkey`.id]: {
+		drop: $item`gold nuggets`,
 	},
-	'robot reindeer': {
+	[$familiar`Robot Reindeer`.id]: {
 		drop: 'holiday snacks',
 	},
-	'ancient yuletide troll': {
+	[$familiar`Ancient Yuletide Troll`.id]: {
 		drop: 'holiday snacks',
 	},
-	'sweet nutcracker': {
+	[$familiar`Sweet Nutcracker`.id]: {
 		drop: 'holiday snacks',
 	},
-	'stocking mimic': {
+	[$familiar`Stocking Mimic`.id]: {
 		drop: 'some simple candy',
 	},
-	'bricko chick': {
-		drop: 'bricko brick',
+	[$familiar`BRICKO chick`.id]: {
+		drop: $item`BRICKO brick`,
 	},
-	'cotton candy carnie': {
-		drop: 'cotton candy pinch',
+	[$familiar`Cotton Candy Carnie`.id]: {
+		drop: $item`cotton candy pinch`,
 	},
-	'untamed turtle': {
+	[$familiar`Untamed Turtle`.id]: {
 		drop: 'turtle bits',
 	},
-	'astral badger': {
+	[$familiar`Astral Badger`.id]: {
 		drop: 'shrooms',
 	},
-	'green pixie': {
-		drop: 'bottle of tequila',
+	[$familiar`Green Pixie`.id]: {
+		drop: $item`bottle of tequila`,
 	},
-	'angry goat': {
-		drop: 'goat cheese pizza',
+	[$familiar`Angry Goat`.id]: {
+		drop: $item`goat cheese pizza`,
 	},
-	'adorable seal larva': {
+	[$familiar`Adorable Seal Larva`.id]: {
 		drop: 'elemental nuggets',
 	},
-	'frozen gravy fairy': {
-		drop: 'cold nuggets',
+	[$familiar`Frozen Gravy Fairy`.id]: {
+		drop: $item`cold nuggets`,
 	},
-	'stinky gravy fairy': {
-		drop: 'stench nuggets',
+	[$familiar`Stinky Gravy Fairy`.id]: {
+		drop: $item`stench nuggets`,
 	},
-	'sleazy gravy fairy': {
-		drop: 'sleaze nuggets',
+	[$familiar`Sleazy Gravy Fairy`.id]: {
+		drop: $item`sleaze nuggets`,
 	},
-	'spooky gravy fairy': {
-		drop: 'spooky nuggets',
+	[$familiar`Spooky Gravy Fairy`.id]: {
+		drop: $item`spooky nuggets`,
 	},
-	'flaming gravy fairy': {
-		drop: 'hot nuggets',
+	[$familiar`Flaming Gravy Fairy`.id]: {
+		drop: $item`hot nuggets`,
 	},
 }
 
@@ -210,8 +205,8 @@ export function getExtraFamInfo(
 	const res: ExtraFamInfo = { borderType: 'normal', desc: [] }
 
 	if (!isBjorn) {
-		switch (fam.type.toLowerCase()) {
-			case 'fist turkey': {
+		switch (fam.id) {
+			case $familiar`Fist Turkey`.id: {
 				const musLeft = 5 - (mafiaProperties._turkeyMuscle as number)
 				const mysLeft = 5 - (mafiaProperties._turkeyMyst as number)
 				const moxLeft = 5 - (mafiaProperties._turkeyMoxie as number)
@@ -237,7 +232,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'melodramedary': {
+			case $familiar`Melodramedary`.id: {
 				const spit = mafiaProperties.camelSpit as number
 				if (spit >= 100) {
 					res.desc.push('Ready to spit!')
@@ -252,7 +247,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'steam-powered cheerleader': {
+			case $familiar`Steam-Powered Cheerleader`.id: {
 				const steamPercent = Math.ceil(
 					(mafiaProperties._cheerleaderSteam as number) / 2
 				)
@@ -262,7 +257,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'slimeling': {
+			case $familiar`Slimeling`.id: {
 				const fullness = mafiaProperties.slimelingFullness as number
 				const stacksDue = mafiaProperties.slimelingStacksDue as number
 				const stacksDropped = mafiaProperties.slimelingStacksDropped as number
@@ -285,14 +280,14 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'gelatinous cubeling': {
+			case $familiar`Gelatinous Cubeling`.id: {
 				res.desc.push(
 					<Text>{mafiaProperties.cubelingProgress as number}/12 to drop</Text>
 				)
 				const needs = [
-					{ name: 'Pole', item: items.byName['eleven-foot pole'] },
-					{ name: 'Ring', item: items.byName['ring of detect boring doors'] },
-					{ name: 'Pick', item: items.byName['pick-o-matic lockpicks'] },
+					{ name: 'Pole', item: $item`eleven-foot pole` },
+					{ name: 'Ring', item: $item`ring of Detect Boring Doors` },
+					{ name: 'Pick', item: $item`Pick-O-Matic lockpicks` },
 				].filter((need) => need.item.available < 1)
 				if (needs.length > 0) {
 					res.desc.push(
@@ -302,13 +297,13 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'crimbo shrub': {
+			case $familiar`Crimbo Shrub`.id: {
 				const gifts = mafiaProperties.shrubGifts
 				const readyToFire =
 					gifts === 'yellow'
-						? effects.byName['everything looks yellow'].turnsActive === 0
+						? $effect`Everything Looks Yellow`.turnsActive === 0
 						: gifts === 'meat' &&
-						  effects.byName['everything looks red'].turnsActive === 0
+						  $effect`Everything Looks Red`.turnsActive === 0
 				res.extraClass = 'all-drops'
 				if (readyToFire) {
 					res.desc.push(<Text>Ready to fire!</Text>)
@@ -319,13 +314,13 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case 'reagnimated gnome': {
+			case $familiar`Reagnimated Gnome`.id: {
 				res.desc.push(
 					<Text>{mafiaProperties._gnomeAdv as number} adv gained</Text>
 				)
 				break
 			}
-			case 'temporal riftlet': {
+			case $familiar`Temporal Riftlet`.id: {
 				res.desc.push(
 					<Text>{mafiaProperties._riftletAdv as number} adv gained</Text>
 				)
@@ -351,16 +346,23 @@ export function getExtraFamInfo(
 	}
 
 	if (isBjorn) {
-		const info = bjornDrops[fam.type.toLowerCase()]
+		const info = bjornDrops[fam.id]
 		if (info) {
-			const item = items.byName[info.drop]
 			if (info.limit && info.prop) {
 				const left = info.limit - (mafiaProperties[info.prop] as number)
 				if (left > 0) {
 					hasDrops = true
 					allDrops = left === info.limit
-					const name = item ? (left > 1 ? item.plural : item.name) : info.drop
-					res.dropInfo = { drop: item ?? name, left: left }
+					const name =
+						typeof info.drop !== 'string'
+							? left > 1
+								? info.drop.plural
+								: info.drop.name
+							: info.drop
+					res.dropInfo = {
+						drop: typeof info.drop === 'string' ? info.drop : name,
+						left: left,
+					}
 					res.desc.unshift(
 						<Text>
 							{left} {name}
@@ -368,8 +370,8 @@ export function getExtraFamInfo(
 					)
 				}
 			} else {
-				const name = item?.name ?? info.drop
-				res.dropInfo = { drop: item ?? name }
+				const name = typeof info.drop === 'string' ? info.drop : info.drop.name
+				res.dropInfo = { drop: info.drop }
 				res.desc.unshift(<Text>drops {name}</Text>)
 			}
 		}
