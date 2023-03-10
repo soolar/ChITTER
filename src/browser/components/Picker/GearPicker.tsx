@@ -3,6 +3,7 @@ import {
 	Button,
 	ButtonGroup,
 	Heading,
+	HStack,
 	Text,
 	VStack,
 	Wrap,
@@ -97,23 +98,29 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			{extraInfo.extraOptions}
 			{equipped && (
 				<ChitterOption icon={<ItemIcon item={equipped} />}>
-					<CommandLink cmd={`unequip ${slot.name}`}>
-						<Text>
-							<Text as="b">unequip</Text>&nbsp;{equipped.name}
-						</Text>
-					</CommandLink>
-					<CommandLink
-						cmd={`chitter_changeFav.js (${
-							equippedFav ? 'remove' : 'add'
-						}, ${favsProp}, ${equipped.name})`}
-					>
-						<ChitterIcon
-							chitImage
-							image={`control_${equippedFav ? 'remove_red' : 'add_blue'}.png`}
-							small
-							tooltip={`${equippedFav ? 'un' : ''}favorite ${equipped.name}`}
-						/>
-					</CommandLink>
+					<HStack>
+						<CommandLink cmd={`unequip ${slot.name}`}>
+							<Text>
+								<Text as="b">unequip</Text>&nbsp;
+								<Text
+									as="span"
+									dangerouslySetInnerHTML={{ __html: equipped.name }}
+								/>
+							</Text>
+						</CommandLink>
+						<CommandLink
+							cmd={`chitter_changeFav.js (${
+								equippedFav ? 'remove' : 'add'
+							}, ${favsProp}, ${equipped.name})`}
+						>
+							<ChitterIcon
+								chitImage
+								image={`control_${equippedFav ? 'remove_red' : 'add_blue'}.png`}
+								small
+								tooltip={`${equippedFav ? 'un' : ''}favorite ${equipped.name}`}
+							/>
+						</CommandLink>
+					</HStack>
 				</ChitterOption>
 			)}
 			{categories

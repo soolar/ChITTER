@@ -37,7 +37,7 @@ export default function ItemIcon({
 			image={extraInfo.image}
 			tooltip={
 				<VStack spacing="none">
-					<Text>{extraInfo.displayName}</Text>
+					<Text dangerouslySetInnerHTML={{ __html: extraInfo.displayName }} />
 					{!weirdFam &&
 						extraInfo.desc.map((node) => (
 							<span className="popup-desc-line">{node}</span>
