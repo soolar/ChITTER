@@ -21,7 +21,7 @@ export default function EffectsBrick() {
 						const extraInfo = getExtraEffectInfo(eff)
 						return (
 							<>
-								<Flex className="chit-effect">
+								<Flex key={eff.name} className="chit-effect">
 									<HStack>
 										<EffectIcon effect={eff} />
 										<VStack spacing={0} className="chit-effect-description">

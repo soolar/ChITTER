@@ -10,10 +10,10 @@ interface SkillPickerArgs {
 
 export default function SkillPicker({ skills, header }: SkillPickerArgs) {
 	return (
-		<Picker
-			header={header}
-		>
-			{ skills.map((skill) => <SkillOption skill={skill} />) }
+		<Picker header={header}>
+			{skills.map((skill) => (
+				<SkillOption key={skill.id} skill={skill} />
+			))}
 		</Picker>
 	)
 }

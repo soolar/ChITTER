@@ -55,12 +55,11 @@ export default function ItemIcon({
 			}
 			borderType={extraInfo.borderType}
 			small={small}
-			onClick={
+			onContextMenu={
 				item &&
 				((ev) => {
-					if (ev.shiftKey) {
-						showItem(item.descId)
-					}
+					showItem(item.descId)
+					ev.preventDefault()
 				})
 			}
 		/>

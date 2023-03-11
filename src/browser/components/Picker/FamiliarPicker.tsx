@@ -1,13 +1,4 @@
-import {
-	Button,
-	Flex,
-	Spacer,
-	Switch,
-	Text,
-	VStack,
-	Wrap,
-	WrapItem,
-} from '@chakra-ui/react'
+import { Flex, Spacer, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import * as React from 'react'
 import { BrowserCharacter } from '../../../character'
 import { BrowserFamiliar, BrowserList } from '../../../guidelines'
@@ -16,6 +7,9 @@ import ChitterIcon from '../Icons/ChitterIcon'
 import Picker from './Picker'
 import { getExtraFamInfo } from '../../familiarHelpers'
 import CommandLink from '../Link/CommandLink'
+import useToggle from '../../hooks/useToggle'
+import SettingToggle from '../SettingToggle'
+import MainLink from '../Link/MainLink'
 
 declare const familiars: BrowserList<BrowserFamiliar>
 declare const my: BrowserCharacter
@@ -29,8 +23,15 @@ interface FamiliarPickerArgs {
 export default function FamiliarPicker({
 	type = 'default',
 }: FamiliarPickerArgs) {
-	const [favoritesOnly, setFavoritesOnly] = React.useState(true)
-	const [dropsOnly, setDropsOnly] = React.useState(false)
+	const toggleSubtype = type === 'default' ? 'normal' : 'rider'
+	const [favoritesOnly, setFavoritesOnly] = useToggle(
+		`famFavsOnly.${toggleSubtype}`,
+		true
+	)
+	const [dropsOnly, setDropsOnly] = useToggle(
+		`famDropsOnly.${toggleSubtype}`,
+		false
+	)
 	const activeFam =
 		type === 'default'
 			? familiars.active[0]
@@ -49,45 +50,48 @@ export default function FamiliarPicker({
 			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
 		)
 	})
+	const cmd =
+		type === 'crown' ? 'enthrone' : type === 'bjorn' ? 'bjornify' : 'familiar'
 
 	return (
 		<Picker
 			header="Change Familiar"
 			footer={
 				<Flex>
-					<Button variant="link">
+					<MainLink href="/familiar.php">
 						<ChitterIcon image="terrarium.gif" tooltip="Visit your terrarium" />
-					</Button>
+					</MainLink>
 					<Spacer />
 					<VStack>
-						<Flex>
-							<Switch
-								isChecked={favoritesOnly}
-								onChange={(e) => setFavoritesOnly(e.target.checked)}
-							/>
-							<Text>Favorites Only</Text>
-						</Flex>
-						<Flex>
-							<Switch
-								isChecked={dropsOnly}
-								onChange={(e) => setDropsOnly(e.target.checked)}
-							/>
-							<Text>Drops Only</Text>
-						</Flex>
+						<SettingToggle
+							displayText="Favorites Only"
+							value={favoritesOnly}
+							setValue={setFavoritesOnly}
+						/>
+						<SettingToggle
+							displayText="Drops Only"
+							value={dropsOnly}
+							setValue={setDropsOnly}
+						/>
 					</VStack>
 					<Spacer />
-					<Button variant="link">
+					<CommandLink cmd="familiar none">
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
-					</Button>
+					</CommandLink>
 				</Flex>
 			}
 		>
 			<Wrap spacing={0}>
 				{famsToShow
-					.filter((fam) => fam !== activeFam && fam.canEquip && fam.owned)
+					.filter(
+						(fam) =>
+							fam !== activeFam &&
+							(fam.canEquip || type !== 'default') &&
+							fam.owned
+					)
 					.map((fam) => (
-						<WrapItem>
-							<CommandLink cmd={`familiar ${fam.type}`}>
+						<WrapItem key={fam.type}>
+							<CommandLink cmd={`${cmd} ${fam.type}`}>
 								<FamIcon fam={fam} isBjorn={type !== 'default'} />
 							</CommandLink>
 						</WrapItem>

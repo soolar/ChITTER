@@ -127,13 +127,15 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 				.filter((category) => category.items.length > 0)
 				.map((category) => {
 					return (
-						<VStack>
+						<VStack key={`${slot.name} ${category.name}`}>
 							<Heading>{category.name}</Heading>
 							<ButtonGroup variant="link">
 								<Wrap spacing={0}>
 									{category.items.map((item) => {
 										return (
-											<WrapItem>
+											<WrapItem
+												key={`${slot.name} ${category.name} ${item.name}`}
+											>
 												<CommandLink cmd={`equip ${slot.name} ${item.name}`}>
 													<ItemIcon item={item} weirdFam={isWeirdFam} />
 												</CommandLink>

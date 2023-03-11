@@ -1,9 +1,7 @@
 import * as React from 'react'
 import {
 	BrowserFamiliar,
-	BrowserItem,
 	BrowserList,
-	BrowserSlot,
 	MummeryCharacter,
 } from '../../../guidelines'
 import { showFam } from '../../../utils'
@@ -27,11 +25,9 @@ import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
 import ChitterIcon from '../Icons/ChitterIcon'
 import MainLink from '../Link/MainLink'
 import GearPicker from '../Picker/GearPicker'
-import {$item, $slot} from '../../fakeLibram'
+import { $item, $slot } from '../../fakeLibram'
 
 declare const familiars: BrowserList<BrowserFamiliar>
-declare const slots: BrowserList<BrowserSlot>
-declare const items: BrowserList<BrowserItem>
 
 const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 	['The Captain']: 'mummericon1.gif',
