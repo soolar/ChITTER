@@ -1,0 +1,394 @@
+[
+	{ "name": "item", "mods": [{ "mod": "Item Drop" }] },
+	{ "name": "meat", "mods": [{ "mod": "Meat Drop" }] },
+	{ "name": "ML", "mods": [{ "mod": "Monster Level" }] },
+	{ "name": "-combat", "mods": [{ "mod": "Combat Rate", "multiplier": -1 }] },
+	{ "name": "+combat", "mods": [{ "mod": "Combat Rate" }] },
+	{
+		"name": "exp",
+		"mods": [
+			{ "mod": "Experience", "multiplier": 0.5 },
+			{
+				"mod": "Muscle Experience",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Muscle Experience Percent",
+				"multiplier": 5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Mysticality Experience",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Mysticality Experience Percent",
+				"multiplier": 5,
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Moxie Experience",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Moxie Experience Percent",
+				"multiplier": 5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{ "name": "prismatic", "mods": [{ "mod": "Prismatic Damage" }] },
+	{
+		"name": "elemental",
+		"mods": [
+			{ "mod": "Hot Damage" },
+			{ "mod": "Cold Damage" },
+			{ "mod": "Sleaze Damage" },
+			{ "mod": "Stench Damage" },
+			{ "mod": "Spooky Damage" }
+		]
+	},
+	{ "name": "fam weight", "mods": [{ "mod": "Familiar Weight" }] },
+	{
+		"name": "mainstat",
+		"mods": [
+			{
+				"mod": "Muscle",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Muscle Percent",
+				"multiplier": 10,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Mysticality",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Mysticality Percent",
+				"multiplier": 10,
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Moxie",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Moxie Percent",
+				"multiplier": 10,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{
+		"name": "damage",
+		"mods": [
+			{
+				"mod": "Weapon Damage",
+				"conditions": {
+					"list": [
+						{ "type": "mainstat", "value": "Mysticality", "inverted": true }
+					]
+				}
+			},
+			{
+				"mod": "Weapon Damage Percent",
+				"multiplier": 0.5,
+				"conditions": {
+					"list": [
+						{ "type": "mainstat", "value": "Mysticality", "inverted": true }
+					]
+				}
+			},
+			{
+				"mod": "Spell Damage",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Spell Damage Percent",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Ranged Damage",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Ranged Damage Percent",
+				"multiplier": 0.5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{
+		"name": "hp regen",
+		"mods": [{ "mod": "HP Regen Min" }, { "mod": "HP Regen Max" }]
+	},
+	{
+		"name": "mp regen",
+		"mods": [{ "mod": "MP Regen Min" }, { "mod": "MP Regen Max" }]
+	},
+	{ "name": "initiative", "mods": [{ "mod": "Initiative" }] },
+	{ "name": "smithsness", "mods": [{ "mod": "Smithsness" }] },
+	{
+		"name": "today",
+		"mods": [{ "mod": "Lasts Until Tomorrow", "boolean": true }]
+	},
+	{
+		"name": "rollover",
+		"mods": [
+			{ "mod": "Adventures" },
+			{ "mod": "PVP Fights", "conditions": [{ "type": "pvp", "value": true }] }
+		],
+		"conditions": { "list": [{ "type": "overdrunk", "value": true }] }
+	},
+	{
+		"name": "DRUNK",
+		"manual": [{ "item": "Drunkula's wineglass" }],
+		"conditions": { "list": [{ "type": "overdrunk", "value": true }] }
+	},
+	{
+		"name": "Wow",
+		"manual": [{ "item": "World's Best Adventurer sash" }]
+	},
+	{
+		"name": "astral",
+		"manual": [
+			{
+				"items": [
+					"astral bludgeon",
+					"astral shield",
+					"astral chapeau",
+					"astral bracer",
+					"astral longbow",
+					"astral shorts",
+					"astral mace",
+					"astral trousers",
+					"astral ring",
+					"astral statuette",
+					"astral pistol",
+					"astral mask",
+					"astral pet sweater",
+					"astra shirt"
+				]
+			}
+		]
+	},
+	{
+		"name": "quest",
+		"mods": [
+			{
+				"mod": "Surgeonosity",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "hiddenHospitalProgress",
+							"value": "1"
+						}
+					]
+				}
+			},
+			{
+				"mod": "Clowniness",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step5"
+						}
+					]
+				}
+			}
+		],
+		"manual": [
+			{
+				"item": "black glass",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questS02Monkees",
+							"value": "finished",
+							"inverted": "true"
+						}
+					]
+				}
+			},
+			{
+				"items": ["Talisman o' Namsilat", "Mega Gem"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Palindome",
+							"value": "finished"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"titanium assault umbrella",
+					"amulet of extreme plot significance"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL10Garbage",
+							"value": "step7"
+						}
+					]
+				}
+			},
+			{
+				"item": "mohawk wig",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL10Garbage",
+							"value": "step9"
+						}
+					]
+				}
+			},
+			{
+				"item": "blackberry galoshes",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Black",
+							"value": "unstarted",
+							"inverted": true
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Black",
+							"value": "step1",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"antique machete",
+					"muculent machete",
+					"machetito",
+					"papier-m&#226;ch&#233;te"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Worship",
+							"value": "step3",
+							"comparison": ">="
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Worship",
+							"value": "step4",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"survival knife",
+					{ "name": "ornate dowsing rod", "weight": 2 },
+					"UV-resistant compass"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Desert",
+							"value": "started"
+						}
+					]
+				}
+			},
+			{
+				"item": "Lord Spookyraven's spectacles",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "unstarted",
+							"inverted": true
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step1",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"item": "unstable fulminate",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step1",
+							"comparison": ">="
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step3",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"Hammer of Smiting",
+					"Chelonian Morningstar",
+					"Greek Pasta Spoon of Peril",
+					"17-Alarm Saucepan",
+					"Shagadelic Disco Banjo",
+					"Squeezebox of the Ages"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step8"
+						},
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step27"
+						}
+					],
+					"any": true
+				}
+			}
+		]
+	}
+]

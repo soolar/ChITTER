@@ -1,5 +1,24 @@
-import { getProperty, Item, propertyExists } from 'kolmafia'
-import { $items, get } from 'libram'
+import {
+	canEquip,
+	classModifier,
+	creatableAmount,
+	fileToBuffer,
+	getProperty,
+	inebrietyLimit,
+	Item,
+	myClass,
+	myInebriety,
+	myPrimestat,
+	numericModifier,
+	print,
+	propertyExists,
+	Slot,
+	Stat,
+	StatType,
+	toInt,
+	toSlot,
+} from 'kolmafia'
+import { $class, $items, $slot, $slots, get, have } from 'libram'
 import {
 	booleanProperties,
 	familiarProperties,
@@ -192,5 +211,211 @@ export const buildProperties = () => {
 	addProps(numericOrStringProperties)
 	addProps(familiarProperties)
 	res.push('\t\t\t}\n')
+	return res.join('')
+}
+
+interface GearMainstatCondition {
+	type: 'mainstat'
+	value: StatType
+	inverted?: boolean
+}
+
+interface GearOverdrunkCondition {
+	type: 'overdrunk'
+	value: boolean
+}
+
+interface GearQuestCondition {
+	type: 'quest'
+	pref: string
+	value: string
+	inverted?: boolean
+}
+
+type GearCondition =
+	| GearMainstatCondition
+	| GearOverdrunkCondition
+	| GearQuestCondition
+
+interface GearConditions {
+	list: GearCondition[]
+	any?: boolean
+}
+
+interface GearMod {
+	mod: string
+	multiplier?: number
+	conditions?: GearConditions
+}
+
+interface ManualGearItemObject {
+	name: string
+	weight: number
+}
+
+type ManualGearItem = ManualGearItemObject | string
+
+interface ManualGearEntrySingular {
+	item: ManualGearItem
+	conditions?: GearConditions
+}
+
+interface ManualGearEntryPlural {
+	items: ManualGearItem[]
+	conditions?: GearConditions
+}
+
+type ManualGearEntry = ManualGearEntrySingular | ManualGearEntryPlural
+
+interface GearCategory {
+	name: string
+	mods?: GearMod[]
+	manual?: ManualGearEntry[]
+	conditions?: GearConditions
+}
+
+const evaluateGearCondition = (cond: GearCondition) => {
+	switch (cond.type) {
+		case 'quest':
+			break
+		case 'mainstat':
+			return (myPrimestat() === Stat.get(cond.value)) === !cond.inverted
+		case 'overdrunk':
+			return myInebriety() > inebrietyLimit() === cond.value
+	}
+	return true
+}
+
+const evaluateGearConditions = (conds: GearConditions) => {
+	if (conds.any) {
+		return conds.list.some((cond) => evaluateGearCondition(cond))
+	}
+	return conds.list.every((cond) => evaluateGearCondition(cond))
+}
+
+export type BrowserGearCategorySlot =
+	| 'hat'
+	| 'back'
+	| 'shirt'
+	| 'weapon'
+	| 'off-hand'
+	| 'pants'
+	| 'acc1'
+	| 'familiar'
+
+interface BrowserGearCategoryItems {
+	hat: BrowserItem[]
+	back: BrowserItem[]
+	shirt: BrowserItem[]
+	weapon: BrowserItem[]
+	['off-hand']: BrowserItem[]
+	pants: BrowserItem[]
+	acc1: BrowserItem[]
+	familiar: BrowserItem[]
+}
+
+export interface BrowserGearCategory {
+	name: string
+	items: BrowserGearCategoryItems
+}
+
+export const buildGearCategories = () => {
+	const gearCategories = JSON.parse(
+		fileToBuffer('chitter_gear_categories.json')
+	) as GearCategory[]
+
+	const filteredItems = $items``.filter(
+		(it) =>
+			canEquip(it) &&
+			have(it) &&
+			[$class`none`, myClass()].some((cl) => cl === classModifier(it, 'Class'))
+	)
+
+	const categories = new Map<string, Map<Slot, Item[]>>()
+	const categoryOrder: string[] = []
+
+	gearCategories.forEach((category) => {
+		if (category.conditions && !evaluateGearConditions(category.conditions)) {
+			return
+		}
+		// item id # -> score
+		const scores = new Map<Item, number>()
+		if (category.mods) {
+			category.mods.forEach((mod) => {
+				if (mod.conditions && !evaluateGearConditions(mod.conditions)) {
+					return
+				}
+				const multi = mod.multiplier ?? 1
+				filteredItems.forEach((it) => {
+					const score = multi * numericModifier(it, mod.mod)
+					scores.set(it, (scores.get(it) ?? 0) + score)
+				})
+			})
+		}
+		if (category.manual) {
+			const handleManualItem = (it: ManualGearItem) => {
+				if (typeof it === 'string') {
+					scores.set(Item.get(it), (scores.get(Item.get(it)) ?? 0) + 1)
+				} else {
+					scores.set(
+						Item.get(it.name),
+						(scores.get(Item.get(it.name)) ?? 0) + it.weight
+					)
+				}
+			}
+			category.manual.forEach((man) => {
+				if (man.conditions && !evaluateGearConditions(man.conditions)) {
+					return
+				}
+				if ('item' in man) {
+					handleManualItem(man.item)
+				} else if ('items' in man) {
+					man.items.forEach(handleManualItem)
+				}
+			})
+		}
+		$slots`hat, back, shirt, weapon, off-hand, pants, acc1, familiar`.forEach(
+			(slot) => {
+				const best = filteredItems
+					.filter((it) => toSlot(it) === slot && (scores.get(it) ?? 0) > 0)
+					.sort((it1, it2) => (scores.get(it2) ?? 0) - (scores.get(it1) ?? 0))
+				const sliced = best.slice(0, Math.min(8, best.length))
+				if (slot === $slot`hat`) {
+					const newMap = new Map<Slot, Item[]>()
+					newMap.set(slot, sliced)
+					categories.set(category.name, newMap)
+				} else {
+					;(categories.get(category.name) as Map<Slot, Item[]>).set(
+						slot,
+						sliced
+					)
+				}
+			}
+		)
+		categoryOrder.push(category.name)
+	})
+
+	const res = ['\t\t\tvar gearCategories = [\n']
+	res.push(
+		...categoryOrder.map((catName) => {
+			const res = [
+				`\t\t\t\t{\n\t\t\t\t\tname: "${catName}",\n\t\t\t\t\titems: {\n`,
+			]
+			$slots`hat, back, shirt, weapon, off-hand, pants, acc1, familiar`.forEach(
+				(slot) => {
+					res.push(`\t\t\t\t\t\t["${slot.toString()}"]: [`)
+					res.push(
+						((categories.get(catName) as Map<Slot, Item[]>).get(slot) as Item[])
+							.map((it) => fieldValueToJSString(it))
+							.join(', ')
+					)
+					res.push('],\n')
+				}
+			)
+			res.push('\t\t\t\t\t}\n\t\t\t\t},\n')
+			return res.join('')
+		})
+	)
+	res.push('\t\t\t]\n')
 	return res.join('')
 }

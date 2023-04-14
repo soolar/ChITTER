@@ -12,7 +12,7 @@ import {
 	thrallGuidelines,
 } from '../guidelines'
 import parseCharpaneData from '../parseCharpaneData'
-import { buildProperties } from '../properties'
+import { buildGearCategories, buildProperties } from '../properties'
 
 export function main(): void {
 	const baseCharpane = visitUrl('charpane.php', false)
@@ -30,6 +30,7 @@ ${buildStringFromGuidelines(skillGuidelines)}
 ${buildStringFromGuidelines(slotGuidelines)}
 ${buildStringFromGuidelines(thrallGuidelines)}
 ${buildStringFromGuidelines(classGuidelines)}
+${buildGearCategories()}
 ${buildProperties()}
 ${buildCharacter()}
 ${parseCharpaneData(baseCharpane)}

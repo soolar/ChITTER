@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {
-	Button,
 	ButtonGroup,
 	Heading,
 	HStack,
@@ -18,8 +17,11 @@ import {
 } from '../../../guidelines'
 import ItemIcon from '../Icons/ItemIcon'
 import { getExtraItemInfo } from '../../itemHelpers'
-import SimpleOption from '../Option/SimpleOption'
-import { BrowserChitProperties } from '../../../properties'
+import {
+	BrowserChitProperties,
+	BrowserGearCategory,
+	BrowserGearCategorySlot,
+} from '../../../properties'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
@@ -31,8 +33,8 @@ type GearPickerArgs = {
 }
 
 declare const items: BrowserList<BrowserItem>
-declare const familiars: BrowserList<BrowserFamiliar>
 declare const chitProperties: BrowserChitProperties
+declare const gearCategories: BrowserGearCategory[]
 
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	const functionalSlotName =
@@ -62,6 +64,13 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			items: items.favorites.filter(baseFilter),
 		},
 	]
+
+	gearCategories.forEach((category) => {
+		categories.push({
+			name: category.name,
+			items: category.items[functionalSlotName as BrowserGearCategorySlot],
+		})
+	})
 
 	let favsProp = 'gear.favorites'
 	let favsList = items.favorites
