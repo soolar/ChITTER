@@ -68,7 +68,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	gearCategories.forEach((category) => {
 		categories.push({
 			name: category.name,
-			items: category.items[functionalSlotName as BrowserGearCategorySlot],
+			items: category.items[functionalSlotName as BrowserGearCategorySlot].filter((it) => equipped !== it),
 		})
 	})
 
