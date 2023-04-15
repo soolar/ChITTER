@@ -81,9 +81,9 @@ const modShorthands: ModShorthand[] = [
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
 	[/ ([\d.]+)([^-\d.]|$)/g, ' +$1$2'],
-	// Reformat rollover effects. Hopefully this really is always at the end, and in this order
+	// Reformat rollover effects. Hopefully this really is always in this order
 	[
-		/Rollover Effect "([^"]+)", Rollover Effect Duration \+(\d+)/,
+		/Rollover Effect "([^"]+)", Rollover Effect Duration \+(\d+)/g,
 		'$2 Rollover Turns $1',
 	],
 	// class name shorthands
@@ -152,6 +152,8 @@ export function parseMods(mods: string, verbose = false) {
 		: (msg: string) => void msg
 
 	verbosePrint(`Pre-parsed: ${mods}`)
+
+	const originalValue = mods
 
 	// Capitalize all words
 	mods = mods.replace(/\b[a-z]/g, (letter) => letter.toUpperCase())
@@ -260,13 +262,26 @@ export function parseMods(mods: string, verbose = false) {
 	})
 
 	// Add details of Rollover effects
-	const rolloverEffect = mods.match(/\d+ Rollover Turns ([^,]+)(?:,|$)/)
-	if (rolloverEffect) {
-		const rolloverEffectName = rolloverEffect[1]
-		verbosePrint(`Found rollover effect ${rolloverEffectName}`)
-		mods += ` [${parseMods(effects.byName[rolloverEffectName].mods)}]`
-		verbosePrint(`After adding rollover effect details: ${mods}`)
-	}
+	mods = mods.replace(
+		/(\d+ Rollover Turns )([^,]+)(,|$)/g,
+		(match, beginning, effName, ending) => {
+			verbosePrint(`Found rollover effect ${effName}`)
+			const effNameMatch = originalValue.match(
+				new RegExp(`Rollover Effect: "(${effName})"`, 'i')
+			)
+			const trueEffName = effNameMatch ? effNameMatch[1] : effName
+			if (effects.byName[trueEffName]) {
+				const parsedEffMods = parseMods(effects.byName[trueEffName].mods)
+				if (parsedEffMods !== '') {
+					return `${beginning}${effName} [${parsedEffMods}]${ending}`
+				}
+			} else {
+				console.log(`WTF: ${trueEffName}`)
+			}
+			return match
+		}
+	)
+	verbosePrint(`After adding rollover effect details: ${mods}`)
 
 	return mods
 }
