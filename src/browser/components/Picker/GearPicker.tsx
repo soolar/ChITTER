@@ -26,6 +26,7 @@ import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
 import { $familiar } from '../../fakeLibram'
+import { BrowserCharacter } from '../../../character'
 
 type GearPickerArgs = {
 	slot: BrowserSlot
@@ -35,6 +36,7 @@ type GearPickerArgs = {
 declare const items: BrowserList<BrowserItem>
 declare const chitProperties: BrowserChitProperties
 declare const gearCategories: BrowserGearCategory[]
+declare const my: BrowserCharacter
 
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	const functionalSlotName =
@@ -143,7 +145,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 								return (
 									<WrapItem key={`${slot.name} favorites ${fav.name}`}>
 										<CommandLink cmd={`equip ${slot.name} ${fav.name}`}>
-											<ItemIcon item={fav} weirdFam={isWeirdFam} />
+											<ItemIcon item={fav} weirdFam={isWeirdFam} forEquipping />
 										</CommandLink>
 									</WrapItem>
 								)
@@ -166,25 +168,23 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 									<WrapItem>
 										<Heading as="h3">{category.name}</Heading>
 									</WrapItem>
-									<WrapItem>
-										<ButtonGroup variant="link">
-											<Wrap spacing={0}>
-												{category.items.map((item) => {
-													return (
-														<WrapItem
-															key={`${slot.name} ${category.name} ${item.name}`}
-														>
-															<CommandLink
-																cmd={`equip ${slot.name} ${item.name}`}
-															>
-																<ItemIcon item={item} weirdFam={isWeirdFam} />
-															</CommandLink>
-														</WrapItem>
-													)
-												})}
-											</Wrap>
-										</ButtonGroup>
-									</WrapItem>
+									<ButtonGroup variant="link">
+										{category.items.map((item) => {
+											return (
+												<WrapItem
+													key={`${slot.name} ${category.name} ${item.name}`}
+												>
+													<CommandLink cmd={`equip ${slot.name} ${item.name}`}>
+														<ItemIcon
+															item={item}
+															weirdFam={isWeirdFam}
+															forEquipping
+														/>
+													</CommandLink>
+												</WrapItem>
+											)
+										})}
+									</ButtonGroup>
 								</Wrap>
 							</HStack>
 						)

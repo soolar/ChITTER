@@ -10,6 +10,7 @@ interface ItemIconArgs {
 	small?: boolean
 	tooltipPrefix?: string
 	weirdFam?: boolean
+	forEquipping?: boolean
 }
 
 export default function ItemIcon({
@@ -17,6 +18,7 @@ export default function ItemIcon({
 	small,
 	tooltipPrefix,
 	weirdFam,
+	forEquipping,
 }: ItemIconArgs) {
 	const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
 
@@ -37,7 +39,13 @@ export default function ItemIcon({
 			image={extraInfo.image}
 			tooltip={
 				<VStack spacing="none">
-					<Text dangerouslySetInnerHTML={{ __html: extraInfo.displayName }} />
+					<Text
+						dangerouslySetInnerHTML={{
+							__html: `${forEquipping ? `${extraInfo.equipVerb} ` : ''}${
+								extraInfo.displayName
+							}`,
+						}}
+					/>
 					{!weirdFam &&
 						extraInfo.desc.map((node) => (
 							<span className="popup-desc-line">{node}</span>

@@ -17,7 +17,14 @@ import { $effect, $item } from './fakeLibram'
 
 declare const mafiaProperties: BrowserMafiaProperties
 declare const my: BrowserCharacter
-declare const effects: BrowserList<BrowserEffect>
+
+type EquipVerb =
+	| 'equip'
+	| 'uncloset'
+	| 'fold'
+	| 'create'
+	| 'pull'
+	| 'somehow equip'
 
 interface ExtraItemInfo {
 	displayName: string
@@ -27,6 +34,7 @@ interface ExtraItemInfo {
 	image: string
 	extraClass?: string
 	borderType: BorderType
+	equipVerb: EquipVerb
 }
 
 interface GetExtraItemInfoOptionalArgs {
@@ -46,10 +54,15 @@ export function getExtraItemInfo(
 		extraOptions: [],
 		image: optionals.iconOverride || (item ? item.image : 'blank.gif'),
 		borderType: 'normal',
+		equipVerb: 'equip',
 	}
 
 	if (item === undefined) {
 		return res
+	}
+
+	if (item.hands > 1) {
+		res.displayName = `${res.displayName} (${item.hands}h)`
 	}
 
 	switch (item.id) {
@@ -296,6 +309,24 @@ export function getExtraItemInfo(
 				}
 			}
 			break
+		}
+	}
+
+	if (item.inInventory === 0) {
+		if (item.inCloset > 0) {
+			res.equipVerb = 'uncloset'
+		} else if (item.foldable > 0) {
+			res.equipVerb = 'fold'
+		} else if (item.inStorage > 0 && my.pulls === -1) {
+			res.equipVerb = 'pull'
+		} else if (item.creatable > 0) {
+			res.equipVerb = 'create'
+			res.borderType = 'warning'
+		} else if (item.inStorage > 0 && my.pulls > 0) {
+			res.equipVerb = 'pull'
+			res.borderType = 'danger'
+		} else {
+			res.equipVerb = 'somehow equip'
 		}
 	}
 

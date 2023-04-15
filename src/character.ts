@@ -29,6 +29,7 @@ import {
 	mySoulsauce,
 	mySpleenUse,
 	myThunder,
+	pullsRemaining,
 	pvpAttacksLeft,
 	spleenLimit,
 	stringModifier,
@@ -75,6 +76,7 @@ export interface BrowserCharacter {
 	advs: number
 	fites: number
 	hash: string
+	pulls: number
 
 	bjornMods: string
 	crownMods: string
@@ -233,6 +235,7 @@ const characterValues: [string, FieldValue][] = [
 	['advs', myAdventures()],
 	['fites', pvpAttacksLeft()],
 	['hash', myHash()],
+	['pulls', pullsRemaining()],
 
 	['bjornMods', evaluatedModifiers(`Throne:${myBjornedFamiliar()}`)],
 	['crownMods', evaluatedModifiers(`Throne:${myEnthronedFamiliar()}`)],
