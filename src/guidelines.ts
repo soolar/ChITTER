@@ -1,6 +1,7 @@
 import {
 	advCost,
 	availableAmount,
+	booleanModifier,
 	canEquip,
 	Class,
 	closetAmount,
@@ -40,6 +41,7 @@ import {
 	toInt,
 	toItem,
 	toSlot,
+	weaponHands,
 	weightAdjustment,
 } from 'kolmafia'
 import {
@@ -175,11 +177,22 @@ export interface BrowserItem {
 	unrestricted: boolean
 	canEquip: boolean
 	slotStr: string
+	hands: number
+	singleEquip: boolean
 	mods: string
 	foldableNames?: string[]
 }
 
 export declare const items: BrowserList<BrowserItem>
+
+export const foldableAmount = (it: Item) =>
+	Object.keys(getRelated(it, 'fold'))
+		.filter((foldableName) => toItem(foldableName) !== it)
+		.reduce(
+			(partial, foldableName) =>
+				partial + availableAmount(toItem(foldableName)),
+			0
+		)
 
 export const itemGuidelines: Guidelines<Item> = {
 	name: 'items',
@@ -193,23 +206,15 @@ export const itemGuidelines: Guidelines<Item> = {
 		['inInventory', (it) => itemAmount(it)],
 		['inCloset', (it) => closetAmount(it)],
 		['inStorage', (it) => storageAmount(it)],
-		[
-			'foldable',
-			(it) =>
-				Object.keys(getRelated(it, 'fold'))
-					.filter((foldableName) => toItem(foldableName) !== it)
-					.reduce(
-						(partial, foldableName) =>
-							partial + availableAmount(toItem(foldableName)),
-						0
-					),
-		],
+		['foldable', foldableAmount],
 		['creatable', (it) => creatableAmount(it)],
 		['onBody', (it) => equippedAmount(it)],
 		['available', (it) => availableAmount(it)],
 		['unrestricted', (it) => isUnrestricted(it)],
 		['canEquip', (it) => canEquip(it)],
 		['slotStr', (it) => toSlot(it).toString()],
+		['hands', (it) => weaponHands(it)],
+		['singleEquip', (it) => booleanModifier(it, 'Single Equip')],
 		['mods', (it) => stringModifier(it, 'Evaluated Modifiers')],
 		[
 			'foldableNames',
@@ -243,7 +248,7 @@ const mummeryCharacters = [
 	'The Doctor',
 	'Miss Funny',
 ]
-export type MummeryCharacter = typeof mummeryCharacters[number]
+export type MummeryCharacter = (typeof mummeryCharacters)[number]
 
 export interface BrowserFamiliar {
 	type: string

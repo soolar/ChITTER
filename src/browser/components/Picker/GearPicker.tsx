@@ -57,9 +57,17 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		fam === $familiar`Fancypants Scarecrow` || fam === $familiar`Mad Hatrack`
 	const equipped = slot.equipped
 	const baseFilter = (item: BrowserItem) =>
-		item.slotStr === functionalSlotName &&
+		item.canEquip &&
+		(item.slotStr === functionalSlotName ||
+			(item.slotStr === 'weapon' && slot.name === 'off-hand')) &&
 		equipped !== item &&
-		item.available > 0
+		item.inInventory +
+			item.inCloset +
+			(my.pulls !== 0 ? item.inStorage : 0) +
+			item.creatable +
+			item.foldable >
+			0 &&
+		!(item.singleEquip && item.onBody > 0)
 	const categories = [
 		{
 			name: 'favorites',
@@ -153,7 +161,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						</Wrap>
 					</ButtonGroup>
 				) : (
-					<Text>You have no favorite items for this slot!</Text>
+					<Text>You have no valid favorite items for this slot!</Text>
 				)}
 				<Heading>Suggestions</Heading>
 				{categories

@@ -1,12 +1,15 @@
 import {
 	canEquip,
 	classModifier,
+	closetAmount,
 	creatableAmount,
 	fileToBuffer,
 	getProperty,
 	hippyStoneBroken,
 	inebrietyLimit,
+	isUnrestricted,
 	Item,
+	itemAmount,
 	myClass,
 	myInebriety,
 	myPrimestat,
@@ -16,10 +19,12 @@ import {
 	Slot,
 	Stat,
 	StatType,
+	storageAmount,
 	toInt,
 	toSlot,
+	weaponHands,
 } from 'kolmafia'
-import { $class, $items, $slot, $slots, get, have } from 'libram'
+import { $class, $items, $skill, $slot, $slots, get, have } from 'libram'
 import {
 	booleanProperties,
 	familiarProperties,
@@ -27,8 +32,9 @@ import {
 	numericProperties,
 	stringProperties,
 } from 'libram/dist/propertyTypes'
+import { weapon } from 'libram/dist/resources/2008/Stickers'
 import { FieldValue, fieldValueToJSString } from './fieldValue'
-import { BrowserItem } from './guidelines'
+import { BrowserItem, foldableAmount } from './guidelines'
 
 type ChitPropertyInfo = [string, FieldValue]
 
@@ -345,7 +351,13 @@ export const buildGearCategories = () => {
 	const filteredItems = $items``.filter(
 		(it) =>
 			canEquip(it) &&
-			have(it) &&
+			isUnrestricted(it) &&
+			itemAmount(it) +
+				closetAmount(it) +
+				storageAmount(it) +
+				foldableAmount(it) +
+				creatableAmount(it) >
+				0 &&
 			[$class`none`, myClass()].some((cl) => cl === classModifier(it, 'Class'))
 	)
 
@@ -365,7 +377,9 @@ export const buildGearCategories = () => {
 				}
 				const multi = mod.multiplier ?? 1
 				filteredItems.forEach((it) => {
-					const score = multi * numericModifier(it, mod.mod)
+					const score =
+						(multi * numericModifier(it, mod.mod)) /
+						(weaponHands(it) > 1 ? 2 : 1)
 					scores.set(it, (scores.get(it) ?? 0) + score)
 				})
 			})
@@ -395,7 +409,15 @@ export const buildGearCategories = () => {
 		$slots`hat, back, shirt, weapon, off-hand, pants, acc1, familiar`.forEach(
 			(slot) => {
 				const best = filteredItems
-					.filter((it) => toSlot(it) === slot && (scores.get(it) ?? 0) > 0)
+					.filter(
+						(it) =>
+							(toSlot(it) === slot ||
+								(slot === $slot`off-hand` &&
+									toSlot(it) === $slot`weapon` &&
+									have($skill`Double-Fisted Skull Smashing`) &&
+									weaponHands(it) === 1)) &&
+							(scores.get(it) ?? 0) > 0
+					)
 					.sort((it1, it2) => (scores.get(it2) ?? 0) - (scores.get(it1) ?? 0))
 				const sliced = best.slice(0, Math.min(8, best.length))
 				if (slot === $slot`hat`) {
