@@ -70,7 +70,7 @@ const modShorthands: ModShorthand[] = [
 		'$1$3-$4',
 	],
 	// simplify regen ranges that are identical
-	[/([\d.]+)-\1/g, '$1'],
+	[/\b([\d.]+)-\1\b/g, '$1'],
 	// Exp%: +5 -> Exp +5% (there is sometimes no : for some reason)
 	[/%:? ([+-]?[\d.]+)/g, ' $1%'],
 	// Wpn +5% looks too weird, extend it back to Weapon +5% for the drops case
