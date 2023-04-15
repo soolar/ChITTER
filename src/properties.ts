@@ -4,6 +4,7 @@ import {
 	creatableAmount,
 	fileToBuffer,
 	getProperty,
+	hippyStoneBroken,
 	inebrietyLimit,
 	Item,
 	myClass,
@@ -232,10 +233,16 @@ interface GearQuestCondition {
 	inverted?: boolean
 }
 
+interface GearPvPCondition {
+	type: 'pvp'
+	value: boolean
+}
+
 type GearCondition =
 	| GearMainstatCondition
 	| GearOverdrunkCondition
 	| GearQuestCondition
+	| GearPvPCondition
 
 interface GearConditions {
 	list: GearCondition[]
@@ -282,11 +289,22 @@ const evaluateGearCondition = (cond: GearCondition) => {
 			return (myPrimestat() === Stat.get(cond.value)) === !cond.inverted
 		case 'overdrunk':
 			return myInebriety() > inebrietyLimit() === cond.value
+		case 'pvp':
+			return hippyStoneBroken() === cond.value
 	}
 	return true
 }
 
-const evaluateGearConditions = (conds: GearConditions) => {
+const evaluateGearConditions = (
+	conds: GearConditions | undefined,
+	catName: string
+) => {
+	if (!conds) {
+		return true
+	}
+	if (!conds.list) {
+		print(`Malformed gear conditions in category ${catName}`)
+	}
 	if (conds.any) {
 		return conds.list.some((cond) => evaluateGearCondition(cond))
 	}
@@ -335,14 +353,14 @@ export const buildGearCategories = () => {
 	const categoryOrder: string[] = []
 
 	gearCategories.forEach((category) => {
-		if (category.conditions && !evaluateGearConditions(category.conditions)) {
+		if (!evaluateGearConditions(category.conditions, category.name)) {
 			return
 		}
 		// item id # -> score
 		const scores = new Map<Item, number>()
 		if (category.mods) {
 			category.mods.forEach((mod) => {
-				if (mod.conditions && !evaluateGearConditions(mod.conditions)) {
+				if (!evaluateGearConditions(mod.conditions, category.name)) {
 					return
 				}
 				const multi = mod.multiplier ?? 1
@@ -364,7 +382,7 @@ export const buildGearCategories = () => {
 				}
 			}
 			category.manual.forEach((man) => {
-				if (man.conditions && !evaluateGearConditions(man.conditions)) {
+				if (!evaluateGearConditions(man.conditions, category.name)) {
 					return
 				}
 				if ('item' in man) {
