@@ -68,7 +68,9 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	gearCategories.forEach((category) => {
 		categories.push({
 			name: category.name,
-			items: category.items[functionalSlotName as BrowserGearCategorySlot].filter((it) => equipped !== it),
+			items: category.items[
+				functionalSlotName as BrowserGearCategorySlot
+			].filter((it) => equipped !== it),
 		})
 	})
 
@@ -132,30 +134,62 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 					</HStack>
 				</ChitterOption>
 			)}
-			{categories
-				.filter((category) => category.items.length > 0)
-				.map((category) => {
-					return (
-						<VStack key={`${slot.name} ${category.name}`}>
-							<Heading>{category.name}</Heading>
-							<ButtonGroup variant="link">
-								<Wrap spacing={0}>
-									{category.items.map((item) => {
-										return (
-											<WrapItem
-												key={`${slot.name} ${category.name} ${item.name}`}
-											>
-												<CommandLink cmd={`equip ${slot.name} ${item.name}`}>
-													<ItemIcon item={item} weirdFam={isWeirdFam} />
-												</CommandLink>
-											</WrapItem>
-										)
-									})}
-								</Wrap>
-							</ButtonGroup>
-						</VStack>
+			<VStack>
+				<Heading>Favorites</Heading>
+				{categories[0].items.length > 0 ? (
+					<ButtonGroup>
+						<Wrap spacing={0}>
+							{categories[0].items.map((fav) => {
+								return (
+									<WrapItem key={`${slot.name} favorites ${fav.name}`}>
+										<CommandLink cmd={`equip ${slot.name} ${fav.name}`}>
+											<ItemIcon item={fav} weirdFam={isWeirdFam} />
+										</CommandLink>
+									</WrapItem>
+								)
+							})}
+						</Wrap>
+					</ButtonGroup>
+				) : (
+					<Text>You have no favorite items for this slot!</Text>
+				)}
+				<Heading>Suggestions</Heading>
+				{categories
+					.filter(
+						(category) =>
+							category.items.length > 0 && category.name !== 'favorites'
 					)
-				})}
+					.map((category) => {
+						return (
+							<HStack key={`${slot.name} ${category.name}`}>
+								<Wrap spacing={0}>
+									<WrapItem>
+										<Heading as="h3">{category.name}</Heading>
+									</WrapItem>
+									<WrapItem>
+										<ButtonGroup variant="link">
+											<Wrap spacing={0}>
+												{category.items.map((item) => {
+													return (
+														<WrapItem
+															key={`${slot.name} ${category.name} ${item.name}`}
+														>
+															<CommandLink
+																cmd={`equip ${slot.name} ${item.name}`}
+															>
+																<ItemIcon item={item} weirdFam={isWeirdFam} />
+															</CommandLink>
+														</WrapItem>
+													)
+												})}
+											</Wrap>
+										</ButtonGroup>
+									</WrapItem>
+								</Wrap>
+							</HStack>
+						)
+					})}
+			</VStack>
 		</Picker>
 	)
 }
