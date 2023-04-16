@@ -3,11 +3,15 @@ import * as React from 'react'
 import { BrowserEffect, BrowserList } from '../../../guidelines'
 import { getExtraEffectInfo } from '../../effectHelpers'
 import EffectIcon from '../Icons/EffectIcon'
+import PickerLauncher from '../Picker/PickerLauncher'
 import Brick from './Brick'
 
 declare const effects: BrowserList<BrowserEffect>
 
 export default function EffectsBrick() {
+	const nameBlock = (eff: BrowserEffect) => (
+		<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
+	)
 	return (
 		<Brick name="Effects" header="Effects">
 			<VStack>
@@ -25,7 +29,16 @@ export default function EffectsBrick() {
 									<HStack>
 										<EffectIcon effect={eff} />
 										<VStack spacing={0} className="chit-effect-description">
-											<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
+											{extraInfo.launches ? (
+												<PickerLauncher
+													WrappedPicker={extraInfo.launches}
+													pickerProps={{}}
+												>
+													{nameBlock(eff)}
+												</PickerLauncher>
+											) : (
+												nameBlock(eff)
+											)}
 											{extraInfo.mods.length > 0 && (
 												<Text
 													className="desc-line"
