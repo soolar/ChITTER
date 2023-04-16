@@ -3,6 +3,7 @@ import ChitterIcon from './ChitterIcon'
 import { BrowserFamiliar } from '../../../guidelines'
 import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { getExtraFamInfo, getWeirdoDivContents } from '../../familiarHelpers'
+import { showFam } from '../../../utils'
 
 interface FamIconArgs {
 	fam?: BrowserFamiliar
@@ -38,6 +39,10 @@ export default function FamIcon({
 				tooltip={tooltip}
 				borderType={extraInfo.borderType}
 				extraClass={extraInfo.extraClass}
+				onContextMenu={(ev) => {
+					showFam(fam.id)
+					ev.preventDefault()
+				}}
 			/>
 		)
 	} else {
