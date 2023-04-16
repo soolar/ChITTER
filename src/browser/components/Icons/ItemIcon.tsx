@@ -20,7 +20,10 @@ export default function ItemIcon({
 	weirdFam,
 	forEquipping,
 }: ItemIconArgs) {
-	const extraInfo = getExtraItemInfo(item, { namePrefix: tooltipPrefix })
+	const extraInfo = getExtraItemInfo(item, {
+		namePrefix: tooltipPrefix,
+		forEquipping,
+	})
 
 	let weirdFamText
 	if (weirdFam && item) {

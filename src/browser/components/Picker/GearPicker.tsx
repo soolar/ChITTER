@@ -113,7 +113,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 
 	const equippedFav = !!favsList.find((it) => it === equipped)
 
-	const extraInfo = getExtraItemInfo(equipped)
+	const extraInfo = getExtraItemInfo(equipped, { forEquipping: true })
 	return (
 		<Picker header={`Change ${slot.name}`}>
 			{extraInfo.extraOptions}

@@ -40,6 +40,7 @@ interface ExtraItemInfo {
 interface GetExtraItemInfoOptionalArgs {
 	namePrefix?: string
 	iconOverride?: string
+	forEquipping?: boolean
 }
 
 export function getExtraItemInfo(
@@ -312,7 +313,7 @@ export function getExtraItemInfo(
 		}
 	}
 
-	if (item.inInventory === 0) {
+	if (item.inInventory === 0 && optionals.forEquipping) {
 		if (item.inCloset > 0) {
 			res.equipVerb = 'uncloset'
 		} else if (item.foldable > 0) {
