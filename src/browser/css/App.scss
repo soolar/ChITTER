@@ -55,6 +55,11 @@ $picker-bg: #f8f8f8;
 	max-height: 32px;
 }
 
+.chit-icon.chit-icon-weird {
+	max-width: unset;
+	max-height: unset;
+}
+
 .chit-icon.border-has-drops {
 	border-color: $icon-border-has-drops;
 }

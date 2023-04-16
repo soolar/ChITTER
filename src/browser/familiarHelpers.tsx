@@ -2,7 +2,7 @@ import * as React from 'react'
 import { BrowserFamiliar, BrowserItem, BrowserList } from '../guidelines'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BrowserMafiaProperties } from '../properties'
-import { pluralize } from '../utils'
+import { pluralize, showFam } from '../utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
 import { $effect, $familiar, $item } from './fakeLibram'
@@ -26,10 +26,14 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 		case 'Melodramedary':
 			return (
 				<HStack
-					className={`chit-icon ${
+					className={`chit-icon chit-icon-weird ${
 						getExtraFamInfo(fam, true, false)?.extraClass
 					}`}
 					spacing="0"
+					onContextMenu={(ev) => {
+						showFam(fam.id)
+						ev.preventDefault()
+					}}
 				>
 					<Image src="/images/otherimages/camelfam_left.gif" border={0} />
 					{Array(Math.floor(fam.weight / 5)).fill(
