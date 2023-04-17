@@ -19,18 +19,16 @@ export default function App() {
 	}
 	return (
 		<ChakraProvider theme={theme}>
-			{['roof' as const, 'walls' as const, 'floor' as const].map(
-				(sectionName) => (
-					<Container
-						maxW="full"
-						id={`chit_${sectionName}`}
-						p="2px"
-						className="chit_chamber"
-					>
-						{brickOrder[sectionName].map(handleBrick)}
-					</Container>
-				)
-			)}
+			{(['roof', 'walls', 'floor'] as const).map((sectionName) => (
+				<Container
+					maxW="full"
+					id={`chit_${sectionName}`}
+					p="2px"
+					className="chit_chamber"
+				>
+					{brickOrder[sectionName].map(handleBrick)}
+				</Container>
+			))}
 		</ChakraProvider>
 	)
 }
