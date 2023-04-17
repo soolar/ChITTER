@@ -20,7 +20,6 @@ import {
 	Stat,
 	StatType,
 	storageAmount,
-	toInt,
 	toSlot,
 	weaponHands,
 } from 'kolmafia'
@@ -32,7 +31,6 @@ import {
 	numericProperties,
 	stringProperties,
 } from 'libram/dist/propertyTypes'
-import { weapon } from 'libram/dist/resources/2008/Stickers'
 import { FieldValue, fieldValueToJSString } from './fieldValue'
 import { BrowserItem, foldableAmount } from './guidelines'
 
@@ -232,10 +230,13 @@ interface GearOverdrunkCondition {
 	value: boolean
 }
 
+type ComparisonStr = '>' | '>=' | '<' | '<=' | '!'
+
 interface GearQuestCondition {
 	type: 'quest'
 	pref: string
 	value: string
+	comparison?: ComparisonStr
 	inverted?: boolean
 }
 
@@ -289,8 +290,33 @@ interface GearCategory {
 
 const evaluateGearCondition = (cond: GearCondition) => {
 	switch (cond.type) {
-		case 'quest':
-			break
+		case 'quest': {
+			const prefVal = get(cond.pref)
+			if (cond.comparison) {
+				const questStepNum = (stepStr: string) =>
+					stepStr === 'finished'
+						? 999
+						: stepStr === 'started'
+						? 0
+						: stepStr.startsWith('step')
+						? Number(stepStr.substring(5))
+						: -1
+				const compStepNum = questStepNum(cond.value)
+				const realStepNum = questStepNum(prefVal)
+				return cond.comparison === '>'
+					? realStepNum > compStepNum
+					: cond.comparison === '>='
+					? realStepNum >= compStepNum
+					: cond.comparison === '<'
+					? realStepNum < compStepNum
+					: cond.comparison === '<='
+					? realStepNum <= compStepNum
+					: cond.comparison === '!'
+					? realStepNum !== compStepNum
+					: false
+			}
+			return prefVal === cond.value
+		}
 		case 'mainstat':
 			return (myPrimestat() === Stat.get(cond.value)) === !cond.inverted
 		case 'overdrunk':
@@ -298,7 +324,6 @@ const evaluateGearCondition = (cond: GearCondition) => {
 		case 'pvp':
 			return hippyStoneBroken() === cond.value
 	}
-	return true
 }
 
 const evaluateGearConditions = (

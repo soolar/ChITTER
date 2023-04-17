@@ -150,7 +150,10 @@
 		"name": "rollover",
 		"mods": [
 			{ "mod": "Adventures" },
-			{ "mod": "PVP Fights", "conditions": { "list": [{ "type": "pvp", "value": true }] } }
+			{
+				"mod": "PVP Fights",
+				"conditions": { "list": [{ "type": "pvp", "value": true }] }
+			}
 		],
 		"conditions": { "list": [{ "type": "overdrunk", "value": true }] }
 	},
@@ -223,7 +226,7 @@
 							"type": "quest",
 							"pref": "questS02Monkees",
 							"value": "finished",
-							"inverted": "true"
+							"comparison": "!"
 						}
 					]
 				}
@@ -275,7 +278,7 @@
 							"type": "quest",
 							"pref": "questL11Black",
 							"value": "unstarted",
-							"inverted": true
+							"comparison": "!"
 						},
 						{
 							"type": "quest",
@@ -334,7 +337,7 @@
 							"type": "quest",
 							"pref": "questL11Manor",
 							"value": "unstarted",
-							"inverted": true
+							"comparison": "!"
 						},
 						{
 							"type": "quest",
