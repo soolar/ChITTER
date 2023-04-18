@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Image } from '@chakra-ui/react'
+import { Container, Image } from '@chakra-ui/react'
 import Picker from './Picker'
 import { BrowserCharacter } from '../../../character'
 import { BrowserEffect, BrowserList } from '../../../guidelines'
@@ -29,7 +29,7 @@ export default function FlavourPicker() {
 	const activeElement = activeArea ? activeArea.element.toLowerCase() : 'none'
 	return (
 		<Picker header="Change Your Flavour">
-			<Box alignContent="center" width="100%">
+			<Container maxW="full" centerContent>
 				<Image
 					src={`/images/relayimages/chit/elementchart2${activeElement}.gif`}
 					width="190"
@@ -38,19 +38,21 @@ export default function FlavourPicker() {
 					useMap="#flavmap"
 				/>
 				<map name="flavmap">
-					{areas.map((flavourArea) => (
-						<area
-							shape="circle"
-							alt={flavourArea.element}
-							title={`Spirit of ${flavourArea.spirit} (${flavourArea.element})`}
-							coords={`${flavourArea.x},${flavourArea.y},22`}
-							href={`/KoLmafia/sideCommand?cmd=cast+spirit+of+${flavourArea.spirit
-								.toLowerCase()
-								.replace(/ /g, '+')}&pwd=${my.hash}`}
-						/>
-					))}
+					{areas
+						.filter((flavourArea) => flavourArea !== activeArea)
+						.map((flavourArea) => (
+							<area
+								shape="circle"
+								alt={flavourArea.element}
+								title={`Spirit of ${flavourArea.spirit} (${flavourArea.element})`}
+								coords={`${flavourArea.x},${flavourArea.y},22`}
+								href={`/KoLmafia/sideCommand?cmd=cast+spirit+of+${flavourArea.spirit
+									.toLowerCase()
+									.replace(/ /g, '+')}&pwd=${my.hash}`}
+							/>
+						))}
 				</map>
-			</Box>
+			</Container>
 		</Picker>
 	)
 }
