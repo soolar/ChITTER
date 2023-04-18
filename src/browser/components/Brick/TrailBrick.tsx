@@ -19,11 +19,7 @@ export default function TrailBrick() {
 		)?.groups?.href ?? '#'
 
 	return (
-		<Brick
-			name="trail"
-			header="Last Adventure"
-			headerHref={lastZoneHref}
-		>
+		<Brick name="trail" header="Last Adventure" headerHref={lastZoneHref}>
 			<VStack spacing={0}>
 				{trailDetails.map((locDetails, i) => (
 					<MainLink href={locDetails.groups?.href ?? '#'}>
