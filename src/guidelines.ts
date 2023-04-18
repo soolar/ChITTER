@@ -15,7 +15,6 @@ import {
 	familiarWeight,
 	favoriteFamiliars,
 	fuelCost,
-	getProperty,
 	getRelated,
 	haveEffect,
 	haveFamiliar,

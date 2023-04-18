@@ -22,7 +22,6 @@ export function main(): void {
 <html lang="">
 	<head>
 		<title>ChITTER</title>
-		<link rel="stylesheet" href="/ChITTER/main.css">
 		<script type="text/javascript">
 ${buildStringFromGuidelines(itemGuidelines)}
 ${buildStringFromGuidelines(effectGuidelines)}
