@@ -12,8 +12,10 @@ import {
 	itemAmount,
 	myClass,
 	myInebriety,
+	myPath,
 	myPrimestat,
 	numericModifier,
+	Path,
 	print,
 	propertyExists,
 	Slot,
@@ -245,11 +247,23 @@ interface GearPvPCondition {
 	value: boolean
 }
 
+interface GearPathCondition {
+	type: 'path'
+	value: string
+}
+
+interface GearBountyCondition {
+	type: 'bounty'
+	value: string
+}
+
 type GearCondition =
 	| GearMainstatCondition
 	| GearOverdrunkCondition
 	| GearQuestCondition
 	| GearPvPCondition
+	| GearPathCondition
+	| GearBountyCondition
 
 interface GearConditions {
 	list: GearCondition[]
@@ -323,6 +337,14 @@ const evaluateGearCondition = (cond: GearCondition) => {
 			return myInebriety() > inebrietyLimit() === cond.value
 		case 'pvp':
 			return hippyStoneBroken() === cond.value
+		case 'path':
+			return myPath() === Path.get(cond.value)
+		case 'bounty':
+			return [
+				get('currentEasyBountyItem'),
+				get('currentHardBountyItem'),
+				get('currentSpecialBountyItem'),
+			].some((bountyItemName) => cond.value === bountyItemName)
 	}
 }
 

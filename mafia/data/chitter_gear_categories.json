@@ -391,6 +391,245 @@
 					],
 					"any": true
 				}
+			},
+			{
+				"items": ["fouet de tortue-dressage", "spaghetti cult robe"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step25"
+						},
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step26"
+						}
+					],
+					"any": true
+				}
+			},
+			{
+				"item": "spooky glove",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questM03Bugbear",
+							"value": "step2"
+						}
+					]
+				}
+			},
+			{
+				"item": "E.M.U. Unit",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questF04Elves",
+							"value": "step3"
+						}
+					]
+				}
+			},
+			{
+				"item": "attorney's badge",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL13Final",
+							"value": "step8"
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		"name": "path",
+		"mods": [
+			{
+				"mod": "Random Monster Modifiers",
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "One Crazy Random Summer"
+						}
+					]
+				}
+			}
+		],
+		"manual": [
+			{
+				"items": [
+					"Yearbook Club Camera",
+					"over-the-shoulder Folder Holder",
+					"twisted-up wet tower"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "KOLHS"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"The Crown of Ed the Undying",
+					"[7961]Staff of Ed",
+					"obsidian nutcracker"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Actually Ed the Undying"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"pool skimmer",
+					"lightning rod",
+					"thunder down underwear",
+					"famous blue raincoat",
+					"thor's pliers"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Heavy Rains"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"Heimz Fortified Kidney Beans",
+					"Tesla's Electroplated Beans",
+					"Mixed Garbanzos and Chickpeas",
+					"Hellfire Spicy Beans",
+					"Frigid Northern Beans",
+					"World's Blackest-Eyed Peas",
+					"Trader Olaf's Exotic Stinkbeans",
+					"Pork 'n' Pork 'n' Pork 'n' Beans",
+					"Shrub's Premium Baked Beans"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Avatar of West of Loathing"
+						}
+					]
+				}
+			},
+			{
+				"item": "lead umbrella",
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Nuclear Autumn"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"hammer",
+					"heavy hammer",
+					"[10462]fire flower",
+					"bonfire flower",
+					"work boots",
+					"fancy boots",
+					"back shell",
+					"spiky back shell",
+					"bony back shell",
+					"cape",
+					"power pants",
+					"frosty button"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Path of the Plumber"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"B. L. A. R. T.",
+					"rusty empty nacho cheese can",
+					"literal bucket hat",
+					"water candle"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Wildfire"
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		"name": "bounty",
+		"manual": [
+			{
+				"item": "pirate fledges",
+				"conditions": {
+					"list": [
+						{
+							"type": "bounty",
+							"value": "warrrrrt"
+						}
+					]
+				},
+				"force": true
+			},
+			{
+				"item": "Talisman o' Namsilat",
+				"conditions": {
+					"list": [
+						{
+							"type": "bounty",
+							"value": "bit of wilted lettuce"
+						}
+					]
+				},
+				"force": true
+			}
+		]
+	},
+	{
+		"name": "charter",
+		"manual": [
+			{
+				"items": [
+					"Paradaisical Cheeseburger recipe",
+					"Taco Dan's Taco Stand Cocktail Sauce Bottle",
+					"sprinkle shaker",
+					"Personal Ventilation Unit",
+					"gore bucket",
+					"encrypted micro-cassette recorder",
+					"GPS-tracking wristwatch",
+					"lube-shoes",
+					"Dinsey mascot mask",
+					"trash net"
+				]
 			}
 		]
 	}
