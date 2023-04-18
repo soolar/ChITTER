@@ -20,6 +20,9 @@ export default function parseCharpaneData(source: string) {
 				break
 			}
 		}
+		if (!sections[sectionName] === undefined) {
+			sections[sectionName] = ''
+		}
 	}
 
 	findSection('familiar', [
