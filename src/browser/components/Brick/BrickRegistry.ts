@@ -17,6 +17,8 @@ const brickRegistry: { [brickName: string]: () => JSX.Element } = {
 	familiar: FamiliarBrick,
 	fam: FamiliarBrick,
 	trail: TrailBrick,
-}
+} as const
+
+export type BrickName = keyof typeof brickRegistry
 
 export default brickRegistry
