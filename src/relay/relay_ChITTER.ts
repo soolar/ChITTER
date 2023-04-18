@@ -1,4 +1,4 @@
-import { visitUrl } from 'kolmafia'
+import { print, visitUrl } from 'kolmafia'
 import { write } from 'kolmafia'
 import { buildCharacter } from '../character'
 import {
@@ -7,6 +7,7 @@ import {
 	effectGuidelines,
 	familiarGuidelines,
 	itemGuidelines,
+	locationGuidelines,
 	skillGuidelines,
 	slotGuidelines,
 	thrallGuidelines,
@@ -30,6 +31,7 @@ ${buildStringFromGuidelines(skillGuidelines)}
 ${buildStringFromGuidelines(slotGuidelines)}
 ${buildStringFromGuidelines(thrallGuidelines)}
 ${buildStringFromGuidelines(classGuidelines)}
+${buildStringFromGuidelines(locationGuidelines)}
 ${buildGearCategories()}
 ${buildProperties()}
 ${buildCharacter()}

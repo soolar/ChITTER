@@ -2,6 +2,7 @@ import {
 	advCost,
 	availableAmount,
 	booleanModifier,
+	canAdventure,
 	canEquip,
 	Class,
 	closetAmount,
@@ -24,10 +25,12 @@ import {
 	Item,
 	itemAmount,
 	lightningCost,
+	Location,
 	MafiaClass,
 	mpCost,
 	myClass,
 	myFamiliar,
+	myLocation,
 	myThrall,
 	rainCost,
 	Skill,
@@ -49,6 +52,7 @@ import {
 	$effects,
 	$familiars,
 	$items,
+	$locations,
 	$skills,
 	$slots,
 	$thralls,
@@ -72,7 +76,7 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 	const res = [`\t\t\tvar ${guidelines.name} = {\n\t\t\t\tbyName: {\n`]
 	res.push(
 		...guidelines.all.map((thing) => {
-			const res = [`\t\t\t\t\t"${thing.toString()}": {`]
+			const res = [`\t\t\t\t\t${fieldValueToJSString(thing.toString())}: {`]
 			res.push(
 				guidelines.fields
 					.map((fieldData) => {
@@ -100,9 +104,9 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 			`\t\t\t${guidelines.name}.${listName} = [\n${list
 				.map(
 					(thing) =>
-						`\t\t\t\t${guidelines.name}.byName["${
-							thing ? thing.toString() : 'none'
-						}"]`
+						`\t\t\t\t${guidelines.name}.byName[${
+							thing ? fieldValueToJSString(thing.toString()) : '"none"'
+						}]`
 				)
 				.join(',\n')}\n\t\t\t];\n`
 		)
@@ -448,4 +452,28 @@ export const classGuidelines: Guidelines<Class> = {
 	favorites: [],
 	active: [myClass()],
 }
-//End Classes
+// End Classes
+
+// Begin Locations
+export interface BrowserLocation {
+	name: string
+	id: number
+	zone: string
+	canAdv: boolean
+}
+
+export declare const locations: BrowserList<BrowserLocation>
+
+export const locationGuidelines: Guidelines<Location> = {
+	name: 'locations',
+	all: $locations``,
+	fields: [
+		['name', (loc) => loc.toString()],
+		['id', (loc) => loc.id],
+		['zone', (loc) => loc.zone],
+		['canAdv', (loc) => canAdventure(loc)],
+	],
+	favorites: [],
+	active: [myLocation()],
+}
+// End Locations
