@@ -59,6 +59,7 @@ import {
 	get,
 } from 'libram'
 import { FieldData, FieldValue, fieldValueToJSString } from './fieldValue'
+import { getPropVal } from './properties'
 
 interface Guidelines<T extends MafiaClass> {
 	name: string
@@ -234,10 +235,9 @@ export const itemGuidelines: Guidelines<Item> = {
 			},
 		],
 	],
-	favorites: getProperty('chit.gear.favorites')
-		.split('|')
-		.map((itemName) => Item.get(itemName))
-		.sort((a, b) => toInt(a) - toInt(b)),
+	favorites: ((getPropVal('gear.favorites') ?? []) as Item[]).sort(
+		(a: Item, b: Item) => toInt(a) - toInt(b)
+	),
 	active: [],
 }
 // End Items

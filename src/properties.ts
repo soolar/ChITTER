@@ -115,8 +115,7 @@ const chitProperties: ChitPropertyInfo[] = [
 	],
 	['gear.display.aftercore.defaults', ['create=true', 'pull=true', 'amount=1']],
 	['gear.layout', 'default'],
-	// 'gear.favorites' is handled by items.favorites in guidelines.ts
-	//['gear.favorites', $items`none`],
+	['gear.favorites', $items`none`],
 	['gear.ignoreG-Lover', false],
 	['gear.lattereminder', true],
 	['helpers.dancecard', true],
