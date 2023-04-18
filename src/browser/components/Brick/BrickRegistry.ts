@@ -4,6 +4,7 @@ import EffectsBrick from './EffectsBrick'
 import FamiliarBrick from './FamiliarBrick'
 import GearBrick from './GearBrick'
 import StatsBrick from './StatsBrick'
+import TrailBrick from './TrailBrick'
 
 const brickRegistry: { [brickName: string]: () => JSX.Element } = {
 	debug: DebugBrick,
@@ -15,6 +16,7 @@ const brickRegistry: { [brickName: string]: () => JSX.Element } = {
 	eff: EffectsBrick,
 	familiar: FamiliarBrick,
 	fam: FamiliarBrick,
+	trail: TrailBrick,
 }
 
 export default brickRegistry

@@ -1,24 +1,38 @@
 import { Box, Center, GridItem, Heading, SimpleGrid } from '@chakra-ui/react'
 import * as React from 'react'
+import MainLink from '../Link/MainLink'
 
 interface BrickArgs {
 	name: string
 	header: string | React.ReactNode
+	headerHref?: string
 	children: React.ReactNode
 	footer?: React.ReactNode
 }
 
-export default function Brick({ name, header, children, footer }: BrickArgs) {
+export default function Brick({
+	name,
+	header,
+	headerHref,
+	children,
+	footer,
+}: BrickArgs) {
+	const headerBlock =
+		typeof header === 'string' ? (
+			<Heading>
+				<Center>{header}</Center>
+			</Heading>
+		) : (
+			<>{header}</>
+		)
 	return (
 		<Box p={1} shadow="md" borderWidth="1px">
 			<SimpleGrid id={`chit-brick-${name}`}>
 				<GridItem bgColor="#efefef">
-					{typeof header === 'string' ? (
-						<Heading>
-							<Center>{header}</Center>
-						</Heading>
+					{headerHref ? (
+						<MainLink href={headerHref}>{headerBlock}</MainLink>
 					) : (
-						<>{header}</>
+						headerBlock
 					)}
 				</GridItem>
 				<GridItem>{children}</GridItem>

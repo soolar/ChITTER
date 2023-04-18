@@ -1,8 +1,10 @@
-import { print } from 'kolmafia'
+import { fieldValueToJSString } from './fieldValue'
 
-interface BrowserCharpaneData {
-	avatar: string // TODO: Make this handle You, Robot properly
-	title: string
+export interface BrowserCharpaneData {
+	sections: {
+		familiar: string
+		trail: string
+	}
 }
 
 export default function parseCharpaneData(source: string) {
@@ -31,5 +33,19 @@ export default function parseCharpaneData(source: string) {
 		/<p><font size=2><b>Ensorcelee:<\/b><br><img src=.*?<\/b>/, // Darke Gyffte
 	])
 
-	return ''
+	findSection('trail', [
+		/href="[^"]+" target=mainpane>Last Adventure:<\/a><\/b><\/font><br><table [^>]+>.*?<\/table><font size=1>.*?<\/font>/,
+	])
+
+	const res = ['\t\t\tcharpaneData = {\n\t\t\t\tsections: {\n']
+
+	for (const section in sections) {
+		res.push(
+			`\t\t\t\t\t${section}: ${fieldValueToJSString(sections[section])},\n`
+		)
+	}
+
+	res.push('\t\t\t\t}\n\t\t\t}')
+
+	return res.join('')
 }
