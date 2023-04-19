@@ -32,6 +32,25 @@ $picker-bg: #f8f8f8;
 	width: 100%;
 }
 
+#chit_home {
+	position: absolute;
+	height: 100vh;
+	overflow-y: hidden;
+}
+
+#chit_roof {
+	flex-shrink: 0;
+}
+
+#chit_walls {
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+#chit_floor {
+	flex-shrink: 0;
+}
+
 .chit-brick {
 	background-color: white;
 	border-collapse: separate;

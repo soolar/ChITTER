@@ -52,7 +52,12 @@ export default function App() {
 	}
 	return (
 		<ChakraProvider theme={theme}>
-			<Flex height="full" flexDirection="column">
+			<Flex
+				height="full"
+				flexDirection="column"
+				flexWrap="nowrap"
+				id="chit_home"
+			>
 				{(['roof', 'walls', 'floor'] as const).map((sectionName) => (
 					<ChitterSection
 						sectionName={sectionName}
