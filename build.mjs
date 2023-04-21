@@ -19,6 +19,7 @@ build({
 	entryPoints: {
 		chitter_changeFav: './src/relay/chitter_changeFav.ts',
 		relay_ChITTER: './src/relay/relay_ChITTER.ts',
+		ChITTERData: './src/relay/ChITTERData.ts',
 	},
 })
 

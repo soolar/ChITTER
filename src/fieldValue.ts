@@ -14,7 +14,7 @@ export type FieldValueBase =
 	| CurrMax
 	| StatValues
 export type FieldValue = FieldValueBase | FieldValueBase[]
-export type FieldData<T> = [string, (thing: T) => FieldValue] | string
+export type FieldData<T> = [string, (thing: T) => FieldValue]
 
 export const fieldValueToJSString: (value: FieldValue) => string = (
 	value: FieldValue

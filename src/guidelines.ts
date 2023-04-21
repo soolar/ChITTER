@@ -68,6 +68,23 @@ interface Guidelines<T extends MafiaClass> {
 	active: T[]
 }
 
+export const buildSingleFromFields = <T extends MafiaClass>(
+	thing: T,
+	fields: FieldData<T>[]
+) => {
+	return `{${fields
+		.map((fieldData) => {
+			const fieldName = typeof fieldData === 'string' ? fieldData : fieldData[0]
+			const fieldValue = fieldData[1](thing)
+			if (fieldValue === undefined) {
+				return undefined
+			}
+			return `${fieldName}: ${fieldValueToJSString(fieldValue)}`
+		})
+		.filter((fieldStr) => fieldStr !== undefined)
+		.join(', ')}}`
+}
+
 // maybe some day I'll figure out a way to do this without any, maybe not...
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
@@ -76,25 +93,9 @@ export const buildStringFromGuidelines = <T extends { [key: string]: any }>(
 	const res = [`\t\t\tvar ${guidelines.name} = {\n\t\t\t\tbyName: {\n`]
 	res.push(
 		...guidelines.all.map((thing) => {
-			const res = [`\t\t\t\t\t${fieldValueToJSString(thing.toString())}: {`]
-			res.push(
-				guidelines.fields
-					.map((fieldData) => {
-						const fieldName =
-							typeof fieldData === 'string' ? fieldData : fieldData[0]
-						const fieldValue: FieldValue =
-							typeof fieldData === 'string'
-								? thing[fieldData]
-								: fieldData[1](thing)
-						if (fieldValue === undefined) {
-							return undefined
-						}
-						return `${fieldName}: ${fieldValueToJSString(fieldValue)}`
-					})
-					.filter((fieldStr) => fieldStr !== undefined)
-					.join(', ')
-			)
-			res.push('},\n')
+			const res = [`\t\t\t\t\t${fieldValueToJSString(thing.toString())}: `]
+			res.push(buildSingleFromFields(thing, guidelines.fields))
+			res.push(',\n')
 			return res.join('')
 		})
 	)
@@ -149,13 +150,13 @@ export const effectGuidelines: Guidelines<Effect> = {
 	name: 'effects',
 	all: $effects``,
 	fields: [
-		'name',
+		['name', (eff) => eff.name],
 		['default', (eff) => encodeURI(eff.default)],
-		'image',
+		['image', (eff) => eff.image],
 		['id', (eff) => toInt(eff)],
-		'descid',
-		'quality',
-		'song',
+		['descid', (eff) => eff.descid],
+		['quality', (eff) => eff.quality],
+		['song', (eff) => eff.song],
 		['turnsActive', (eff) => haveEffect(eff)],
 		['mods', (eff) => stringModifier(eff, 'Evaluated Modifiers')],
 	],
@@ -203,10 +204,10 @@ export const itemGuidelines: Guidelines<Item> = {
 	all: $items``,
 	fields: [
 		['name', (it) => it.toString()],
-		'image',
+		['image', (it) => it.image],
 		['id', (it) => toInt(it)],
 		['descId', (it) => it.descid],
-		'plural',
+		['plural', (it) => it.plural],
 		['inInventory', (it) => itemAmount(it)],
 		['inCloset', (it) => closetAmount(it)],
 		['inStorage', (it) => storageAmount(it)],
@@ -301,16 +302,16 @@ export const familiarGuidelines: Guidelines<Familiar> = {
 	all: $familiars``,
 	fields: [
 		['type', (fam) => fam.toString()],
-		'image',
+		['image', (fam) => fam.image],
 		['id', (fam) => toInt(fam)],
-		'name',
-		'experience',
+		['name', (fam) => fam.name],
+		['experience', (fam) => fam.experience],
 		['weight', (fam) => familiarWeight(fam)],
 		['buffedWeight', (fam) => familiarWeight(fam) + weightAdjustment()],
 		['drop', (fam) => fam.dropItem],
-		'dropsLimit',
-		'dropsToday',
-		'dropName',
+		['dropsLimit', (fam) => fam.dropsLimit],
+		['dropsToday', (fam) => fam.dropsToday],
+		['dropName', (fam) => fam.dropName],
 		['owned', (fam) => haveFamiliar(fam)],
 		['unrestricted', (fam) => isUnrestricted(fam)],
 		['canEquip', (fam) => canEquip(fam)],
@@ -359,12 +360,12 @@ export const skillGuidelines: Guidelines<Skill> = {
 	name: 'skills',
 	all: $skills``,
 	fields: [
-		'name',
-		'image',
+		['name', (skill) => skill.name],
+		['image', (skill) => skill.image],
 		['id', (skill) => toInt(skill)],
 		['have', (skill) => haveSkill(skill)],
-		'dailylimit',
-		'timescast',
+		['dailylimit', (skill) => skill.dailylimit],
+		['timescast', (skill) => skill.timescast],
 		['advCost', (skill) => advCost(skill)],
 		['fuelCost', (skill) => fuelCost(skill)],
 		['mpCost', (skill) => mpCost(skill)],
@@ -419,12 +420,12 @@ export const thrallGuidelines: Guidelines<Thrall> = {
 	all: $thralls``,
 	fields: [
 		['type', (thrall) => thrall.toString()],
-		'name',
-		'id',
-		'level',
-		'image',
-		'tinyimage',
-		'skill',
+		['name', (thrall) => thrall.name],
+		['id', (thrall) => thrall.id],
+		['level', (thrall) => thrall.level],
+		['image', (thrall) => thrall.image],
+		['tinyimage', (thrall) => thrall.tinyimage],
+		['skill', (thrall) => thrall.skill],
 	],
 	favorites: [],
 	active: [myThrall()],
