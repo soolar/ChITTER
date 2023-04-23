@@ -7,13 +7,12 @@ import {
 	Item,
 	Location,
 	MafiaClass,
-	print,
 	Skill,
 	Slot,
 	Thrall,
 	writeln,
 } from 'kolmafia'
-import { FieldData, fieldValueToJSString } from '../fieldValue'
+import { FieldData } from '../fieldValue'
 import {
 	buildSingleFromFields,
 	classGuidelines,

@@ -1,3 +1,4 @@
+import APITestBrick from './APITestBrick'
 import CharacterBrick from './CharacterBrick'
 import DebugBrick from './DebugBrick'
 import EffectsBrick from './EffectsBrick'
@@ -17,6 +18,7 @@ const brickRegistry: { [brickName: string]: () => JSX.Element } = {
 	familiar: FamiliarBrick,
 	fam: FamiliarBrick,
 	trail: TrailBrick,
+	apitest: APITestBrick,
 } as const
 
 export type BrickName = keyof typeof brickRegistry

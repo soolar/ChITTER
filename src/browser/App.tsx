@@ -47,7 +47,7 @@ function ChitterSection({ sectionName, bricks }: ChitterSectionArgs) {
 export default function App() {
 	const brickOrder = {
 		roof: ['character', 'stats', 'gear', 'trail'],
-		walls: ['effects', 'debug'],
+		walls: ['apitest', 'effects', 'debug'],
 		floor: ['familiar'],
 	}
 	return (
