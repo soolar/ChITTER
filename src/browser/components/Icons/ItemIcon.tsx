@@ -1,12 +1,12 @@
 import * as React from 'react'
 import ChitterIcon from './ChitterIcon'
-import { BrowserItem } from '../../../guidelines'
-import { getExtraItemInfo } from '../../itemHelpers'
 import { Text, VStack } from '@chakra-ui/react'
 import { showItem } from '../../../utils'
+import { Item } from 'kolmafia'
+import { useExtraItemInfo } from '../../itemHelpers'
 
 interface ItemIconArgs {
-	item?: BrowserItem
+	item: Item
 	small?: boolean
 	tooltipPrefix?: string
 	weirdFam?: boolean
@@ -20,14 +20,16 @@ export default function ItemIcon({
 	weirdFam,
 	forEquipping,
 }: ItemIconArgs) {
-	const extraInfo = getExtraItemInfo(item, {
+	const extraInfo = useExtraItemInfo(item, {
 		namePrefix: tooltipPrefix,
 		forEquipping,
 	})
 
 	let weirdFamText
 	if (weirdFam && item) {
-		const match = item.mods.match(/Familiar Effect: "([^"]+), cap (\d+)"/)
+		const match = extraInfo.rawMods.match(
+			/Familiar Effect: "([^"]+), cap (\d+)"/
+		)
 		if (match) {
 			weirdFamText = (
 				<Text className="popup-desc-line">
@@ -64,12 +66,12 @@ export default function ItemIcon({
 						))}
 				</VStack>
 			}
-			borderType={extraInfo.borderType}
+			borderType={'normal'}
 			small={small}
 			onContextMenu={
 				item &&
 				((ev) => {
-					showItem(item.descId)
+					showItem(Number(extraInfo.item?.descid ?? 0))
 					ev.preventDefault()
 				})
 			}

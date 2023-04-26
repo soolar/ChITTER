@@ -25,7 +25,8 @@
 		"kolmafia": "^5.26781.0",
 		"libram": "^0.7.1",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"tome-kolmafia-client": "file:tome-kolmafia-client-v0.0.10.tgz"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.18.10",

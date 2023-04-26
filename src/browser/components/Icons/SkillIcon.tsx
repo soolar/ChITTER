@@ -1,10 +1,10 @@
 import * as React from 'react'
 import ChitterIcon from './ChitterIcon'
-import { BrowserSkill } from '../../../guidelines'
 import { Text } from '@chakra-ui/react'
+import { Skill } from 'kolmafia'
 
 interface SkillIconArgs {
-	skill: BrowserSkill
+	skill: Skill
 }
 
 export default function SkillIcon({ skill }: SkillIconArgs) {

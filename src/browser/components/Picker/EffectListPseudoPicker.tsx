@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { BrowserEffect } from '../../../guidelines'
+import { Effect } from 'kolmafia'
 import EffectOption from '../Option/EffectOption'
 import Picker from '../Picker/Picker'
 
 interface EffectListPseudoPickerArgs {
-	effects: BrowserEffect[]
-	enabled?: (eff: BrowserEffect) => boolean
+	effects: Effect[]
+	enabled?: (eff: Effect) => boolean
 }
 
 export default function EffectListPseudoPicker({

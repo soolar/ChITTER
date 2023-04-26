@@ -6,25 +6,25 @@ const config = {
 	minifySyntax: true,
 	platform: 'node',
 	target: 'rhino1.7.13',
-	external: ['kolmafia'],
 	plugins: [babel()],
 	define: {
-		'process.env.NODE_ENV': '"production"',
+		'process.env.NODE_ENV': '"development"',
 	},
 }
 
 build({
 	...config,
+	external: ['kolmafia'],
 	outdir: 'KoLmafia/relay',
 	entryPoints: {
 		chitter_changeFav: './src/relay/chitter_changeFav.ts',
 		relay_ChITTER: './src/relay/relay_ChITTER.ts',
-		ChITTERData: './src/relay/ChITTERData.ts',
 	},
 })
 
 build({
 	...config,
+	alias: { kolmafia: 'tome-kolmafia-client' },
 	outdir: 'KoLmafia/relay/ChITTER',
 	entryPoints: { ChITTER: './src/browser/index.tsx' },
 	loader: { '.ts': 'tsx' },

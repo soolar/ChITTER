@@ -1,47 +1,55 @@
 import * as React from 'react'
-import { BrowserFamiliar, BrowserItem, BrowserList } from '../guidelines'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { BrowserMafiaProperties } from '../properties'
 import { pluralize, showFam } from '../utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
-import { $effect, $familiar, $item } from './fakeLibram'
+//import { $familiar, $item } from 'libram'
+import {
+	Familiar,
+	familiarWeight,
+	Item,
+	toFamiliar,
+	toInt,
+	toItem,
+} from 'kolmafia'
 
-declare const mafiaProperties: BrowserMafiaProperties
-declare const items: BrowserList<BrowserItem>
-
-export const nextLevelInfo = (fam: BrowserFamiliar) => {
+export const nextLevelInfo = (fam: Familiar) => {
 	for (let i = 2; i <= 20; ++i) {
 		const nextGoal = i * i
 		if (nextGoal > fam.experience) {
 			const prevGoal = i === 2 ? 0 : (i - 1) * (i - 1)
-			return { progress: fam.experience - prevGoal, goal: nextGoal - prevGoal }
+			return {
+				progress: fam.experience - prevGoal,
+				goal: nextGoal - prevGoal,
+			}
 		}
 	}
 	return { progress: 1, goal: 1 }
 }
 
-export function getWeirdoDivContents(fam: BrowserFamiliar) {
-	switch (fam.type) {
-		case 'Melodramedary':
+export function useWeirdoDivContents(fam: Familiar) {
+	const extraInfo = useExtraFamInfo(fam, true, false)
+	switch (fam) {
+		case toFamiliar(`Melodramedary`): {
+			const weight = familiarWeight(fam)
+			const famNum = toInt(fam)
 			return (
 				<HStack
-					className={`chit-icon chit-icon-weird ${
-						getExtraFamInfo(fam, true, false)?.extraClass
-					}`}
+					className={`chit-icon chit-icon-weird ${extraInfo?.extraClass}`}
 					spacing="0"
 					onContextMenu={(ev) => {
-						showFam(fam.id)
+						showFam(famNum ?? 0)
 						ev.preventDefault()
 					}}
 				>
 					<Image src="/images/otherimages/camelfam_left.gif" border={0} />
-					{Array(Math.floor(fam.weight / 5)).fill(
+					{Array(Math.floor((weight ?? 0) / 5)).fill(
 						<Image src="/images/otherimages/camelfam_middle.gif" border={0} />
 					)}
 					<Image src="/images/otherimages/camelfam_right.gif" border={0} />
 				</HStack>
 			)
+		}
 	}
 
 	return null
@@ -51,146 +59,146 @@ export function getWeirdoDivContents(fam: BrowserFamiliar) {
 interface BjornInfo {
 	limit?: number
 	prop?: string
-	drop: string | BrowserItem // can be an item name or a general descriptor
+	drop: string | Item // can be an item name or a general descriptor
 }
 
-const bjornDrops: { [fam: number]: BjornInfo } = {
-	[$familiar`Grimstone Golem`.id]: {
+const bjornDrops: { [fam: string]: BjornInfo } = {
+	[toFamiliar(`Grimstone Golem`).toString()]: {
 		limit: 1,
 		prop: '_grimstoneMaskDropsCrown',
-		drop: $item`grimstone mask`,
+		drop: toItem(`grimstone mask`),
 	},
-	[$familiar`Grim Brother`.id]: {
+	[toFamiliar(`Grim Brother`).toString()]: {
 		limit: 2,
 		prop: '_grimFairyTaleDropsCrown',
-		drop: $item`grim fairy tale`,
+		drop: toItem(`grim fairy tale`),
 	},
-	[$familiar`Trick-or-Treating Tot`.id]: {
+	[toFamiliar(`Trick-or-Treating Tot`).toString()]: {
 		limit: 3,
 		prop: '_hoardedCandyDropsCrown',
-		drop: $item`hoarded candy wad`,
+		drop: toItem(`hoarded candy wad`),
 	},
-	[$familiar`Optimistic Candle`.id]: {
+	[toFamiliar(`Optimistic Candle`).toString()]: {
 		limit: 3,
 		prop: '_optimisticCandleDropsCrown',
-		drop: $item`glob of melted wax`,
+		drop: toItem(`glob of melted wax`),
 	},
-	[$familiar`Garbage Fire`.id]: {
+	[toFamiliar(`Garbage Fire`).toString()]: {
 		limit: 3,
 		prop: '_garbageFireDropsCrown',
-		drop: $item`burning newspaper`,
+		drop: toItem(`burning newspaper`),
 	},
-	[$familiar`Twitching Space Critter`.id]: {
+	[toFamiliar(`Twitching Space Critter`).toString()]: {
 		limit: 1,
 		prop: '_spaceFurDropsCrown',
-		drop: $item`space beast fur`,
+		drop: toItem(`space beast fur`),
 	},
-	[$familiar`Machine Elf`.id]: {
+	[toFamiliar(`Machine Elf`).toString()]: {
 		limit: 25,
 		prop: '_abstractionDropsCrown',
 		drop: 'abstractions',
 	},
-	[$familiar`Adventurous Spelunker`.id]: {
+	[toFamiliar(`Adventurous Spelunker`).toString()]: {
 		limit: 6,
 		prop: '_oreDropsCrown',
 		drop: 'non-quest ore',
 	},
-	[$familiar`Puck Man`.id]: {
+	[toFamiliar(`Puck Man`).toString()]: {
 		limit: 25,
 		prop: '_yellowPixelDropsCrown',
-		drop: $item`yellow pixel`,
+		drop: toItem(`yellow pixel`),
 	},
-	[$familiar`Warbear Drone`.id]: {
-		drop: $item`warbear whosit`,
+	[toFamiliar(`Warbear Drone`).toString()]: {
+		drop: toItem(`warbear whosit`),
 	},
-	[$familiar`Li'l Xenomorph`.id]: {
-		drop: $item`lunar isotope`,
+	[toFamiliar(`Li'l Xenomorph`).toString()]: {
+		drop: toItem(`lunar isotope`),
 	},
-	[$familiar`Pottery Barn Owl`.id]: {
-		drop: $item`volcanic ash`,
+	[toFamiliar(`Pottery Barn Owl`).toString()]: {
+		drop: toItem(`volcanic ash`),
 	},
-	[$familiar`Party Mouse`.id]: {
+	[toFamiliar(`Party Mouse`).toString()]: {
 		drop: 'decent-good booze',
 	},
-	[$familiar`Yule Hound`.id]: {
-		drop: $item`candy cane`,
+	[toFamiliar(`Yule Hound`).toString()]: {
+		drop: toItem(`candy cane`),
 	},
-	[$familiar`Gluttonous Green Ghost`.id]: {
+	[toFamiliar(`Gluttonous Green Ghost`).toString()]: {
 		drop: 'burritos',
 	},
-	[$familiar`Reassembled Blackbird`.id]: {
-		drop: $item`blackberry`,
+	[toFamiliar(`Reassembled Blackbird`).toString()]: {
+		drop: toItem(`blackberry`),
 	},
-	[$familiar`Reconstituted Crow`.id]: {
-		drop: $item`blackberry`,
+	[toFamiliar(`Reconstituted Crow`).toString()]: {
+		drop: toItem(`blackberry`),
 	},
-	[$familiar`Hunchbacked Minion`.id]: {
+	[toFamiliar(`Hunchbacked Minion`).toString()]: {
 		drop: 'brain or bone',
 	},
-	[$familiar`Reanimated Reanimator`.id]: {
+	[toFamiliar(`Reanimated Reanimator`).toString()]: {
 		drop: 'hot wings or skulls',
 	},
-	[$familiar`Attention-Deficit Demon`.id]: {
+	[toFamiliar(`Attention-Deficit Demon`).toString()]: {
 		drop: 'some bad food',
 	},
-	[$familiar`Piano Cat`.id]: {
+	[toFamiliar(`Piano Cat`).toString()]: {
 		drop: 'some bad booze',
 	},
-	[$familiar`Golden Monkey`.id]: {
-		drop: $item`gold nuggets`,
+	[toFamiliar(`Golden Monkey`).toString()]: {
+		drop: toItem(`gold nuggets`),
 	},
-	[$familiar`Robot Reindeer`.id]: {
-		drop: 'holiday snacks',
+	[toFamiliar(`Robot Reindeer`).toString()]: {
+		drop: 'hoay snacks',
 	},
-	[$familiar`Ancient Yuletide Troll`.id]: {
-		drop: 'holiday snacks',
+	[toFamiliar(`Ancient Yuletide Troll`).toString()]: {
+		drop: 'hoay snacks',
 	},
-	[$familiar`Sweet Nutcracker`.id]: {
-		drop: 'holiday snacks',
+	[toFamiliar(`Sweet Nutcracker`).toString()]: {
+		drop: 'hoay snacks',
 	},
-	[$familiar`Stocking Mimic`.id]: {
+	[toFamiliar(`Stocking Mimic`).toString()]: {
 		drop: 'some simple candy',
 	},
-	[$familiar`BRICKO chick`.id]: {
-		drop: $item`BRICKO brick`,
+	[toFamiliar(`BRICKO chick`).toString()]: {
+		drop: toItem(`BRICKO brick`),
 	},
-	[$familiar`Cotton Candy Carnie`.id]: {
-		drop: $item`cotton candy pinch`,
+	[toFamiliar(`Cotton Candy Carnie`).toString()]: {
+		drop: toItem(`cotton candy pinch`),
 	},
-	[$familiar`Untamed Turtle`.id]: {
+	[toFamiliar(`Untamed Turtle`).toString()]: {
 		drop: 'turtle bits',
 	},
-	[$familiar`Astral Badger`.id]: {
+	[toFamiliar(`Astral Badger`).toString()]: {
 		drop: 'shrooms',
 	},
-	[$familiar`Green Pixie`.id]: {
-		drop: $item`bottle of tequila`,
+	[toFamiliar(`Green Pixie`).toString()]: {
+		drop: toItem(`bottle of tequila`),
 	},
-	[$familiar`Angry Goat`.id]: {
-		drop: $item`goat cheese pizza`,
+	[toFamiliar(`Angry Goat`).toString()]: {
+		drop: toItem(`goat cheese pizza`),
 	},
-	[$familiar`Adorable Seal Larva`.id]: {
+	[toFamiliar(`Adorable Seal Larva`).toString()]: {
 		drop: 'elemental nuggets',
 	},
-	[$familiar`Frozen Gravy Fairy`.id]: {
-		drop: $item`cold nuggets`,
+	[toFamiliar(`Frozen Gravy Fairy`).toString()]: {
+		drop: toItem(`cold nuggets`),
 	},
-	[$familiar`Stinky Gravy Fairy`.id]: {
-		drop: $item`stench nuggets`,
+	[toFamiliar(`Stinky Gravy Fairy`).toString()]: {
+		drop: toItem(`stench nuggets`),
 	},
-	[$familiar`Sleazy Gravy Fairy`.id]: {
-		drop: $item`sleaze nuggets`,
+	[toFamiliar(`Sleazy Gravy Fairy`).toString()]: {
+		drop: toItem(`sleaze nuggets`),
 	},
-	[$familiar`Spooky Gravy Fairy`.id]: {
-		drop: $item`spooky nuggets`,
+	[toFamiliar(`Spooky Gravy Fairy`).toString()]: {
+		drop: toItem(`spooky nuggets`),
 	},
-	[$familiar`Flaming Gravy Fairy`.id]: {
-		drop: $item`hot nuggets`,
+	[toFamiliar(`Flaming Gravy Fairy`).toString()]: {
+		drop: toItem(`hot nuggets`),
 	},
 }
 
 interface DropInfo {
-	drop: BrowserItem | string
+	drop: Item | string
 	left?: number
 }
 
@@ -201,16 +209,19 @@ interface ExtraFamInfo {
 	dropInfo?: DropInfo
 }
 
-export function getExtraFamInfo(
-	fam: BrowserFamiliar,
+export function useExtraFamInfo(
+	fam: Familiar,
 	isTooltip: boolean,
 	isBjorn: boolean
 ): ExtraFamInfo {
+	void fam
+	void isTooltip
+	void isBjorn
 	const res: ExtraFamInfo = { borderType: 'normal', desc: [] }
-
+	/*
 	if (!isBjorn) {
 		switch (fam.id) {
-			case $familiar`Fist Turkey`.id: {
+			case toFamiliar(`Fist Turkey`).id: {
 				const musLeft = 5 - (mafiaProperties._turkeyMuscle as number)
 				const mysLeft = 5 - (mafiaProperties._turkeyMyst as number)
 				const moxLeft = 5 - (mafiaProperties._turkeyMoxie as number)
@@ -236,7 +247,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Melodramedary`.id: {
+			case toFamiliar(`Melodramedary`).id: {
 				const spit = mafiaProperties.camelSpit as number
 				if (spit >= 100) {
 					res.desc.push('Ready to spit!')
@@ -251,7 +262,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Steam-Powered Cheerleader`.id: {
+			case toFamiliar(`Steam-Powered Cheerleader`).id: {
 				const steamPercent = Math.ceil(
 					(mafiaProperties._cheerleaderSteam as number) / 2
 				)
@@ -261,7 +272,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Slimeling`.id: {
+			case toFamiliar(`Slimeling`).id: {
 				const fullness = mafiaProperties.slimelingFullness as number
 				const stacksDue = mafiaProperties.slimelingStacksDue as number
 				const stacksDropped = mafiaProperties.slimelingStacksDropped as number
@@ -284,14 +295,14 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Gelatinous Cubeling`.id: {
+			case toFamiliar(`Gelatinous Cubeling`).id: {
 				res.desc.push(
 					<Text>{mafiaProperties.cubelingProgress as number}/12 to drop</Text>
 				)
 				const needs = [
-					{ name: 'Pole', item: $item`eleven-foot pole` },
-					{ name: 'Ring', item: $item`ring of Detect Boring Doors` },
-					{ name: 'Pick', item: $item`Pick-O-Matic lockpicks` },
+					{ name: 'Pole', item: toItem(`eleven-foot pole`) },
+					{ name: 'Ring', item: toItem(`ring of Detect Boring Doors`) },
+					{ name: 'Pick', item: toItem(`Pick-O-Matic lockpicks`) },
 				].filter((need) => need.item.available < 1)
 				if (needs.length > 0) {
 					res.desc.push(
@@ -301,7 +312,7 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Crimbo Shrub`.id: {
+			case toFamiliar(`Crimbo Shrub`).id: {
 				const gifts = mafiaProperties.shrubGifts
 				const readyToFire =
 					gifts === 'yellow'
@@ -318,13 +329,13 @@ export function getExtraFamInfo(
 				}
 				break
 			}
-			case $familiar`Reagnimated Gnome`.id: {
+			case toFamiliar(`Reagnimated Gnome`).id: {
 				res.desc.push(
 					<Text>{mafiaProperties._gnomeAdv as number} adv gained</Text>
 				)
 				break
 			}
-			case $familiar`Temporal Riftlet`.id: {
+			case toFamiliar(`Temporal Riftlet`).id: {
 				res.desc.push(
 					<Text>{mafiaProperties._riftletAdv as number} adv gained</Text>
 				)
@@ -386,6 +397,7 @@ export function getExtraFamInfo(
 	} else if (hasDrops) {
 		res.borderType = 'has-drops'
 	}
+	*/
 
 	return res
 }

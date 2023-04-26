@@ -1,13 +1,13 @@
 import * as React from 'react'
 import ChitterOption from './ChitterOption'
 import OptionText from './OptionText'
-import { BrowserSkill } from '../../../guidelines'
 import { Button } from '@chakra-ui/react'
 import SkillIcon from '../Icons/SkillIcon'
 import { getExtraSkillInfo } from '../../skillHelpers'
+import { Skill } from 'kolmafia'
 
 interface SkillOptionArgs {
-	skill: BrowserSkill
+	skill: Skill
 }
 
 export default function SkillOption({ skill }: SkillOptionArgs) {

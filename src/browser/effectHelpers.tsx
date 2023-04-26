@@ -1,8 +1,8 @@
+import { Effect, stringModifier, toEffect } from 'kolmafia'
+//import { $effect } from 'libram'
 import * as React from 'react'
-import { BrowserEffect } from '../guidelines'
 import { parseMods } from '../utils'
 import FlavourPicker from './components/Picker/FlavourPicker'
-import { $effect } from './fakeLibram'
 
 interface ExtraEffectInfo {
 	mods: string
@@ -10,19 +10,21 @@ interface ExtraEffectInfo {
 	launches?: React.ComponentType<Record<string, never>>
 }
 
-export function getExtraEffectInfo(eff: BrowserEffect): ExtraEffectInfo {
-	const res: ExtraEffectInfo = { mods: eff.mods }
+export function useExtraEffectInfo(eff: Effect): ExtraEffectInfo {
+	const res: ExtraEffectInfo = {
+		mods: stringModifier(eff, 'Evaluated Modifiers'),
+	}
 
-	switch (eff.id) {
-		case $effect`Video... Games?`.id: {
+	switch (eff) {
+		case toEffect(`Video... Games?`): {
 			res.mods = 'Basically Everything +5'
 			break
 		}
-		case $effect`Spirit of Bacon Grease`.id:
-		case $effect`Spirit of Peppermint`.id:
-		case $effect`Spirit of Wormwood`.id:
-		case $effect`Spirit of Cayenne`.id:
-		case $effect`Spirit of Garlic`.id: {
+		case toEffect(`Spirit of Bacon Grease`):
+		case toEffect(`Spirit of Peppermint`):
+		case toEffect(`Spirit of Wormwood`):
+		case toEffect(`Spirit of Cayenne`):
+		case toEffect(`Spirit of Garlic`): {
 			res.launches = FlavourPicker
 			break
 		}

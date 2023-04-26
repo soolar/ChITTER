@@ -1,17 +1,13 @@
 import * as React from 'react'
-import { BrowserEffect } from '../../../guidelines'
+import { Effect, toString } from 'kolmafia'
 import ChitterIcon from './ChitterIcon'
 
 interface EffectIconArgs {
-	effect: BrowserEffect
+	effect: Effect
 }
 
 export default function EffectIcon({ effect }: EffectIconArgs) {
-	return (
-		<ChitterIcon
-			image={effect.image}
-			tooltip={effect.name}
-			borderType="normal"
-		/>
-	)
+	const name = toString(effect as unknown as string)
+
+	return <ChitterIcon image={effect.image} tooltip={name} borderType="normal" />
 }

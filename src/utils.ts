@@ -1,6 +1,4 @@
-import { BrowserEffect, BrowserItem, BrowserList } from './guidelines'
-
-declare const effects: BrowserList<BrowserEffect>
+import { Item, stringModifier, toEffect } from 'kolmafia'
 
 export interface CurrMax {
 	curr: number
@@ -13,7 +11,7 @@ export interface StatValues {
 	substats: number
 }
 
-export function pluralize(thing: string | BrowserItem, amount: number) {
+export function pluralize(thing: string | Item, amount: number) {
 	if (typeof thing === 'string') {
 		if (thing.slice(-1) === 's') {
 			return amount === 1 ? thing.slice(0, -1) : thing
@@ -270,8 +268,11 @@ export function parseMods(mods: string, verbose = false) {
 				new RegExp(`Rollover Effect: "(${effName})"`, 'i')
 			)
 			const trueEffName = effNameMatch ? effNameMatch[1] : effName
-			if (effects.byName[trueEffName]) {
-				const parsedEffMods = parseMods(effects.byName[trueEffName].mods)
+			const eff = toEffect(trueEffName)
+			if (eff) {
+				const parsedEffMods = parseMods(
+					stringModifier(eff, 'Evaluated Modifiers')
+				)
 				if (parsedEffMods !== '') {
 					return `${beginning}${effName} [${parsedEffMods}]${ending}`
 				}

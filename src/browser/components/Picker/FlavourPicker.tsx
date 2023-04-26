@@ -1,11 +1,7 @@
 import * as React from 'react'
 import { Container, Image } from '@chakra-ui/react'
 import Picker from './Picker'
-import { BrowserCharacter } from '../../../character'
-import { BrowserEffect, BrowserList } from '../../../guidelines'
-
-declare const my: BrowserCharacter
-declare const effects: BrowserList<BrowserEffect>
+import { haveEffect, myHash, toEffect, toSkill, useSkill } from 'kolmafia'
 
 interface FlavourArea {
 	element: string
@@ -24,7 +20,7 @@ export default function FlavourPicker() {
 		{ element: 'None', spirit: 'Nothing', x: 89, y: 95 },
 	]
 	const activeArea = areas.find(
-		(area) => effects.byName[`Spirit of ${area.spirit}`]?.turnsActive > 0
+		(area) => haveEffect(toEffect(`Spirit of ${area.spirit}`)) > 0
 	)
 	const activeElement = activeArea ? activeArea.element.toLowerCase() : 'none'
 	return (
@@ -40,17 +36,19 @@ export default function FlavourPicker() {
 				<map name="flavmap">
 					{areas
 						.filter((flavourArea) => flavourArea !== activeArea)
-						.map((flavourArea) => (
-							<area
-								shape="circle"
-								alt={flavourArea.element}
-								title={`Spirit of ${flavourArea.spirit} (${flavourArea.element})`}
-								coords={`${flavourArea.x},${flavourArea.y},22`}
-								href={`/KoLmafia/sideCommand?cmd=cast+spirit+of+${flavourArea.spirit
-									.toLowerCase()
-									.replace(/ /g, '+')}&pwd=${my.hash}`}
-							/>
-						))}
+						.map((flavourArea) => {
+							const spiritSkill = toSkill(`Spirit of ${flavourArea.spirit}`)
+							return (
+								<area
+									shape="circle"
+									alt={flavourArea.element}
+									title={`Spirit of ${flavourArea.spirit} (${flavourArea.element})`}
+									coords={`${flavourArea.x},${flavourArea.y},22`}
+									onClick={() => useSkill(spiritSkill)}
+									href="#"
+								/>
+							)
+						})}
 				</map>
 			</Container>
 		</Picker>

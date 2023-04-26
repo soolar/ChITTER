@@ -1,24 +1,22 @@
+import { getProperty, toSkill } from 'kolmafia'
 import * as React from 'react'
-import { BrowserMafiaProperties } from '../../../properties'
-import { $skill } from '../../fakeLibram'
+//import { $skill, get } from 'libram'
 import SkillPicker from './SkillPicker'
 
-declare const mafiaProperties: BrowserMafiaProperties
-
 export default function PickerSweatpants() {
-	const sweat = mafiaProperties.sweat as number
+	const sweat = getProperty('sweat')
 	return (
 		<SkillPicker
 			header={`Sweat Magic (${sweat}% sweaty)`}
 			skills={[
-				$skill`Sip Some Sweat`,
-				$skill`Drench Yourself in Sweat`,
-				$skill`Sweat Out Some Booze`,
-				$skill`Make Sweat-Ade`,
-				$skill`Sweat Flick`,
-				$skill`Sweat Spray`,
-				$skill`Sweat Flood`,
-				$skill`Sweat Sip`,
+				toSkill(`Sip Some Sweat`),
+				toSkill(`Drench Yourself in Sweat`),
+				toSkill(`Sweat Out Some Booze`),
+				toSkill(`Make Sweat-Ade`),
+				toSkill(`Sweat Flick`),
+				toSkill(`Sweat Spray`),
+				toSkill(`Sweat Flood`),
+				toSkill(`Sweat Sip`),
 			]}
 		/>
 	)

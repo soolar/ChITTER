@@ -16,7 +16,7 @@ import {
 	BrowserSlot,
 } from '../../../guidelines'
 import ItemIcon from '../Icons/ItemIcon'
-import { getExtraItemInfo } from '../../itemHelpers'
+import { useExtraItemInfo } from '../../itemHelpers'
 import {
 	BrowserChitProperties,
 	BrowserGearCategory,
@@ -25,20 +25,20 @@ import {
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
-import { $familiar } from '../../fakeLibram'
+//import { $familiar } from '../../fakeLibram'
 import { BrowserCharacter } from '../../../character'
+import { Familiar, Slot } from 'kolmafia'
 
 type GearPickerArgs = {
-	slot: BrowserSlot
-	fam?: BrowserFamiliar
+	slot: Slot
+	fam?: Familiar
 }
 
-declare const items: BrowserList<BrowserItem>
-declare const chitProperties: BrowserChitProperties
-declare const gearCategories: BrowserGearCategory[]
-declare const my: BrowserCharacter
-
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
+	void slot
+	void fam
+	return <div>heck</div>
+	/*
 	const functionalSlotName =
 		slot.name === 'acc2' || slot.name === 'acc3'
 			? 'acc1'
@@ -200,4 +200,5 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			</VStack>
 		</Picker>
 	)
+	*/
 }

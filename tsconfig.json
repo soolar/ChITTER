@@ -12,11 +12,15 @@
 		"noEmitOnError": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
+		"esModuleInterop": true,
 		"pretty": true,
 		"strict": true,
 		"target": "es2018",
 		"jsx": "react",
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"paths": {
+			"kolmafia": ["./tome-kolmafia-client"]
+		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx"],
 	"exclude": [

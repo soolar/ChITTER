@@ -1,11 +1,24 @@
 import { Divider, GridItem, Heading, SimpleGrid, Text } from '@chakra-ui/react'
+import {
+	fullnessLimit,
+	inebrietyLimit,
+	myBasestat,
+	myBuffedstat,
+	myFullness,
+	myHp,
+	myInebriety,
+	myMaxhp,
+	myMaxmp,
+	myMp,
+	mySpleenUse,
+	spleenLimit,
+	toStat,
+} from 'kolmafia'
+//import { $stat } from 'libram'
 import * as React from 'react'
-import { BrowserCharacter } from '../../../character'
 import { CurrMax, StatValues } from '../../../utils'
 import ProgressBar from '../ProgressBar'
 import Brick from './Brick'
-
-declare const my: BrowserCharacter
 
 interface ResourceRowArgs {
 	name: string
@@ -82,6 +95,29 @@ function StatRow({ name, statValues }: StatRowArgs) {
 }
 
 export default function StatsBrick() {
+	const my = {
+		hp: { curr: myHp(), max: myMaxhp() },
+		mp: { curr: myMp(), max: myMaxmp() },
+		fullness: { curr: myFullness(), max: fullnessLimit() },
+		inebriety: { curr: myInebriety(), max: inebrietyLimit() },
+		spleenUse: { curr: mySpleenUse(), max: spleenLimit() },
+
+		muscle: {
+			base: myBasestat(toStat(`Muscle`)),
+			buffed: myBuffedstat(toStat(`Muscle`)),
+			substats: myBasestat(toStat(`Submuscle`)),
+		},
+		mysticality: {
+			base: myBasestat(toStat(`Mysticality`)),
+			buffed: myBuffedstat(toStat(`Mysticality`)),
+			substats: myBasestat(toStat(`Submysticality`)),
+		},
+		moxie: {
+			base: myBasestat(toStat(`Moxie`)),
+			buffed: myBuffedstat(toStat(`Moxie`)),
+			substats: myBasestat(toStat(`Submoxie`)),
+		},
+	}
 	return (
 		<Brick name="stats" header="My Stats">
 			<SimpleGrid columns={3}>

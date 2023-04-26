@@ -1,20 +1,49 @@
 import { Flex, Spacer, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import * as React from 'react'
-import { BrowserCharacter } from '../../../character'
-import { BrowserFamiliar, BrowserList } from '../../../guidelines'
 import FamIcon from '../Icons/FamIcon'
 import ChitterIcon from '../Icons/ChitterIcon'
 import Picker from './Picker'
-import { getExtraFamInfo } from '../../familiarHelpers'
-import CommandLink from '../Link/CommandLink'
+import { useExtraFamInfo } from '../../familiarHelpers'
 import useToggle from '../../hooks/useToggle'
 import SettingToggle from '../SettingToggle'
 import MainLink from '../Link/MainLink'
-
-declare const familiars: BrowserList<BrowserFamiliar>
-declare const my: BrowserCharacter
+import {
+	bjornifyFamiliar,
+	canEquip,
+	enthroneFamiliar,
+	Familiar,
+	favoriteFamiliars,
+	haveFamiliar,
+	myBjornedFamiliar,
+	myEnthronedFamiliar,
+	myFamiliar,
+	toFamiliar,
+	toInt,
+	useFamiliar,
+} from 'kolmafia'
+import CallbackLink from '../Link/CallbackLink'
+//import { $familiars } from 'libram'
 
 export type FamiliarPickerType = 'default' | 'bjorn' | 'crown'
+
+interface FamiliarPickerFamArgs {
+	fam: Familiar
+	cmd: (fam: Familiar) => boolean
+	type?: FamiliarPickerType
+}
+
+function FamiliarPickerFam({ fam, cmd, type }: FamiliarPickerFamArgs) {
+	const famNum = toInt(fam)
+	return famNum !== 0 ? (
+		<WrapItem key={famNum}>
+			<CallbackLink callback={() => cmd(fam)}>
+				<FamIcon fam={fam} isBjorn={type !== 'default'} />
+			</CallbackLink>
+		</WrapItem>
+	) : (
+		<div>L bozo</div>
+	)
+}
 
 interface FamiliarPickerArgs {
 	type?: FamiliarPickerType
@@ -34,24 +63,36 @@ export default function FamiliarPicker({
 	)
 	const activeFam =
 		type === 'default'
-			? familiars.active[0]
+			? myFamiliar()
 			: type === 'bjorn'
-			? my.bjornFam
-			: my.crownFam
+			? myBjornedFamiliar()
+			: myEnthronedFamiliar()
 	const famsToShow = (
-		favoritesOnly ? familiars.favorites : familiars.all
+		favoritesOnly
+			? Object.keys(favoriteFamiliars()).map((famName) => toFamiliar(famName))
+			: Familiar.all().filter((fam) => haveFamiliar(fam))
 	).filter((fam) => {
+		if (!canEquip(fam) && type === 'default') {
+			return false
+		}
+		if (fam === activeFam) {
+			return false
+		}
 		if (!dropsOnly) {
 			return true
 		}
-		const extraInfo = getExtraFamInfo(fam, false, type !== 'default')
+		const extraInfo = useExtraFamInfo(fam, false, type !== 'default')
 		return (
 			extraInfo.dropInfo &&
 			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
 		)
 	})
 	const cmd =
-		type === 'crown' ? 'enthrone' : type === 'bjorn' ? 'bjornify' : 'familiar'
+		type === 'crown'
+			? enthroneFamiliar
+			: type === 'bjorn'
+			? bjornifyFamiliar
+			: useFamiliar
 
 	return (
 		<Picker
@@ -75,27 +116,23 @@ export default function FamiliarPicker({
 						/>
 					</VStack>
 					<Spacer />
-					<CommandLink cmd="familiar none">
+					<CallbackLink callback={() => useFamiliar(Familiar.none)}>
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
-					</CommandLink>
+					</CallbackLink>
 				</Flex>
 			}
 		>
 			<Wrap spacing={0}>
-				{famsToShow
-					.filter(
-						(fam) =>
-							fam !== activeFam &&
-							(fam.canEquip || type !== 'default') &&
-							fam.owned
-					)
-					.map((fam) => (
-						<WrapItem key={fam.type}>
-							<CommandLink cmd={`${cmd} ${fam.type}`}>
-								<FamIcon fam={fam} isBjorn={type !== 'default'} />
-							</CommandLink>
-						</WrapItem>
-					))}
+				{famsToShow.map((fam) => (
+					<FamiliarPickerFam fam={fam} cmd={cmd} type={type} />
+				))}
+				{!favoritesOnly && (
+					<>
+						<WrapItem>Familiar.all() machine broke</WrapItem>
+						<WrapItem>Understandable, have a nice day</WrapItem>
+					</>
+				)}
+				{dropsOnly && <WrapItem>Gimme a bit.</WrapItem>}
 			</Wrap>
 		</Picker>
 	)

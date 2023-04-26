@@ -1,22 +1,24 @@
 import * as React from 'react'
-import { BrowserEffect } from '../../../guidelines'
+import { Effect, stringModifier } from 'kolmafia'
 import { parseMods } from '../../../utils'
 import EffectIcon from '../Icons/EffectIcon'
 import ChitterOption from './ChitterOption'
 import OptionText from './OptionText'
 
 interface EffectOptionArgs {
-	effect: BrowserEffect
+	effect: Effect
 	enabled?: boolean
 }
 
 export default function EffectOption({ effect, enabled }: EffectOptionArgs) {
+	const name = effect.toString()
+	const mods = stringModifier(effect, 'Evaluated Modifiers')
 	return (
 		<ChitterOption
 			icon={<EffectIcon effect={effect} />}
 			enabled={enabled ?? true}
 		>
-			<OptionText subject={effect.name} desc={parseMods(effect.mods)} />
+			<OptionText subject={name} desc={parseMods(mods)} />
 		</ChitterOption>
 	)
 }

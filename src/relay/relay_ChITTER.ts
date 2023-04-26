@@ -1,19 +1,6 @@
-import { print, visitUrl } from 'kolmafia'
+import { visitUrl } from 'kolmafia'
 import { write } from 'kolmafia'
-import { buildCharacter } from '../character'
-import {
-	buildStringFromGuidelines,
-	classGuidelines,
-	effectGuidelines,
-	familiarGuidelines,
-	itemGuidelines,
-	locationGuidelines,
-	skillGuidelines,
-	slotGuidelines,
-	thrallGuidelines,
-} from '../guidelines'
 import parseCharpaneData from '../parseCharpaneData'
-import { buildGearCategories, buildProperties } from '../properties'
 
 export function main(): void {
 	const baseCharpane = visitUrl('charpane.php', false)
@@ -23,17 +10,6 @@ export function main(): void {
 	<head>
 		<title>ChITTER</title>
 		<script type="text/javascript">
-${buildStringFromGuidelines(itemGuidelines)}
-${buildStringFromGuidelines(effectGuidelines)}
-${buildStringFromGuidelines(familiarGuidelines)}
-${buildStringFromGuidelines(skillGuidelines)}
-${buildStringFromGuidelines(slotGuidelines)}
-${buildStringFromGuidelines(thrallGuidelines)}
-${buildStringFromGuidelines(classGuidelines)}
-${buildStringFromGuidelines(locationGuidelines)}
-${buildGearCategories()}
-${buildProperties()}
-${buildCharacter()}
 ${parseCharpaneData(baseCharpane)}
 		</script>
 	</head>

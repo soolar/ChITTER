@@ -1,9 +1,5 @@
 import * as React from 'react'
-import {
-	BrowserFamiliar,
-	BrowserList,
-	MummeryCharacter,
-} from '../../../guidelines'
+import { MummeryCharacter } from '../../../guidelines'
 import { showFam } from '../../../utils'
 import FamIcon from '../Icons/FamIcon'
 import FamiliarPicker from '../Picker/FamiliarPicker'
@@ -21,13 +17,21 @@ import {
 	useBreakpointValue,
 	VStack,
 } from '@chakra-ui/react'
-import { getExtraFamInfo, nextLevelInfo } from '../../familiarHelpers'
+import { nextLevelInfo, useExtraFamInfo } from '../../familiarHelpers'
 import ChitterIcon from '../Icons/ChitterIcon'
 import MainLink from '../Link/MainLink'
 import GearPicker from '../Picker/GearPicker'
-import { $item, $slot } from '../../fakeLibram'
-
-declare const familiars: BrowserList<BrowserFamiliar>
+//import { $item, $slot } from 'libram'
+import {
+	equippedItem,
+	familiarWeight,
+	itemAmount,
+	myFamiliar,
+	toInt,
+	toSlot,
+	toString,
+	weightAdjustment,
+} from 'kolmafia'
 
 const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 	['The Captain']: 'mummericon1.gif',
@@ -40,11 +44,11 @@ const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 }
 
 export default function FamiliarBrick() {
-	const currFam = familiars.active[0]
+	const currFam = myFamiliar()
 
 	if (currFam) {
 		const nextInfo = nextLevelInfo(currFam)
-		const extraInfo = getExtraFamInfo(currFam, false, false)
+		const extraInfo = useExtraFamInfo(currFam, false, false)
 
 		const famIcon = (
 			<PickerLauncher
@@ -60,7 +64,9 @@ export default function FamiliarBrick() {
 		const famInfo = (
 			<VStack spacing="none">
 				<Tooltip label="Click for Familiar Haiku">
-					<Heading onClick={() => showFam(currFam.id)}>{currFam.name}</Heading>
+					<Heading onClick={() => showFam(toInt(currFam))}>
+						{currFam.name}
+					</Heading>
 				</Tooltip>
 				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
 			</VStack>
@@ -69,9 +75,9 @@ export default function FamiliarBrick() {
 		const famEquip = (
 			<PickerLauncher
 				WrappedPicker={GearPicker}
-				pickerProps={{ slot: $slot`familiar`, fam: currFam }}
+				pickerProps={{ slot: toSlot(`familiar`), fam: currFam }}
 			>
-				<ItemIcon item={$slot`familiar`.equipped} />
+				<ItemIcon item={equippedItem(toSlot(`familiar`))} />
 			</PickerLauncher>
 		)
 
@@ -99,9 +105,9 @@ export default function FamiliarBrick() {
 		const mummery = (
 			<VStack spacing="none">
 				<Text>Pick a Mummer's Costume</Text>
-				{currFam.mummeryCharacter && (
+				{/*currFam.mummeryCharacter && (
 					<Text>Currently {currFam.mummeryCharacter}</Text>
-				)}
+				)*/}
 			</VStack>
 		)
 
@@ -110,7 +116,7 @@ export default function FamiliarBrick() {
 				name="familiar"
 				header={
 					<Flex>
-						{$item`mumming trunk`.inInventory > 0 && (
+						{/*itemAmount($item`mumming trunk`) > 0 && (
 							<MainLink href="/inv_use.php?whichitem=9592&pwd">
 								<ChitterIcon
 									image={
@@ -123,15 +129,19 @@ export default function FamiliarBrick() {
 									small
 								/>
 							</MainLink>
-						)}
+						)*/}
 						<Spacer />
 						<Heading>
 							<Tooltip
-								label={`Buffed Weight (Base Weight: ${currFam.weight}lb)`}
+								label={`Buffed Weight (Base Weight: ${familiarWeight(
+									currFam
+								)}lb)`}
 							>
-								<span style={{ color: 'blue' }}>{currFam.buffedWeight}lb</span>
+								<span style={{ color: 'blue' }}>
+									{familiarWeight(currFam) + weightAdjustment()}lb
+								</span>
 							</Tooltip>{' '}
-							{currFam.type}
+							{toString(currFam as unknown as string)}
 						</Heading>
 						<Spacer />
 					</Flex>
@@ -140,7 +150,7 @@ export default function FamiliarBrick() {
 					<ProgressBar
 						value={nextInfo.progress}
 						max={nextInfo.goal}
-						desc={`exp to ${currFam.weight + 1}lbs`}
+						desc={`exp to ${familiarWeight(currFam) + 1}lbs`}
 					/>
 				}
 			>

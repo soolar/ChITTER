@@ -1,33 +1,31 @@
 import * as React from 'react'
 import { HStack, Text, VStack } from '@chakra-ui/react'
-import { BrowserCharacter } from '../../../character'
-import { $item } from '../../fakeLibram'
 import CurrencyReadout from '../CurrencyReadout'
 import Brick from './Brick'
-
-declare const my: BrowserCharacter
+import { myLevel, myName, myPath, toItem } from 'kolmafia'
+//import { $item } from 'libram'
 
 export default function CharacterBrick() {
 	return (
-		<Brick name="Character" header={my.name}>
+		<Brick name="Character" header={myName()}>
 			<HStack>
 				{/* Character avatar here */}
 				<VStack>
 					{/* Character title here */}
 					{/* Restrictions here */}
-					{my.pathName !== 'none' && <Text>{my.pathName}</Text>}
+					{<Text>{myPath().name}</Text>}
 					<HStack>
 						{[
 							'meat' as const,
-							$item`11-leaf clover`,
-							$item`Freddy Kruegerand`,
+							toItem(`11-leaf clover`),
+							toItem(`Freddy Kruegerand`),
 						].map((it) => (
 							<CurrencyReadout item={it} />
 						))}
 					</HStack>
 				</VStack>
 				<VStack>
-					<Text>{my.level}</Text>
+					<Text>{myLevel()}</Text>
 					<CurrencyReadout item="fites" />
 					<CurrencyReadout item="advs" />
 				</VStack>
