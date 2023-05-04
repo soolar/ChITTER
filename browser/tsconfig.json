@@ -19,7 +19,7 @@
 		"jsx": "react",
 		"skipLibCheck": true,
 		"paths": {
-			"kolmafia": ["./tome-kolmafia-client"]
+			"kolmafia": ["./node_modules/tome-kolmafia-client"]
 		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx"],

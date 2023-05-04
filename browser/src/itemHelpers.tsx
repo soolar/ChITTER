@@ -16,7 +16,6 @@ import {
 	creatableAmount,
 	Effect,
 	equippedItem,
-	getProperty,
 	getRelated,
 	haveEffect,
 	Item,
@@ -33,7 +32,7 @@ import {
 	toString,
 	weaponHands,
 } from 'kolmafia'
-//import { $effect, $effects, $item, $slot, $slots, get, have } from 'libram'
+import { $item, get } from 'libram'
 
 type EquipVerb =
 	| 'equip'
@@ -102,7 +101,7 @@ export function useExtraItemInfo(
 	}
 
 	switch (item) {
-		case toItem(`June cleaver`): {
+		case $item`June cleaver`: {
 			/*
 			const fightsLeft = get('_juneCleaverFightsLeft')
 			if (fightsLeft === 0) {
@@ -114,7 +113,7 @@ export function useExtraItemInfo(
 			*/
 			break
 		}
-		case toItem(`designer sweatpants`): {
+		case $item`designer sweatpants`: {
 			/*
 			const rawSweat = get('sweat')
 			const sweat = Math.max(Math.min(100, rawSweat), 0)
@@ -136,10 +135,10 @@ export function useExtraItemInfo(
 			*/
 			break
 		}
-		case toItem(`Pantsgiving`): {
-			const crumbsFound = Number(getProperty('_pantsgivingCrumbs'))
+		case $item`Pantsgiving`: {
+			const crumbsFound = get('_pantsgivingCrumbs')
 			const crumbs = 10 - crumbsFound
-			const banishesUsed = Number(getProperty('_pantsgivingBanish'))
+			const banishesUsed = get('_pantsgivingBanish')
 			const banishes = 5 - banishesUsed
 			if (crumbs > 0) {
 				res.desc.push(<Text>{crumbs} crumbs left</Text>)
@@ -149,8 +148,8 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		case toItem(`V for Vivala mask`): {
-			const advsGained = Number(getProperty('_vmaskAdv'))
+		case $item`V for Vivala mask`: {
+			const advsGained = get('_vmaskAdv')
 			const advsGainable = 10 - advsGained
 			if (advsGainable > 0) {
 				res.desc.push(<Text>{advsGainable} adv gainable</Text>)
@@ -158,8 +157,8 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		case toItem(`mayfly bait necklace`): {
-			const fliesUsed = Number(getProperty('_mayflySummons'))
+		case $item`mayfly bait necklace`: {
+			const fliesUsed = get('_mayflySummons')
 			const fliesLeft = 30 - fliesUsed
 			if (fliesLeft > 0) {
 				res.desc.push(<Text>{fliesLeft} summons left</Text>)
@@ -168,19 +167,19 @@ export function useExtraItemInfo(
 			break
 		}
 		// @ts-expect-error intentional fallthrough
-		case toItem(`stinky cheese eye`): {
-			const usedBanish = Number(getProperty('_stinkyCheeseBanisherUsed'))
+		case $item`stinky cheese eye`: {
+			const usedBanish = get('_stinkyCheeseBanisherUsed')
 			if (!usedBanish) {
 				res.desc.push(<Text>banish available</Text>)
 			}
 			// intentional fallthrough to automatically get stinkiness
 		}
 		// eslint-disable-next-line no-fallthrough
-		case toItem(`stinky cheese sword`):
-		case toItem(`stinky cheese diaper`):
-		case toItem(`stinky cheese wheel`):
-		case toItem(`Staff of Queso Escusado`): {
-			const stinkiness = Number(getProperty('_stinkyCheeseCount'))
+		case $item`stinky cheese sword`:
+		case $item`stinky cheese diaper`:
+		case $item`stinky cheese wheel`:
+		case $item`Staff of Queso Escusado`: {
+			const stinkiness = get('_stinkyCheeseCount')
 			if (stinkiness < 100) {
 				res.desc.push(<Text>{stinkiness}/100 stinkiness</Text>)
 				res.borderType = 'has-drops'
@@ -189,7 +188,7 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		case toItem(`Buddy Bjorn`): {
+		case $item`Buddy Bjorn`: {
 			const bjornFam = myBjornedFamiliar()
 			const bjornMods = stringModifier(
 				`Throne:${bjornFam?.name}`,
@@ -212,7 +211,7 @@ export function useExtraItemInfo(
 			)
 			break
 		}
-		case toItem(`Crown of Thrones`): {
+		case $item`Crown of Thrones`: {
 			const crownFam = myEnthronedFamiliar()
 			const crownMods = stringModifier(
 				`Throne:${crownFam?.name}`,
@@ -236,8 +235,8 @@ export function useExtraItemInfo(
 			break
 		}
 		/*
-		case toItem(`scratch 'n' sniff sword`):
-		case toItem(`scratch 'n' sniff crossbow`): {
+		case $item`scratch 'n' sniff sword`:
+		case $item`scratch 'n' sniff crossbow`: {
 			const stickers = $slots`sticker1, sticker2, sticker3`.map((slot) =>
 				equippedItem(slot)
 			)
@@ -253,34 +252,34 @@ export function useExtraItemInfo(
 				post?: string
 			}[] = [
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff unicorn sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff unicorn sticker`),
 					value: 25,
 					pre: 'Item +',
 				},
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff apple sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff apple sticker`),
 					value: 2,
 					pre: '+',
 					post: ' exp',
 				},
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff UPC sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff UPC sticker`),
 					value: 25,
 					pre: 'Meat +',
 				},
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff wrestler sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff wrestler sticker`),
 					value: 10,
 					pre: 'Stats +',
 					post: '%',
 				},
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff dragon sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff dragon sticker`),
 					value: 3,
 					pre: 'Prismatic Dmg +',
 				},
 				{
-					amount: stickerAmount(toItem(`scratch 'n' sniff rock band sticker`)),
+					amount: stickerAmount($item`scratch 'n' sniff rock band sticker`),
 					value: 20,
 					pre: 'All Dmg +',
 				},
@@ -299,7 +298,7 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		case toItem(`The Crown of Ed the Undying`): {
+		case $item`The Crown of Ed the Undying`: {
 			const currDecor = getProperty('edPiece')
 			const decorMods = stringModifier(
 				`Edpiece:${currDecor}`,
@@ -310,28 +309,28 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		case toItem(`card sleeve`): {
+		case $item`card sleeve`: {
 			const currCard = equippedItem($slot`card-sleeve`)
 			const cardMods = stringModifier(
-				currCard ?? toItem(`none`),
+				currCard ?? $item`none`,
 				'Evaluated Modifiers'
 			)
 			res.mods += `, ${cardMods}`
 			break
 		}
-		case toItem(`over-the-shoulder Folder Holder`): {
+		case $item`over-the-shoulder Folder Holder`: {
 			const folderSlots = $slots`folder1, folder2, folder3, folder4, folder5`
 			const equippedFolders = folderSlots.map((folderSlot) =>
 				equippedItem(folderSlot)
 			)
 			const folderMods = equippedFolders.map((folder) =>
-				stringModifier(folder ?? toItem(`none`), 'Evaluated Modifiers')
+				stringModifier(folder ?? $item`none`, 'Evaluated Modifiers')
 			)
 			const nonEmptyMods = folderMods.filter((mod) => mod !== '')
 			res.mods = [res.mods, ...nonEmptyMods].join(', ')
 			break
 		}
-		case toItem(`your cowboy boots`): {
+		case $item`your cowboy boots`: {
 			const bootSlots = $slots`bootskin, bootspur`
 			const equippedBootery = bootSlots.map((bootSlot) =>
 				equippedItem(bootSlot)
@@ -344,13 +343,13 @@ export function useExtraItemInfo(
 			break
 		}
 		*/
-		case toItem(`mafia thumb ring`): {
-			const thumbAdvs = Number(getProperty('_mafiaThumbRingAdvs'))
+		case $item`mafia thumb ring`: {
+			const thumbAdvs = get('_mafiaThumbRingAdvs')
 			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
 			break
 		}
 		/*
-		case toItem(`Daylight Shavings Helmet`): {
+		case $item`Daylight Shavings Helmet`: {
 			const lastBeardId = get('lastBeardBuff')
 			const lastBeard = toEffect(lastBeardId)
 			const beards = $effects`Spectacle Moustache, Toiletbrush Moustache, Barbell Moustache, Grizzly Beard, Surrealist's Moustache, Musician's Musician's Moustache, Gull-Wing Moustache, Space Warlord's Beard, Pointy Wizard Beard, Cowboy Stache, Friendly Chops`
@@ -404,8 +403,8 @@ export function useExtraItemInfo(
 			break
 		}
 		*/
-		case toItem(`bone abacus`): {
-			const victories = Number(getProperty('boneAbacusVictories'))
+		case $item`bone abacus`: {
+			const victories = get('boneAbacusVictories')
 			if (victories < 1000) {
 				res.desc.push(<Text>{victories}/1000 wins</Text>)
 				res.borderType = 'has-drops'
@@ -415,13 +414,13 @@ export function useExtraItemInfo(
 			break
 		}
 		// @ts-expect-error intentional fallthrough
-		case toItem(`navel ring of navel gazing`): {
+		case $item`navel ring of navel gazing`: {
 			res.displayName = 'navel ring'
 			// intentional fallthrough to automatically get stinkiness
 		}
 		// eslint-disable-next-line no-fallthrough
-		case toItem(`Greatest American Pants`): {
-			const runsUsed = Number(getProperty('_navelRunaways'))
+		case $item`Greatest American Pants`: {
+			const runsUsed = get('_navelRunaways')
 			const freeChance =
 				runsUsed < 3 ? 100 : runsUsed < 6 ? 80 : runsUsed < 9 ? 50 : 20
 			res.desc.push(<Text>{freeChance}% free run</Text>)
@@ -429,7 +428,7 @@ export function useExtraItemInfo(
 				res.borderType = 'has-drops'
 			}
 			if (item.name.toLowerCase() === 'greatest american pants') {
-				const buffsUsed = Number(getProperty('_gapBuffs'))
+				const buffsUsed = get('_gapBuffs')
 				if (buffsUsed < 5) {
 					res.desc.push(<Text>{5 - buffsUsed} super powers</Text>)
 					res.borderType = 'has-drops'

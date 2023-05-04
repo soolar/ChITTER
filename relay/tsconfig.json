@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"rootDir": "src",
+		"experimentalDecorators": true,
+		"noEmit": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"declaration": false,
+		"forceConsistentCasingInFileNames": true,
+		"lib": ["es2020", "dom"],
+		"module": "commonjs",
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"esModuleInterop": true,
+		"pretty": true,
+		"strict": true,
+		"target": "es2018",
+		"jsx": "react",
+		"skipLibCheck": true
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"exclude": [
+		"node_modules",
+		"typings/main",
+		"typings/main.d.ts",
+		"typings/index.d.ts"
+	],
+	"isolatedModules": true
+}

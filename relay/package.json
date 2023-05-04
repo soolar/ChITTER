@@ -1,0 +1,62 @@
+{
+	"name": "chitter",
+	"version": "0.0.1",
+	"description": "Character Info Toolbox, Totally, Except React",
+	"main": "index.js",
+	"scripts": {
+		"build": "yarn run build:types && yarn run build:js",
+		"build:types": "tsc",
+		"build:js": "node build.mjs",
+		"lint": "eslint src && prettier --check .",
+		"lint:fix": "eslint src --fix && prettier --check --write .",
+		"watch": "yarn run build:types && yarn run watch:js",
+		"watch:js": "webpack --watch --progress"
+	},
+	"author": "soolar",
+	"license": "MIT",
+	"private": true,
+	"dependencies": {
+		"@chakra-ui/react": "^2.3.2",
+		"@chakra-ui/styled-system": "^2.3.1",
+		"@emotion/react": "^11.10.4",
+		"@emotion/styled": "^11.10.4",
+		"core-js": "^3.25.1",
+		"framer-motion": "^7.3.2",
+		"kolmafia": "^5.26781.0",
+		"libram": "^0.7.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"tome-kolmafia-client": "file:tome-kolmafia-client-v0.0.10.tgz"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.18.10",
+		"@babel/compat-data": "^7.19.0",
+		"@babel/core": "^7.19.0",
+		"@babel/plugin-proposal-class-properties": "^7.18.6",
+		"@babel/plugin-proposal-decorators": "^7.19.0",
+		"@babel/plugin-proposal-object-rest-spread": "^7.18.9",
+		"@babel/preset-env": "^7.19.0",
+		"@babel/preset-react": "^7.18.6",
+		"@babel/preset-typescript": "^7.18.6",
+		"@types/react": "^18.0.19",
+		"@types/react-dom": "^18.0.6",
+		"@typescript-eslint/eslint-plugin": "^5.37.0",
+		"@typescript-eslint/parser": "^5.37.0",
+		"babel-plugin-transform-scss": "^1.2.0",
+		"esbuild": "^0.17.17",
+		"esbuild-plugin-babel": "^0.2.3",
+		"eslint": "^8.23.1",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-libram": "^0.2.17",
+		"node-sass": "^7.0.3",
+		"path": "^0.12.7",
+		"prettier": "^2.7.1",
+		"typescript": "^4.8.3"
+	},
+	"prettier": {
+		"tabWidth": 2,
+		"useTabs": true,
+		"semi": false,
+		"singleQuote": true
+	}
+}
