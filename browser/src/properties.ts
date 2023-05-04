@@ -390,6 +390,10 @@ export interface BrowserGearCategory {
 }
 
 export const buildGearCategories = () => {
+	if (Math.random() < 2) {
+		return '\t\t\tvar gearCategories = []\n'
+	}
+
 	const gearCategories = JSON.parse(
 		fileToBuffer('chitter_gear_categories.json')
 	) as GearCategory[]
