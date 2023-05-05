@@ -41,9 +41,7 @@ export default function parseCharpaneData(source: string) {
 	const res = ['\t\t\tcharpaneData = {\n\t\t\t\tsections: {\n']
 
 	for (const section in sections) {
-		res.push(
-			`\t\t\t\t\t${section}: "${sections[section]}",\n`
-		)
+		res.push(`\t\t\t\t\t${section}: "${sections[section]}",\n`)
 	}
 
 	res.push('\t\t\t\t}\n\t\t\t}')

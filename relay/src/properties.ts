@@ -175,4 +175,3 @@ export const getPropVal = (propName: string) => {
 	}
 	return undefined
 }
-

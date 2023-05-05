@@ -1,7 +1,30 @@
-import {$class, $items, $skill, $slot, $slots, get, have} from "libram"
-import {canEquip, classModifier, closetAmount, creatableAmount, fileToBuffer, hippyStoneBroken, inebrietyLimit, isUnrestricted, Item, itemAmount, myClass, myInebriety, myPath, myPrimestat, numericModifier, Path, print, Slot, Stat, storageAmount, toSlot, weaponHands} from "kolmafia"
-import {foldableAmount} from "./guidelines"
-import {fieldValueToJSString} from "./fieldValue"
+import { $class, $items, $skill, $slot, $slots, get, have } from 'libram'
+import {
+	canEquip,
+	classModifier,
+	closetAmount,
+	creatableAmount,
+	fileToBuffer,
+	hippyStoneBroken,
+	inebrietyLimit,
+	isUnrestricted,
+	Item,
+	itemAmount,
+	myClass,
+	myInebriety,
+	myPath,
+	myPrimestat,
+	numericModifier,
+	Path,
+	print,
+	Slot,
+	Stat,
+	storageAmount,
+	toSlot,
+	weaponHands,
+} from 'kolmafia'
+import { foldableAmount } from './guidelines'
+import { fieldValueToJSString } from './fieldValue'
 
 type StatType = 'Muscle' | 'Mysticality' | 'Moxie'
 
