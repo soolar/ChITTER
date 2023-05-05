@@ -1,5 +1,3 @@
-import { fieldValueToJSString } from './fieldValue'
-
 export interface BrowserCharpaneData {
 	sections: {
 		familiar: string
@@ -44,7 +42,7 @@ export default function parseCharpaneData(source: string) {
 
 	for (const section in sections) {
 		res.push(
-			`\t\t\t\t\t${section}: ${fieldValueToJSString(sections[section])},\n`
+			`\t\t\t\t\t${section}: "${sections[section]}",\n`
 		)
 	}
 

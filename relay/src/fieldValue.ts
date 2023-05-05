@@ -1,5 +1,4 @@
 import { Class, Familiar, Item, Skill, Stat } from 'kolmafia'
-import { CurrMax, StatValues } from './utils'
 
 export type FieldValueBase =
 	| string
@@ -11,8 +10,6 @@ export type FieldValueBase =
 	| Skill
 	| Class
 	| Familiar
-	| CurrMax
-	| StatValues
 export type FieldValue = FieldValueBase | FieldValueBase[]
 export type FieldData<T> = [string, (thing: T) => FieldValue]
 
@@ -52,12 +49,6 @@ export const fieldValueToJSString: (value: FieldValue) => string = (
 	}
 	if (value instanceof Familiar) {
 		return `familiars.byName["${value.toString()}"]`
-	}
-	if ('curr' in value && 'max' in value) {
-		return `{ curr: ${value.curr}, max: ${value.max} }`
-	}
-	if ('base' in value && 'buffed' in value && 'substats' in value) {
-		return `{ base: ${value.base}, buffed: ${value.buffed}, substats: ${value.substats} }`
 	}
 	throw new TypeError('Unhandled type in fieldValueToJSString')
 }

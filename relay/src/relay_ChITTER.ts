@@ -1,6 +1,6 @@
 import { visitUrl } from 'kolmafia'
 import { write } from 'kolmafia'
-import parseCharpaneData from '../parseCharpaneData'
+import parseCharpaneData from './parseCharpaneData'
 
 export function main(): void {
 	const baseCharpane = visitUrl('charpane.php', false)
