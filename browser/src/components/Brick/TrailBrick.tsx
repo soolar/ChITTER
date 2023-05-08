@@ -1,3 +1,4 @@
+/*
 import * as React from 'react'
 import { Text, VStack } from '@chakra-ui/react'
 import Brick from './Brick'
@@ -32,3 +33,4 @@ export default function TrailBrick() {
 		</Brick>
 	)
 }
+*/
