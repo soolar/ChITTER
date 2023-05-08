@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { MummeryCharacter } from '../../../guidelines'
-import { showFam } from '../../../utils'
+import { showFam } from '../../utils'
 import FamIcon from '../Icons/FamIcon'
 import FamiliarPicker from '../Picker/FamiliarPicker'
 import ItemIcon from '../Icons/ItemIcon'
@@ -33,6 +32,7 @@ import {
 	weightAdjustment,
 } from 'kolmafia'
 
+/*
 const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 	['The Captain']: 'mummericon1.gif',
 	Beelzebub: 'mummericon2.gif',
@@ -42,6 +42,7 @@ const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 	['The Doctor']: 'mummericon6.gif',
 	['Miss Funny']: 'mummericon7.gif',
 }
+*/
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()

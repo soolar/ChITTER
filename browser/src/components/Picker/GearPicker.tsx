@@ -9,24 +9,12 @@ import {
 	WrapItem,
 } from '@chakra-ui/react'
 import Picker from './Picker'
-import {
-	BrowserFamiliar,
-	BrowserItem,
-	BrowserList,
-	BrowserSlot,
-} from '../../../guidelines'
 import ItemIcon from '../Icons/ItemIcon'
 import { useExtraItemInfo } from '../../itemHelpers'
-import {
-	BrowserChitProperties,
-	BrowserGearCategory,
-	BrowserGearCategorySlot,
-} from '../../../properties'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
 //import { $familiar } from '../../fakeLibram'
-import { BrowserCharacter } from '../../../character'
 import { Familiar, Slot } from 'kolmafia'
 
 type GearPickerArgs = {

@@ -22,6 +22,7 @@ import {
 	useFamiliar,
 } from 'kolmafia'
 import CallbackLink from '../Link/CallbackLink'
+import {$familiar} from 'libram'
 //import { $familiars } from 'libram'
 
 export type FamiliarPickerType = 'default' | 'bjorn' | 'crown'
@@ -70,9 +71,9 @@ export default function FamiliarPicker({
 	const famsToShow = (
 		favoritesOnly
 			? Object.keys(favoriteFamiliars()).map((famName) => toFamiliar(famName))
-			: Familiar.all().filter((fam) => haveFamiliar(fam))
+			: Familiar.all().filter((fam) => haveFamiliar(fam as Familiar))
 	).filter((fam) => {
-		if (!canEquip(fam) && type === 'default') {
+		if (!canEquip(fam as Familiar) && type === 'default') {
 			return false
 		}
 		if (fam === activeFam) {
@@ -81,7 +82,7 @@ export default function FamiliarPicker({
 		if (!dropsOnly) {
 			return true
 		}
-		const extraInfo = useExtraFamInfo(fam, false, type !== 'default')
+		const extraInfo = useExtraFamInfo(fam as Familiar, false, type !== 'default')
 		return (
 			extraInfo.dropInfo &&
 			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
@@ -116,7 +117,7 @@ export default function FamiliarPicker({
 						/>
 					</VStack>
 					<Spacer />
-					<CallbackLink callback={() => useFamiliar(Familiar.none)}>
+					<CallbackLink callback={() => useFamiliar($familiar.none)}>
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
 					</CallbackLink>
 				</Flex>
@@ -124,7 +125,7 @@ export default function FamiliarPicker({
 		>
 			<Wrap spacing={0}>
 				{famsToShow.map((fam) => (
-					<FamiliarPickerFam fam={fam} cmd={cmd} type={type} />
+					<FamiliarPickerFam fam={fam as Familiar} cmd={cmd} type={type} />
 				))}
 				{!favoritesOnly && (
 					<>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import ChitterIcon from './ChitterIcon'
 import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { useExtraFamInfo, useWeirdoDivContents } from '../../familiarHelpers'
-import { showFam } from '../../../utils'
+import { showFam } from '../../utils'
 import { Familiar, familiarWeight, toInt, toString } from 'kolmafia'
 
 interface FamIconArgs {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { pluralize, showFam } from '../utils'
+import { pluralize, showFam } from './utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
 //import { $familiar, $item } from 'libram'

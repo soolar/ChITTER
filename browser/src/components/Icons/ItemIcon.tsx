@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ChitterIcon from './ChitterIcon'
 import { Text, VStack } from '@chakra-ui/react'
-import { showItem } from '../../../utils'
+import { showItem } from '../../utils'
 import { Item } from 'kolmafia'
 import { useExtraItemInfo } from '../../itemHelpers'
 

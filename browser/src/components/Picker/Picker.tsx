@@ -16,7 +16,9 @@ export default function Picker({
 		<>
 			<PopoverHeader className="picker-header">{header}</PopoverHeader>
 			<PopoverBody className="picker-body">{children}</PopoverBody>
-			{footer && <PopoverFooter className="picker-footer">{footer}</PopoverFooter>}
+			{footer && (
+				<PopoverFooter className="picker-footer">{footer}</PopoverFooter>
+			)}
 		</>
 	)
 }

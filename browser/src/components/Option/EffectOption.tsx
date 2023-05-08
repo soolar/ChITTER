@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Effect, stringModifier } from 'kolmafia'
-import { parseMods } from '../../../utils'
+import { parseMods } from '../../utils'
 import EffectIcon from '../Icons/EffectIcon'
 import ChitterOption from './ChitterOption'
 import OptionText from './OptionText'

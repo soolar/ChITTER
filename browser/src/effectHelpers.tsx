@@ -1,7 +1,7 @@
 import { Effect, stringModifier, toEffect } from 'kolmafia'
 //import { $effect } from 'libram'
 import * as React from 'react'
-import { parseMods } from '../utils'
+import { parseMods } from './utils'
 import FlavourPicker from './components/Picker/FlavourPicker'
 
 interface ExtraEffectInfo {

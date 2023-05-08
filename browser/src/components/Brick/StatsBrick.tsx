@@ -16,7 +16,7 @@ import {
 } from 'kolmafia'
 //import { $stat } from 'libram'
 import * as React from 'react'
-import { CurrMax, StatValues } from '../../../utils'
+import { CurrMax, StatValues } from '../../utils'
 import ProgressBar from '../ProgressBar'
 import Brick from './Brick'
 
