@@ -3,8 +3,8 @@ import babel from 'esbuild-plugin-babel'
 
 build({
 	bundle: true,
-	minifySyntax: true,
-	platform: 'node',
+	minifySyntax: false,
+	platform: 'browser',
 	target: 'rhino1.7.13',
 	plugins: [babel()],
 	define: {

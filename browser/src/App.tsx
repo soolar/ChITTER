@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChakraProvider, Container, Flex, Spacer } from '@chakra-ui/react'
+import { ChakraProvider, Container, Flex } from '@chakra-ui/react'
 import brickRegistry, { BrickName } from './components/Brick/BrickRegistry'
 import ErrorBrick from './components/Brick/ErrorBrick'
 import theme from './theme'
