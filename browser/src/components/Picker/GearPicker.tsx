@@ -14,8 +14,30 @@ import { useExtraItemInfo } from '../../itemHelpers'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CommandLink from '../Link/CommandLink'
-//import { $familiar } from '../../fakeLibram'
-import { Familiar, Slot } from 'kolmafia'
+import { $familiar, $skill, $slot } from 'libram'
+import {
+	availableAmount,
+	booleanModifier,
+	canEquip,
+	closetAmount,
+	creatableAmount,
+	equippedAmount,
+	equippedItem,
+	Familiar,
+	familiarEquipment,
+	getRelated,
+	haveSkill,
+	Item,
+	itemAmount,
+	pullsRemaining,
+	Slot,
+	storageAmount,
+	toInt,
+	toItem,
+	toSlot,
+	toString,
+} from 'kolmafia'
+import { getPropVal } from '../../utils'
 
 type GearPickerArgs = {
 	slot: Slot
@@ -23,46 +45,58 @@ type GearPickerArgs = {
 }
 
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
-	void slot
-	void fam
-	return <div>heck</div>
-	/*
-	const functionalSlotName =
-		slot.name === 'acc2' || slot.name === 'acc3'
-			? 'acc1'
-			: slot.name === 'familiar'
+	const slotName = toString(slot as unknown as string)
+	const functionalSlot =
+		slot === $slot`acc2` || slot === $slot`acc3`
+			? $slot`acc1`
+			: slot === $slot`familiar`
 			? fam === $familiar`Disembodied Hand`
-				? 'weapon'
+				? $slot`weapon`
 				: fam === $familiar`Fancypants Scarecrow`
-				? 'pants'
+				? $slot`pants`
 				: fam === $familiar`Mad Hatrack`
-				? 'hat'
+				? $slot`hat`
 				: fam === $familiar`Left-Hand Man`
-				? 'off-hand'
-				: 'familiar'
-			: slot.name
+				? $slot`off-hand`
+				: $slot`familiar`
+			: slot
 	const isWeirdFam =
 		fam === $familiar`Fancypants Scarecrow` || fam === $familiar`Mad Hatrack`
-	const equipped = slot.equipped
-	const baseFilter = (item: BrowserItem) =>
-		item.canEquip &&
-		(item.slotStr === functionalSlotName ||
-			(item.slotStr === 'weapon' && slot.name === 'off-hand')) &&
+	const equipped = equippedItem(slot)
+	const foldableAmount = (it: Item) =>
+		Object.keys(getRelated(it, 'fold'))
+			.filter((foldableName) => toItem(foldableName) !== it)
+			.reduce(
+				(partial, foldableName) =>
+					partial + availableAmount(toItem(foldableName)),
+				0,
+			)
+	const baseFilter = (item: Item) =>
+		canEquip(item) &&
+		(toSlot(item) === functionalSlot ||
+			(haveSkill($skill`Double-Fisted Skull Smashing`) &&
+				toSlot(item) === $slot`weapon` &&
+				slot === $slot`off-hand`)) &&
 		equipped !== item &&
-		item.inInventory +
-			item.inCloset +
-			(my.pulls !== 0 ? item.inStorage : 0) +
-			item.creatable +
-			item.foldable >
+		itemAmount(item) +
+			closetAmount(item) +
+			(pullsRemaining() !== 0 ? storageAmount(item) : 0) +
+			creatableAmount(item) +
+			foldableAmount(item) >
 			0 &&
-		!(item.singleEquip && item.onBody > 0)
+		!(booleanModifier(item, 'Single Equip') && equippedAmount(item) > 0)
+	const favsProp = 'gear.favorites'
+	const favsList = ((getPropVal(favsProp) ?? []) as Item[])
+		.sort((a: Item, b: Item) => toInt(a) - toInt(b))
+		.filter(baseFilter)
 	const categories = [
 		{
 			name: 'favorites',
-			items: items.favorites.filter(baseFilter),
+			items: favsList,
 		},
 	]
 
+	/*
 	gearCategories.forEach((category) => {
 		categories.push({
 			name: category.name,
@@ -71,29 +105,24 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			].filter((it) => equipped !== it),
 		})
 	})
-
-	let favsProp = 'gear.favorites'
-	let favsList = items.favorites
+	*/
 
 	if (fam) {
-		if (functionalSlotName !== 'familiar') {
-			favsProp = `familiar.${functionalSlotName}${
-				functionalSlotName !== 'pants' ? 's' : ''
-			}`
-			favsList = chitProperties[favsProp] as BrowserItem[]
-			categories[0].items = favsList.filter(baseFilter)
-		} else if (fam.uniqueEquipment) {
-			if (fam.uniqueEquipment.foldableNames) {
+		const uniqueEquipment = familiarEquipment(fam)
+		if (uniqueEquipment) {
+			const foldables = Object.keys(getRelated(uniqueEquipment, 'fold') ?? {})
+			if (foldables.length > 0) {
 				categories.push({
 					name: 'uniques',
-					items: fam.uniqueEquipment.foldableNames
-						.map((itemName) => items.byName[itemName])
+					items: foldables
+						.filter((itemName: string) => itemName !== '')
+						.map((itemName: string) => toItem(itemName))
 						.filter(baseFilter),
 				})
 			} else {
 				categories.push({
 					name: 'unique',
-					items: [fam.uniqueEquipment].filter(baseFilter),
+					items: [uniqueEquipment].filter(baseFilter),
 				})
 			}
 		}
@@ -101,14 +130,14 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 
 	const equippedFav = !!favsList.find((it) => it === equipped)
 
-	const extraInfo = getExtraItemInfo(equipped, { forEquipping: true })
+	const extraInfo = useExtraItemInfo(equipped, { forEquipping: true })
 	return (
-		<Picker header={`Change ${slot.name}`}>
+		<Picker header={`Change ${slotName}`}>
 			{extraInfo.extraOptions}
 			{equipped && (
 				<ChitterOption icon={<ItemIcon item={equipped} />}>
 					<HStack>
-						<CommandLink cmd={`unequip ${slot.name}`}>
+						<CommandLink cmd={`unequip ${slotName}`}>
 							<Text>
 								<Text as="b">unequip</Text>&nbsp;
 								<Text
@@ -139,8 +168,8 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						<Wrap spacing={0}>
 							{categories[0].items.map((fav) => {
 								return (
-									<WrapItem key={`${slot.name} favorites ${fav.name}`}>
-										<CommandLink cmd={`equip ${slot.name} ${fav.name}`}>
+									<WrapItem key={`${slotName} favorites ${fav.name}`}>
+										<CommandLink cmd={`equip ${slotName} ${fav.name}`}>
 											<ItemIcon item={fav} weirdFam={isWeirdFam} forEquipping />
 										</CommandLink>
 									</WrapItem>
@@ -155,11 +184,11 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 				{categories
 					.filter(
 						(category) =>
-							category.items.length > 0 && category.name !== 'favorites'
+							category.items.length > 0 && category.name !== 'favorites',
 					)
 					.map((category) => {
 						return (
-							<HStack key={`${slot.name} ${category.name}`}>
+							<HStack key={`${slotName} ${category.name}`}>
 								<Wrap spacing={0}>
 									<WrapItem>
 										<Heading as="h3">{category.name}</Heading>
@@ -168,9 +197,9 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 										{category.items.map((item) => {
 											return (
 												<WrapItem
-													key={`${slot.name} ${category.name} ${item.name}`}
+													key={`${slotName} ${category.name} ${item.name}`}
 												>
-													<CommandLink cmd={`equip ${slot.name} ${item.name}`}>
+													<CommandLink cmd={`equip ${slotName} ${item.name}`}>
 														<ItemIcon
 															item={item}
 															weirdFam={isWeirdFam}
@@ -188,5 +217,4 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			</VStack>
 		</Picker>
 	)
-	*/
 }

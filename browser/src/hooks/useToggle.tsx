@@ -2,7 +2,7 @@ import * as React from 'react'
 
 export default function useToggle(
 	name: string,
-	def: boolean
+	def: boolean,
 ): [boolean, React.Dispatch<React.SetStateAction<boolean>>] {
 	const trueName = `chitter.${name}`
 	const storedValue = window.localStorage.getItem(trueName)

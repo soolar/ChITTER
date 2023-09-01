@@ -22,8 +22,7 @@ import {
 	useFamiliar,
 } from 'kolmafia'
 import CallbackLink from '../Link/CallbackLink'
-import {$familiar} from 'libram'
-//import { $familiars } from 'libram'
+import { $familiar, $familiars } from 'libram'
 
 export type FamiliarPickerType = 'default' | 'bjorn' | 'crown'
 
@@ -56,11 +55,11 @@ export default function FamiliarPicker({
 	const toggleSubtype = type === 'default' ? 'normal' : 'rider'
 	const [favoritesOnly, setFavoritesOnly] = useToggle(
 		`famFavsOnly.${toggleSubtype}`,
-		true
+		true,
 	)
 	const [dropsOnly, setDropsOnly] = useToggle(
 		`famDropsOnly.${toggleSubtype}`,
-		false
+		false,
 	)
 	const activeFam =
 		type === 'default'
@@ -71,8 +70,11 @@ export default function FamiliarPicker({
 	const famsToShow = (
 		favoritesOnly
 			? Object.keys(favoriteFamiliars()).map((famName) => toFamiliar(famName))
-			: Familiar.all().filter((fam) => haveFamiliar(fam as Familiar))
+			: $familiars``.filter((fam) => haveFamiliar(fam as Familiar))
 	).filter((fam) => {
+		if (toInt(fam as Familiar) === 0) {
+			return false
+		}
 		if (!canEquip(fam as Familiar) && type === 'default') {
 			return false
 		}
@@ -82,7 +84,11 @@ export default function FamiliarPicker({
 		if (!dropsOnly) {
 			return true
 		}
-		const extraInfo = useExtraFamInfo(fam as Familiar, false, type !== 'default')
+		const extraInfo = useExtraFamInfo(
+			fam as Familiar,
+			false,
+			type !== 'default',
+		)
 		return (
 			extraInfo.dropInfo &&
 			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
@@ -125,11 +131,16 @@ export default function FamiliarPicker({
 		>
 			<Wrap spacing={0}>
 				{famsToShow.map((fam) => (
-					<FamiliarPickerFam fam={fam as Familiar} cmd={cmd} type={type} />
+					<FamiliarPickerFam
+						key={toInt(fam as Familiar)}
+						fam={fam as Familiar}
+						cmd={cmd}
+						type={type}
+					/>
 				))}
 				{!favoritesOnly && (
 					<>
-						<WrapItem>Familiar.all() machine broke</WrapItem>
+						<WrapItem>$familiars`` machine broke</WrapItem>
 						<WrapItem>Understandable, have a nice day</WrapItem>
 					</>
 				)}

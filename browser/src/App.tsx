@@ -40,7 +40,7 @@ function ChitterSection({ sectionName, bricks }: ChitterSectionArgs) {
 			className="chit_chamber"
 		>
 			{bricks.map((brickName) => (
-				<ChitterBrick brickName={brickName} />
+				<ChitterBrick key={brickName} brickName={brickName} />
 			))}
 		</Container>
 	)
@@ -57,6 +57,7 @@ function Layout() {
 		<Flex height="full" flexDirection="column" flexWrap="nowrap" id="chit_home">
 			{(['roof', 'walls', 'floor'] as const).map((sectionName) => (
 				<ChitterSection
+					key={sectionName}
 					sectionName={sectionName}
 					bricks={brickOrder[sectionName]}
 				/>
@@ -96,13 +97,13 @@ async function getChitterCharacterState() {
 		'familiar',
 	]
 	const slots = await Promise.all(
-		slotNames.map((slotName) => call.toSlot(slotName))
+		slotNames.map((slotName) => call.toSlot(slotName)),
 	)
 	const equipment = await Promise.all(
-		slots.map((slot) => call.equippedItem(slot))
+		slots.map((slot) => call.equippedItem(slot)),
 	)
 	const equipmentIds = await Promise.all(
-		equipment.map((equipped) => call.toInt(equipped))
+		equipment.map((equipped) => call.toInt(equipped)),
 	)
 	return {
 		myTurncount,

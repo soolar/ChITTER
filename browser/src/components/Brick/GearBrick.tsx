@@ -3,8 +3,8 @@ import { Wrap, WrapItem } from '@chakra-ui/react'
 import Brick from './Brick'
 import PickerLauncher from '../Picker/PickerLauncher'
 import GearPicker from '../Picker/GearPicker'
-import { Slot, toSlot, toString } from 'kolmafia'
-//import { $slots } from 'libram'
+import { Slot, toString } from 'kolmafia'
+import { $slots } from 'libram'
 import ItemIcon from '../Icons/ItemIcon'
 import { equippedItem } from 'kolmafia'
 
@@ -25,24 +25,13 @@ function GearBrickSlotIcon({ slot }: GearBrickSlotIconArgs) {
 }
 
 export default function GearBrick() {
-	const relevantSlots = [
-		//$slots`hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3`
-		toSlot('hat'),
-		toSlot('back'),
-		toSlot('shirt'),
-		toSlot('weapon'),
-		toSlot('off-hand'),
-		toSlot('pants'),
-		toSlot('acc1'),
-		toSlot('acc2'),
-		toSlot('acc3'),
-	]
+	const relevantSlots = $slots`hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3`
 
 	return (
 		<Brick name="gear" header="Gear">
 			<Wrap justify="center" spacing="2px">
-				{relevantSlots.map((slot) => (
-					<GearBrickSlotIcon slot={slot} />
+				{relevantSlots.map((slot, i) => (
+					<GearBrickSlotIcon key={i} slot={slot} />
 				))}
 			</Wrap>
 		</Brick>

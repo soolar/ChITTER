@@ -45,7 +45,7 @@ export function getExtraSkillInfo(sk: Skill): ExtraSkillInfo {
 		}
 		case toSkill(`Make Sweat-Ade`): {
 			res.desc.push(
-				<Text>Makes a 4 spleen consumable that grants 5 PvP fights</Text>
+				<Text>Makes a 4 spleen consumable that grants 5 PvP fights</Text>,
 			)
 			handleSweat(50)
 			break
@@ -57,7 +57,7 @@ export function getExtraSkillInfo(sk: Skill): ExtraSkillInfo {
 		}
 		case toSkill(`Sweat Spray`): {
 			res.desc.push(
-				<Text>Deal minor sleaze damage for the rest of combat</Text>
+				<Text>Deal minor sleaze damage for the rest of combat</Text>,
 			)
 			handleSweat(3)
 			break

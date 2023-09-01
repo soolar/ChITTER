@@ -28,7 +28,7 @@ export default function ItemIcon({
 	let weirdFamText
 	if (weirdFam && item) {
 		const match = extraInfo.rawMods.match(
-			/Familiar Effect: "([^"]+), cap (\d+)"/
+			/Familiar Effect: "([^"]+), cap (\d+)"/,
 		)
 		if (match) {
 			weirdFamText = (

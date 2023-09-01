@@ -32,7 +32,7 @@ import {
 	toString,
 	weaponHands,
 } from 'kolmafia'
-import { $item, get } from 'libram'
+import { $effects, $item, $slot, $slots, get, have } from 'libram'
 
 type EquipVerb =
 	| 'equip'
@@ -63,7 +63,7 @@ interface UseExtraItemInfoOptionalArgs {
 
 export function useExtraItemInfo(
 	item: Item,
-	optionals: UseExtraItemInfoOptionalArgs = {}
+	optionals: UseExtraItemInfoOptionalArgs = {},
 ): ExtraItemInfo {
 	const mods = stringModifier(item, 'Evaluated Modifiers')
 	const name = toString(item as unknown as string)
@@ -75,7 +75,7 @@ export function useExtraItemInfo(
 				.map((foldableName) => toItem(foldableName))
 		: []
 	const foldableAltAmounts = foldableAlts.map((foldable) =>
-		availableAmount(foldable)
+		availableAmount(foldable),
 	)
 	const foldableAmount = foldableAltAmounts.reduce((acc, amt) => acc + amt, 0)
 	const res: ExtraItemInfo = {
@@ -102,7 +102,6 @@ export function useExtraItemInfo(
 
 	switch (item) {
 		case $item`June cleaver`: {
-			/*
 			const fightsLeft = get('_juneCleaverFightsLeft')
 			if (fightsLeft === 0) {
 				res.desc.push(<Text>noncom now!</Text>)
@@ -110,11 +109,9 @@ export function useExtraItemInfo(
 			} else {
 				res.desc.push(<Text>{fightsLeft} to noncom</Text>)
 			}
-			*/
 			break
 		}
 		case $item`designer sweatpants`: {
-			/*
 			const rawSweat = get('sweat')
 			const sweat = Math.max(Math.min(100, rawSweat), 0)
 			const sweatBoozeUsed = get('_sweatOutSomeBoozeUsed')
@@ -130,9 +127,8 @@ export function useExtraItemInfo(
 					pickerProps={{}}
 					verb="use"
 					subject="some sweat"
-				/>
+				/>,
 			)
-			*/
 			break
 		}
 		case $item`Pantsgiving`: {
@@ -192,7 +188,7 @@ export function useExtraItemInfo(
 			const bjornFam = myBjornedFamiliar()
 			const bjornMods = stringModifier(
 				`Throne:${bjornFam?.name}`,
-				'Evaluated Modifiers'
+				'Evaluated Modifiers',
 			)
 			const bjornInfo = useExtraFamInfo(bjornFam, true, true)
 			if (bjornFam) {
@@ -207,7 +203,7 @@ export function useExtraItemInfo(
 					pickerProps={{ type: 'bjorn' }}
 					verb="pick"
 					subject="a rider"
-				/>
+				/>,
 			)
 			break
 		}
@@ -215,7 +211,7 @@ export function useExtraItemInfo(
 			const crownFam = myEnthronedFamiliar()
 			const crownMods = stringModifier(
 				`Throne:${crownFam?.name}`,
-				'Evaluated Modifiers'
+				'Evaluated Modifiers',
 			)
 			const crownInfo = useExtraFamInfo(crownFam, true, true)
 			if (crownFam) {
@@ -230,11 +226,10 @@ export function useExtraItemInfo(
 					pickerProps={{ type: 'crown' }}
 					verb="pick"
 					subject="a rider"
-				/>
+				/>,
 			)
 			break
 		}
-		/*
 		case $item`scratch 'n' sniff sword`:
 		case $item`scratch 'n' sniff crossbow`: {
 			const stickers = $slots`sticker1, sticker2, sticker3`.map((slot) =>
@@ -299,7 +294,7 @@ export function useExtraItemInfo(
 			break
 		}
 		case $item`The Crown of Ed the Undying`: {
-			const currDecor = getProperty('edPiece')
+			const currDecor = get('edPiece')
 			const decorMods = stringModifier(
 				`Edpiece:${currDecor}`,
 				'Evaluated Modifiers'
@@ -342,13 +337,10 @@ export function useExtraItemInfo(
 			res.mods = [res.mods, ...nonEmptyMods].join(', ')
 			break
 		}
-		*/
 		case $item`mafia thumb ring`: {
-			const thumbAdvs = get('_mafiaThumbRingAdvs')
-			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
+			res.desc.push(<Text>{get('_mafiaThumbRingAdvs')} adv gained</Text>)
 			break
 		}
-		/*
 		case $item`Daylight Shavings Helmet`: {
 			const lastBeardId = get('lastBeardBuff')
 			const lastBeard = toEffect(lastBeardId)
@@ -391,7 +383,7 @@ export function useExtraItemInfo(
 			res.desc.push(
 				<Text
 					dangerouslySetInnerHTML={{
-						__html: `${nextBeard.toString()} [${parseMods(
+						__html: `${toString(nextBeard as unknown as string)} [${parseMods(
 							nextBeardRawMods
 						)}] due ${currBeard ? `in ${turnsOfCurrBeard ?? 0} turns` : 'now'}`,
 					}}
@@ -402,7 +394,6 @@ export function useExtraItemInfo(
 			}
 			break
 		}
-		*/
 		case $item`bone abacus`: {
 			const victories = get('boneAbacusVictories')
 			if (victories < 1000) {
@@ -439,7 +430,7 @@ export function useExtraItemInfo(
 							subject="super power"
 							WrappedPicker={GAPPicker}
 							pickerProps={{ usesRemaining: 5 - buffsUsed }}
-						/>
+						/>,
 					)
 				}
 			}

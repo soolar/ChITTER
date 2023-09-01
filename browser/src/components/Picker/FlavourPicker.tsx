@@ -20,7 +20,7 @@ export default function FlavourPicker() {
 		{ element: 'None', spirit: 'Nothing', x: 89, y: 95 },
 	]
 	const activeArea = areas.find(
-		(area) => haveEffect(toEffect(`Spirit of ${area.spirit}`)) > 0
+		(area) => haveEffect(toEffect(`Spirit of ${area.spirit}`)) > 0,
 	)
 	const activeElement = activeArea ? activeArea.element.toLowerCase() : 'none'
 	return (

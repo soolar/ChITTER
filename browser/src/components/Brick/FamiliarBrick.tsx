@@ -135,7 +135,7 @@ export default function FamiliarBrick() {
 						<Heading>
 							<Tooltip
 								label={`Buffed Weight (Base Weight: ${familiarWeight(
-									currFam
+									currFam,
 								)}lb)`}
 							>
 								<span style={{ color: 'blue' }}>

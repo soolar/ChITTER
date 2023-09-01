@@ -3,14 +3,14 @@ import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { pluralize, showFam } from './utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
-//import { $familiar, $item } from 'libram'
+import { $effect, $familiar, $item, get } from 'libram'
 import {
+	availableAmount,
 	Familiar,
 	familiarWeight,
+	haveEffect,
 	Item,
-	toFamiliar,
 	toInt,
-	toItem,
 } from 'kolmafia'
 
 export const nextLevelInfo = (fam: Familiar) => {
@@ -30,7 +30,7 @@ export const nextLevelInfo = (fam: Familiar) => {
 export function useWeirdoDivContents(fam: Familiar) {
 	const extraInfo = useExtraFamInfo(fam, true, false)
 	switch (fam) {
-		case toFamiliar(`Melodramedary`): {
+		case $familiar`Melodramedary`: {
 			const weight = familiarWeight(fam)
 			const famNum = toInt(fam)
 			return (
@@ -44,7 +44,7 @@ export function useWeirdoDivContents(fam: Familiar) {
 				>
 					<Image src="/images/otherimages/camelfam_left.gif" border={0} />
 					{Array(Math.floor((weight ?? 0) / 5)).fill(
-						<Image src="/images/otherimages/camelfam_middle.gif" border={0} />
+						<Image src="/images/otherimages/camelfam_middle.gif" border={0} />,
 					)}
 					<Image src="/images/otherimages/camelfam_right.gif" border={0} />
 				</HStack>
@@ -63,137 +63,137 @@ interface BjornInfo {
 }
 
 const bjornDrops: { [fam: string]: BjornInfo } = {
-	[toFamiliar(`Grimstone Golem`).toString()]: {
+	[$familiar`Grimstone Golem`.toString()]: {
 		limit: 1,
 		prop: '_grimstoneMaskDropsCrown',
-		drop: toItem(`grimstone mask`),
+		drop: $item`grimstone mask`,
 	},
-	[toFamiliar(`Grim Brother`).toString()]: {
+	[$familiar`Grim Brother`.toString()]: {
 		limit: 2,
 		prop: '_grimFairyTaleDropsCrown',
-		drop: toItem(`grim fairy tale`),
+		drop: $item`grim fairy tale`,
 	},
-	[toFamiliar(`Trick-or-Treating Tot`).toString()]: {
+	[$familiar`Trick-or-Treating Tot`.toString()]: {
 		limit: 3,
 		prop: '_hoardedCandyDropsCrown',
-		drop: toItem(`hoarded candy wad`),
+		drop: $item`hoarded candy wad`,
 	},
-	[toFamiliar(`Optimistic Candle`).toString()]: {
+	[$familiar`Optimistic Candle`.toString()]: {
 		limit: 3,
 		prop: '_optimisticCandleDropsCrown',
-		drop: toItem(`glob of melted wax`),
+		drop: $item`glob of melted wax`,
 	},
-	[toFamiliar(`Garbage Fire`).toString()]: {
+	[$familiar`Garbage Fire`.toString()]: {
 		limit: 3,
 		prop: '_garbageFireDropsCrown',
-		drop: toItem(`burning newspaper`),
+		drop: $item`burning newspaper`,
 	},
-	[toFamiliar(`Twitching Space Critter`).toString()]: {
+	[$familiar`Twitching Space Critter`.toString()]: {
 		limit: 1,
 		prop: '_spaceFurDropsCrown',
-		drop: toItem(`space beast fur`),
+		drop: $item`space beast fur`,
 	},
-	[toFamiliar(`Machine Elf`).toString()]: {
+	[$familiar`Machine Elf`.toString()]: {
 		limit: 25,
 		prop: '_abstractionDropsCrown',
 		drop: 'abstractions',
 	},
-	[toFamiliar(`Adventurous Spelunker`).toString()]: {
+	[$familiar`Adventurous Spelunker`.toString()]: {
 		limit: 6,
 		prop: '_oreDropsCrown',
 		drop: 'non-quest ore',
 	},
-	[toFamiliar(`Puck Man`).toString()]: {
+	[$familiar`Puck Man`.toString()]: {
 		limit: 25,
 		prop: '_yellowPixelDropsCrown',
-		drop: toItem(`yellow pixel`),
+		drop: $item`yellow pixel`,
 	},
-	[toFamiliar(`Warbear Drone`).toString()]: {
-		drop: toItem(`warbear whosit`),
+	[$familiar`Warbear Drone`.toString()]: {
+		drop: $item`warbear whosit`,
 	},
-	[toFamiliar(`Li'l Xenomorph`).toString()]: {
-		drop: toItem(`lunar isotope`),
+	[$familiar`Li'l Xenomorph`.toString()]: {
+		drop: $item`lunar isotope`,
 	},
-	[toFamiliar(`Pottery Barn Owl`).toString()]: {
-		drop: toItem(`volcanic ash`),
+	[$familiar`Pottery Barn Owl`.toString()]: {
+		drop: $item`volcanic ash`,
 	},
-	[toFamiliar(`Party Mouse`).toString()]: {
+	[$familiar`Party Mouse`.toString()]: {
 		drop: 'decent-good booze',
 	},
-	[toFamiliar(`Yule Hound`).toString()]: {
-		drop: toItem(`candy cane`),
+	[$familiar`Yule Hound`.toString()]: {
+		drop: $item`candy cane`,
 	},
-	[toFamiliar(`Gluttonous Green Ghost`).toString()]: {
+	[$familiar`Gluttonous Green Ghost`.toString()]: {
 		drop: 'burritos',
 	},
-	[toFamiliar(`Reassembled Blackbird`).toString()]: {
-		drop: toItem(`blackberry`),
+	[$familiar`Reassembled Blackbird`.toString()]: {
+		drop: $item`blackberry`,
 	},
-	[toFamiliar(`Reconstituted Crow`).toString()]: {
-		drop: toItem(`blackberry`),
+	[$familiar`Reconstituted Crow`.toString()]: {
+		drop: $item`blackberry`,
 	},
-	[toFamiliar(`Hunchbacked Minion`).toString()]: {
+	[$familiar`Hunchbacked Minion`.toString()]: {
 		drop: 'brain or bone',
 	},
-	[toFamiliar(`Reanimated Reanimator`).toString()]: {
+	[$familiar`Reanimated Reanimator`.toString()]: {
 		drop: 'hot wings or skulls',
 	},
-	[toFamiliar(`Attention-Deficit Demon`).toString()]: {
+	[$familiar`Attention-Deficit Demon`.toString()]: {
 		drop: 'some bad food',
 	},
-	[toFamiliar(`Piano Cat`).toString()]: {
+	[$familiar`Piano Cat`.toString()]: {
 		drop: 'some bad booze',
 	},
-	[toFamiliar(`Golden Monkey`).toString()]: {
-		drop: toItem(`gold nuggets`),
+	[$familiar`Golden Monkey`.toString()]: {
+		drop: $item`gold nuggets`,
 	},
-	[toFamiliar(`Robot Reindeer`).toString()]: {
+	[$familiar`Robot Reindeer`.toString()]: {
 		drop: 'hoay snacks',
 	},
-	[toFamiliar(`Ancient Yuletide Troll`).toString()]: {
+	[$familiar`Ancient Yuletide Troll`.toString()]: {
 		drop: 'hoay snacks',
 	},
-	[toFamiliar(`Sweet Nutcracker`).toString()]: {
+	[$familiar`Sweet Nutcracker`.toString()]: {
 		drop: 'hoay snacks',
 	},
-	[toFamiliar(`Stocking Mimic`).toString()]: {
+	[$familiar`Stocking Mimic`.toString()]: {
 		drop: 'some simple candy',
 	},
-	[toFamiliar(`BRICKO chick`).toString()]: {
-		drop: toItem(`BRICKO brick`),
+	[$familiar`BRICKO chick`.toString()]: {
+		drop: $item`BRICKO brick`,
 	},
-	[toFamiliar(`Cotton Candy Carnie`).toString()]: {
-		drop: toItem(`cotton candy pinch`),
+	[$familiar`Cotton Candy Carnie`.toString()]: {
+		drop: $item`cotton candy pinch`,
 	},
-	[toFamiliar(`Untamed Turtle`).toString()]: {
+	[$familiar`Untamed Turtle`.toString()]: {
 		drop: 'turtle bits',
 	},
-	[toFamiliar(`Astral Badger`).toString()]: {
+	[$familiar`Astral Badger`.toString()]: {
 		drop: 'shrooms',
 	},
-	[toFamiliar(`Green Pixie`).toString()]: {
-		drop: toItem(`bottle of tequila`),
+	[$familiar`Green Pixie`.toString()]: {
+		drop: $item`bottle of tequila`,
 	},
-	[toFamiliar(`Angry Goat`).toString()]: {
-		drop: toItem(`goat cheese pizza`),
+	[$familiar`Angry Goat`.toString()]: {
+		drop: $item`goat cheese pizza`,
 	},
-	[toFamiliar(`Adorable Seal Larva`).toString()]: {
+	[$familiar`Adorable Seal Larva`.toString()]: {
 		drop: 'elemental nuggets',
 	},
-	[toFamiliar(`Frozen Gravy Fairy`).toString()]: {
-		drop: toItem(`cold nuggets`),
+	[$familiar`Frozen Gravy Fairy`.toString()]: {
+		drop: $item`cold nuggets`,
 	},
-	[toFamiliar(`Stinky Gravy Fairy`).toString()]: {
-		drop: toItem(`stench nuggets`),
+	[$familiar`Stinky Gravy Fairy`.toString()]: {
+		drop: $item`stench nuggets`,
 	},
-	[toFamiliar(`Sleazy Gravy Fairy`).toString()]: {
-		drop: toItem(`sleaze nuggets`),
+	[$familiar`Sleazy Gravy Fairy`.toString()]: {
+		drop: $item`sleaze nuggets`,
 	},
-	[toFamiliar(`Spooky Gravy Fairy`).toString()]: {
-		drop: toItem(`spooky nuggets`),
+	[$familiar`Spooky Gravy Fairy`.toString()]: {
+		drop: $item`spooky nuggets`,
 	},
-	[toFamiliar(`Flaming Gravy Fairy`).toString()]: {
-		drop: toItem(`hot nuggets`),
+	[$familiar`Flaming Gravy Fairy`.toString()]: {
+		drop: $item`hot nuggets`,
 	},
 }
 
@@ -212,19 +212,15 @@ interface ExtraFamInfo {
 export function useExtraFamInfo(
 	fam: Familiar,
 	isTooltip: boolean,
-	isBjorn: boolean
+	isBjorn: boolean,
 ): ExtraFamInfo {
-	void fam
-	void isTooltip
-	void isBjorn
 	const res: ExtraFamInfo = { borderType: 'normal', desc: [] }
-	/*
 	if (!isBjorn) {
 		switch (fam.id) {
-			case toFamiliar(`Fist Turkey`).id: {
-				const musLeft = 5 - (mafiaProperties._turkeyMuscle as number)
-				const mysLeft = 5 - (mafiaProperties._turkeyMyst as number)
-				const moxLeft = 5 - (mafiaProperties._turkeyMoxie as number)
+			case $familiar`Fist Turkey`.id: {
+				const musLeft = 5 - get('_turkeyMuscle')
+				const mysLeft = 5 - get('_turkeyMyst')
+				const moxLeft = 5 - get('_turkeyMoxie')
 				const statsLeft = musLeft + mysLeft + moxLeft
 				if (statsLeft > 0) {
 					const statsLeftStr = [
@@ -241,14 +237,14 @@ export function useExtraFamInfo(
 						res.desc.push(
 							<Tooltip label={<Text>{statsLeftStr}</Text>}>
 								<Text>{statsLeft} stats left</Text>
-							</Tooltip>
+							</Tooltip>,
 						)
 					}
 				}
 				break
 			}
-			case toFamiliar(`Melodramedary`).id: {
-				const spit = mafiaProperties.camelSpit as number
+			case $familiar`Melodramedary`.id: {
+				const spit = get('camelSpit')
 				if (spit >= 100) {
 					res.desc.push('Ready to spit!')
 					res.extraClass = 'has-drops'
@@ -257,25 +253,23 @@ export function useExtraFamInfo(
 						<VStack spacing="none">
 							<Text>{spit}% charged</Text>
 							<ProgressBar value={spit} max={100} desc="camel spit" />
-						</VStack>
+						</VStack>,
 					)
 				}
 				break
 			}
-			case toFamiliar(`Steam-Powered Cheerleader`).id: {
-				const steamPercent = Math.ceil(
-					(mafiaProperties._cheerleaderSteam as number) / 2
-				)
+			case $familiar`Steam-Powered Cheerleader`.id: {
+				const steamPercent = Math.ceil(get('_cheerleaderSteam') / 2)
 				if (steamPercent > 0) {
 					res.desc.push(<Text>{steamPercent}% steam</Text>)
 					res.extraClass = steamPercent > 50 ? 'all-drops' : 'has-drops'
 				}
 				break
 			}
-			case toFamiliar(`Slimeling`).id: {
-				const fullness = mafiaProperties.slimelingFullness as number
-				const stacksDue = mafiaProperties.slimelingStacksDue as number
-				const stacksDropped = mafiaProperties.slimelingStacksDropped as number
+			case $familiar`Slimeling`.id: {
+				const fullness = get('slimelingFullness')
+				const stacksDue = get('slimelingStacksDue')
+				const stacksDropped = get('slimelingStacksDropped')
 				const hasFullness = fullness > 0
 				const hasStacksToDrop = stacksDue > 0 && stacksDue > stacksDropped
 				if (hasFullness || hasStacksToDrop) {
@@ -287,7 +281,7 @@ export function useExtraFamInfo(
 									{stacksDropped}/{stacksDue} stacks dropped
 								</Text>
 							)}
-						</>
+						</>,
 					)
 				}
 				if (hasStacksToDrop) {
@@ -295,30 +289,28 @@ export function useExtraFamInfo(
 				}
 				break
 			}
-			case toFamiliar(`Gelatinous Cubeling`).id: {
-				res.desc.push(
-					<Text>{mafiaProperties.cubelingProgress as number}/12 to drop</Text>
-				)
+			case $familiar`Gelatinous Cubeling`.id: {
+				res.desc.push(<Text>{get('cubelingProgress')}/12 to drop</Text>)
 				const needs = [
-					{ name: 'Pole', item: toItem(`eleven-foot pole`) },
-					{ name: 'Ring', item: toItem(`ring of Detect Boring Doors`) },
-					{ name: 'Pick', item: toItem(`Pick-O-Matic lockpicks`) },
-				].filter((need) => need.item.available < 1)
+					{ name: 'Pole', item: $item`eleven-foot pole` },
+					{ name: 'Ring', item: $item`ring of Detect Boring Doors` },
+					{ name: 'Pick', item: $item`Pick-O-Matic lockpicks` },
+				].filter((need) => availableAmount(need.item) < 1)
 				if (needs.length > 0) {
 					res.desc.push(
-						<Text>Need {needs.map((need) => need.name).join(', ')}</Text>
+						<Text>Need {needs.map((need) => need.name).join(', ')}</Text>,
 					)
 					res.extraClass = 'all-drops'
 				}
 				break
 			}
-			case toFamiliar(`Crimbo Shrub`).id: {
-				const gifts = mafiaProperties.shrubGifts
+			case $familiar`Crimbo Shrub`.id: {
+				const gifts = get('shrubGifts')
 				const readyToFire =
 					gifts === 'yellow'
-						? $effect`Everything Looks Yellow`.turnsActive === 0
+						? haveEffect($effect`Everything Looks Yellow`) === 0
 						: gifts === 'meat' &&
-						  $effect`Everything Looks Red`.turnsActive === 0
+						  haveEffect($effect`Everything Looks Red`) === 0
 				res.extraClass = 'all-drops'
 				if (readyToFire) {
 					res.desc.push(<Text>Ready to fire!</Text>)
@@ -329,16 +321,12 @@ export function useExtraFamInfo(
 				}
 				break
 			}
-			case toFamiliar(`Reagnimated Gnome`).id: {
-				res.desc.push(
-					<Text>{mafiaProperties._gnomeAdv as number} adv gained</Text>
-				)
+			case $familiar`Reagnimated Gnome`.id: {
+				res.desc.push(<Text>{get('_gnomeAdv')} adv gained</Text>)
 				break
 			}
-			case toFamiliar(`Temporal Riftlet`).id: {
-				res.desc.push(
-					<Text>{mafiaProperties._riftletAdv as number} adv gained</Text>
-				)
+			case $familiar`Temporal Riftlet`.id: {
+				res.desc.push(<Text>{get('_riftletAdv')} adv gained</Text>)
 				break
 			}
 		}
@@ -347,16 +335,20 @@ export function useExtraFamInfo(
 	const dropsLeft = fam.dropsLimit - fam.dropsToday
 	let hasDrops = !isBjorn && dropsLeft > 0
 	let allDrops = hasDrops && fam.dropsToday === 0
-	const dropName = fam.drop
-		? pluralize(fam.drop, dropsLeft)
-		: pluralize(fam.dropName, dropsLeft)
+	const dropName =
+		fam.dropItem !== $item.none
+			? pluralize(fam.dropItem, dropsLeft)
+			: pluralize(fam.dropName, dropsLeft)
 
 	if (hasDrops && dropName && !isBjorn) {
-		res.dropInfo = { drop: fam.drop ?? dropName, left: dropsLeft }
+		res.dropInfo = {
+			drop: fam.dropItem === $item.none ? fam.dropItem : fam.dropName,
+			left: dropsLeft,
+		}
 		res.desc.unshift(
 			<Text>
 				{dropsLeft} {dropName}
-			</Text>
+			</Text>,
 		)
 	}
 
@@ -364,7 +356,7 @@ export function useExtraFamInfo(
 		const info = bjornDrops[fam.id]
 		if (info) {
 			if (info.limit && info.prop) {
-				const left = info.limit - (mafiaProperties[info.prop] as number)
+				const left = info.limit - get(info.prop, 0)
 				if (left > 0) {
 					hasDrops = true
 					allDrops = left === info.limit
@@ -381,7 +373,7 @@ export function useExtraFamInfo(
 					res.desc.unshift(
 						<Text>
 							{left} {name}
-						</Text>
+						</Text>,
 					)
 				}
 			} else {
@@ -397,7 +389,6 @@ export function useExtraFamInfo(
 	} else if (hasDrops) {
 		res.borderType = 'has-drops'
 	}
-	*/
 
 	return res
 }

@@ -1,5 +1,5 @@
 import { Link } from '@chakra-ui/react'
-import { myHash } from 'kolmafia'
+import { cliExecute } from 'kolmafia'
 import * as React from 'react'
 
 interface CommandLinkArgs {
@@ -9,7 +9,7 @@ interface CommandLinkArgs {
 
 export default function CommandLink({ cmd, children }: CommandLinkArgs) {
 	return (
-		<Link href={`/KoLmafia/sideCommand?cmd=${encodeURI(cmd)}&pwd=${myHash()}`}>
+		<Link href="#" onClick={() => cliExecute(cmd)}>
 			{children}
 		</Link>
 	)
