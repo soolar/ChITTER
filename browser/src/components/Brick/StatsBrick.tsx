@@ -12,9 +12,8 @@ import {
 	myMp,
 	mySpleenUse,
 	spleenLimit,
-	toStat,
 } from 'kolmafia'
-//import { $stat } from 'libram'
+import { $stat } from 'libram'
 import * as React from 'react'
 import { CurrMax, StatValues } from '../../utils'
 import ProgressBar from '../ProgressBar'
@@ -103,19 +102,19 @@ export default function StatsBrick() {
 		spleenUse: { curr: mySpleenUse(), max: spleenLimit() },
 
 		muscle: {
-			base: myBasestat(toStat(`Muscle`)),
-			buffed: myBuffedstat(toStat(`Muscle`)),
-			substats: myBasestat(toStat(`Submuscle`)),
+			base: myBasestat($stat`Muscle`),
+			buffed: myBuffedstat($stat`Muscle`),
+			substats: myBasestat($stat`Submuscle`),
 		},
 		mysticality: {
-			base: myBasestat(toStat(`Mysticality`)),
-			buffed: myBuffedstat(toStat(`Mysticality`)),
-			substats: myBasestat(toStat(`Submysticality`)),
+			base: myBasestat($stat`Mysticality`),
+			buffed: myBuffedstat($stat`Mysticality`),
+			substats: myBasestat($stat`Submysticality`),
 		},
 		moxie: {
-			base: myBasestat(toStat(`Moxie`)),
-			buffed: myBuffedstat(toStat(`Moxie`)),
-			substats: myBasestat(toStat(`Submoxie`)),
+			base: myBasestat($stat`Moxie`),
+			buffed: myBuffedstat($stat`Moxie`),
+			substats: myBasestat($stat`Submoxie`),
 		},
 	}
 	return (

@@ -1,5 +1,5 @@
 import { Effect, stringModifier, toEffect } from 'kolmafia'
-//import { $effect } from 'libram'
+import { $effect } from 'libram'
 import * as React from 'react'
 import { parseMods } from './utils'
 import FlavourPicker from './components/Picker/FlavourPicker'
@@ -16,15 +16,15 @@ export function useExtraEffectInfo(eff: Effect): ExtraEffectInfo {
 	}
 
 	switch (eff) {
-		case toEffect(`Video... Games?`): {
+		case $effect`Video... Games?`: {
 			res.mods = 'Basically Everything +5'
 			break
 		}
-		case toEffect(`Spirit of Bacon Grease`):
-		case toEffect(`Spirit of Peppermint`):
-		case toEffect(`Spirit of Wormwood`):
-		case toEffect(`Spirit of Cayenne`):
-		case toEffect(`Spirit of Garlic`): {
+		case $effect`Spirit of Bacon Grease`:
+		case $effect`Spirit of Peppermint`:
+		case $effect`Spirit of Wormwood`:
+		case $effect`Spirit of Cayenne`:
+		case $effect`Spirit of Garlic`: {
 			res.launches = FlavourPicker
 			break
 		}

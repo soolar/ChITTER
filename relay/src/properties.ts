@@ -1,40 +1,9 @@
 import {
-	canEquip,
-	classModifier,
-	closetAmount,
-	creatableAmount,
-	fileToBuffer,
 	getProperty,
-	hippyStoneBroken,
-	inebrietyLimit,
-	isUnrestricted,
 	Item,
-	itemAmount,
-	myClass,
-	myInebriety,
-	myPath,
-	myPrimestat,
-	numericModifier,
-	Path,
-	print,
-	propertyExists,
-	Slot,
-	Stat,
-	StatType,
-	storageAmount,
-	toSlot,
-	weaponHands,
 } from 'kolmafia'
-import { $class, $items, $skill, $slot, $slots, get, have } from 'libram'
-import {
-	booleanProperties,
-	familiarProperties,
-	numericOrStringProperties,
-	numericProperties,
-	stringProperties,
-} from 'libram/dist/propertyTypes'
-import { FieldValue, fieldValueToJSString } from './fieldValue'
-import { foldableAmount } from './guidelines'
+import { $items } from 'libram'
+import { FieldValue } from './fieldValue'
 
 type ChitPropertyInfo = [string, FieldValue]
 

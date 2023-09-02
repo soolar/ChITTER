@@ -3,7 +3,7 @@ import { HStack, Image, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { pluralize, showFam } from './utils'
 import ProgressBar from './components/ProgressBar'
 import { BorderType } from './components/Icons/ChitterIcon'
-import { $effect, $familiar, $item, get } from 'libram'
+import { $effect, $familiar, $item, get, MummingTrunk } from 'libram'
 import {
 	availableAmount,
 	Familiar,
@@ -12,6 +12,37 @@ import {
 	Item,
 	toInt,
 } from 'kolmafia'
+
+const mummeryCharacters = [
+	'The Captain',
+	'Beelzebub',
+	'Saint Patrick',
+	'Prince George',
+	'Oliver Cromwell',
+	'The Doctor',
+	'Miss Funny',
+]
+type MummeryCharacter = (typeof mummeryCharacters)[number]
+
+const mummeryMap: { [mod: string]: MummeryCharacter } = {
+	['MP Regen Min']: 'Beelzebub',
+	['Item Drop']: 'Prince George',
+	['HP Regen Min']: 'The Doctor',
+	['Experience (Muscle)']: 'Saint Patrick',
+	['Experience (Mysticality)']: 'Oliver Cromwell',
+	['Experience (Moxie)']: 'Miss Funny',
+	['Meat Drop']: 'The Captain',
+}
+
+function getMummeryCharacter(fam: Familiar) {
+	const modInfo = MummingTrunk.currentCostumes().get(fam)
+	if (modInfo) {
+		const modType = modInfo[0]
+		const character = mummeryMap[modType]
+		return character
+	}
+	return undefined
+}
 
 export const nextLevelInfo = (fam: Familiar) => {
 	for (let i = 2; i <= 20; ++i) {
@@ -207,6 +238,7 @@ interface ExtraFamInfo {
 	extraClass?: string
 	borderType: BorderType
 	dropInfo?: DropInfo
+	mummeryCharacter?: MummeryCharacter
 }
 
 export function useExtraFamInfo(
@@ -214,7 +246,7 @@ export function useExtraFamInfo(
 	isTooltip: boolean,
 	isBjorn: boolean,
 ): ExtraFamInfo {
-	const res: ExtraFamInfo = { borderType: 'normal', desc: [] }
+	const res: ExtraFamInfo = { borderType: 'normal', desc: [], mummeryCharacter: getMummeryCharacter(fam) }
 	if (!isBjorn) {
 		switch (fam.id) {
 			case $familiar`Fist Turkey`.id: {

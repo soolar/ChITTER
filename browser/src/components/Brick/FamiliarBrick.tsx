@@ -20,7 +20,7 @@ import { nextLevelInfo, useExtraFamInfo } from '../../familiarHelpers'
 import ChitterIcon from '../Icons/ChitterIcon'
 import MainLink from '../Link/MainLink'
 import GearPicker from '../Picker/GearPicker'
-//import { $item, $slot } from 'libram'
+import { $item, $slot, have } from 'libram'
 import {
 	equippedItem,
 	familiarWeight,
@@ -32,8 +32,7 @@ import {
 	weightAdjustment,
 } from 'kolmafia'
 
-/*
-const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
+const mummeryCharacterToIconMap: { [char: string]: string } = {
 	['The Captain']: 'mummericon1.gif',
 	Beelzebub: 'mummericon2.gif',
 	['Saint Patrick']: 'mummericon3.gif',
@@ -42,7 +41,6 @@ const mummeryCharacterToIconMap: { [char: MummeryCharacter]: string } = {
 	['The Doctor']: 'mummericon6.gif',
 	['Miss Funny']: 'mummericon7.gif',
 }
-*/
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()
@@ -84,7 +82,7 @@ export default function FamiliarBrick() {
 
 		const layout = useBreakpointValue({
 			base: (
-				<VStack>
+				<VStack key="base">
 					<HStack>
 						{famIcon}
 						{famEquip}
@@ -93,7 +91,7 @@ export default function FamiliarBrick() {
 				</VStack>
 			),
 			sm: (
-				<Flex>
+				<Flex key="sm">
 					{famIcon}
 					<Spacer />
 					{famInfo}
@@ -106,9 +104,9 @@ export default function FamiliarBrick() {
 		const mummery = (
 			<VStack spacing="none">
 				<Text>Pick a Mummer's Costume</Text>
-				{/*currFam.mummeryCharacter && (
-					<Text>Currently {currFam.mummeryCharacter}</Text>
-				)*/}
+				{extraInfo.mummeryCharacter && (
+					<Text>Currently {extraInfo.mummeryCharacter}</Text>
+				)}
 			</VStack>
 		)
 
@@ -117,12 +115,12 @@ export default function FamiliarBrick() {
 				name="familiar"
 				header={
 					<Flex>
-						{/*itemAmount($item`mumming trunk`) > 0 && (
+						{have($item`mumming trunk`) && (
 							<MainLink href="/inv_use.php?whichitem=9592&pwd">
 								<ChitterIcon
 									image={
-										currFam.mummeryCharacter
-											? mummeryCharacterToIconMap[currFam.mummeryCharacter]
+										extraInfo.mummeryCharacter
+											? mummeryCharacterToIconMap[extraInfo.mummeryCharacter]
 											: 'mummericon0.gif'
 									}
 									tooltip={mummery}
@@ -130,7 +128,7 @@ export default function FamiliarBrick() {
 									small
 								/>
 							</MainLink>
-						)*/}
+						)}
 						<Spacer />
 						<Heading>
 							<Tooltip
