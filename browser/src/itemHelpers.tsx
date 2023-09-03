@@ -87,7 +87,7 @@ export function useExtraItemInfo(
 		mods: mods ?? '',
 		rawMods: mods ?? '',
 		extraOptions: [],
-		image: optionals.iconOverride || (item ? item.image : 'blank.gif'),
+		image: optionals.iconOverride || (item !== $item`none` ? item.image : 'blank.gif'),
 		borderType: 'normal',
 		equipVerb: 'equip',
 	}

@@ -364,13 +364,17 @@ export function useExtraFamInfo(
 		}
 	}
 
-	const dropsLeft = fam.dropsLimit - fam.dropsToday
-	let hasDrops = !isBjorn && dropsLeft > 0
+	const dropsLeft = fam.dropsLimit > 0 ? (fam.dropsLimit - fam.dropsToday) : fam.dropsLimit === 0 ? 0 : -1
+	let hasDrops = !isBjorn && dropsLeft !== 0
 	let allDrops = hasDrops && fam.dropsToday === 0
 	const dropName =
-		fam.dropItem !== $item.none
+		fam.dropItem !== $item.none && fam.dropItem
 			? pluralize(fam.dropItem, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft)
+
+	if(fam === $familiar`Hobo in Sheep's Clothing`) {
+		console.log(`dingbob ${JSON.stringify(fam)}`)
+	}
 
 	if (hasDrops && dropName && !isBjorn) {
 		res.dropInfo = {
@@ -379,7 +383,7 @@ export function useExtraFamInfo(
 		}
 		res.desc.unshift(
 			<Text>
-				{dropsLeft} {dropName}
+				{dropsLeft >= 0 ? dropsLeft : '∞'} {dropName}
 			</Text>,
 		)
 	}

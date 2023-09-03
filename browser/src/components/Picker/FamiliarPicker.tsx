@@ -91,7 +91,7 @@ export default function FamiliarPicker({
 		)
 		return (
 			extraInfo.dropInfo &&
-			(extraInfo.dropInfo.left === undefined || extraInfo.dropInfo.left > 0)
+			(extraInfo.dropInfo.left !== 0)
 		)
 	})
 	const cmd =
@@ -138,13 +138,6 @@ export default function FamiliarPicker({
 						type={type}
 					/>
 				))}
-				{!favoritesOnly && (
-					<>
-						<WrapItem>$familiars`` machine broke</WrapItem>
-						<WrapItem>Understandable, have a nice day</WrapItem>
-					</>
-				)}
-				{dropsOnly && <WrapItem>Gimme a bit.</WrapItem>}
 			</Wrap>
 		</Picker>
 	)

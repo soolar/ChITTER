@@ -13,6 +13,7 @@ import ItemIcon from '../Icons/ItemIcon'
 import { useExtraItemInfo } from '../../itemHelpers'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
+import CallbackLink from '../Link/CallbackLink'
 import CommandLink from '../Link/CommandLink'
 import { $familiar, $skill, $slot } from 'libram'
 import {
@@ -21,6 +22,7 @@ import {
 	canEquip,
 	closetAmount,
 	creatableAmount,
+	equip,
 	equippedAmount,
 	equippedItem,
 	Familiar,
@@ -37,6 +39,7 @@ import {
 	toSlot,
 	toString,
 } from 'kolmafia'
+import { $item } from 'libram'
 import { getPropVal } from '../../utils'
 
 type GearPickerArgs = {
@@ -137,7 +140,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			{equipped && (
 				<ChitterOption icon={<ItemIcon item={equipped} />}>
 					<HStack>
-						<CommandLink cmd={`unequip ${slotName}`}>
+						<CallbackLink callback={() => equip(slot, $item.none)}>
 							<Text>
 								<Text as="b">unequip</Text>&nbsp;
 								<Text
@@ -145,7 +148,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 									dangerouslySetInnerHTML={{ __html: equipped.name }}
 								/>
 							</Text>
-						</CommandLink>
+						</CallbackLink>
 						<CommandLink
 							cmd={`chitter_changeFav.js (${
 								equippedFav ? 'remove' : 'add'
@@ -169,9 +172,9 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 							{categories[0].items.map((fav) => {
 								return (
 									<WrapItem key={`${slotName} favorites ${fav.name}`}>
-										<CommandLink cmd={`equip ${slotName} ${fav.name}`}>
+										<CallbackLink callback={() => equip(slot, fav)}>
 											<ItemIcon item={fav} weirdFam={isWeirdFam} forEquipping />
-										</CommandLink>
+										</CallbackLink>
 									</WrapItem>
 								)
 							})}
@@ -199,13 +202,13 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 												<WrapItem
 													key={`${slotName} ${category.name} ${item.name}`}
 												>
-													<CommandLink cmd={`equip ${slotName} ${item.name}`}>
+													<CallbackLink callback={() => equip(slot, item)}>
 														<ItemIcon
 															item={item}
 															weirdFam={isWeirdFam}
 															forEquipping
 														/>
-													</CommandLink>
+													</CallbackLink>
 												</WrapItem>
 											)
 										})}
