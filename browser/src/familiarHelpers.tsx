@@ -251,6 +251,9 @@ export function useExtraFamInfo(
 		desc: [],
 		mummeryCharacter: getMummeryCharacter(fam),
 	}
+	if (fam.id === 0) {
+		return res
+	}
 	if (!isBjorn) {
 		switch (fam.id) {
 			case $familiar`Fist Turkey`.id: {
