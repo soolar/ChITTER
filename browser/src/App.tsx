@@ -129,7 +129,10 @@ async function getChitterCharacterState() {
 export default function App() {
 	return (
 		<ChakraProvider theme={theme}>
-			<RefreshContextProvider charStateOverride={getChitterCharacterState}>
+			<RefreshContextProvider
+				charStateOverride={getChitterCharacterState}
+				interval={4000}
+			>
 				<Layout />
 			</RefreshContextProvider>
 		</ChakraProvider>
