@@ -69,7 +69,7 @@ export default function ItemIcon({
 						))}
 				</VStack>
 			}
-			borderType={'normal'}
+			borderType={extraInfo.borderType}
 			small={small}
 			onContextMenu={(ev) => {
 				if (showItemCallback) {
