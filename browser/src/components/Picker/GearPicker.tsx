@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import Picker from './Picker'
 import ItemIcon from '../Icons/ItemIcon'
-import { useExtraItemInfo } from '../../itemHelpers'
+import { getGearRecommendations, useExtraItemInfo } from '../../itemHelpers'
 import ChitterOption from '../Option/ChitterOption'
 import ChitterIcon from '../Icons/ChitterIcon'
 import CallbackLink from '../Link/CallbackLink'
@@ -29,6 +29,7 @@ import {
 	familiarEquipment,
 	getRelated,
 	haveSkill,
+	isUnrestricted,
 	Item,
 	itemAmount,
 	pullsRemaining,
@@ -76,6 +77,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			)
 	const baseFilter = (item: Item) =>
 		canEquip(item) &&
+		isUnrestricted(item) &&
 		(toSlot(item) === functionalSlot ||
 			(haveSkill($skill`Double-Fisted Skull Smashing`) &&
 				toSlot(item) === $slot`weapon` &&
@@ -98,14 +100,14 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			items: favsList,
 		},
 	]
-
 	/*
-	gearCategories.forEach((category) => {
+	const recommendations = getGearRecommendations(functionalSlot)
+	recommendations.categoryOrder.forEach((name) => {
 		categories.push({
-			name: category.name,
-			items: category.items[
-				functionalSlotName as BrowserGearCategorySlot
-			].filter((it) => equipped !== it),
+			name,
+			items: (recommendations.categories.get(name) as Item[]).filter(
+				(it) => equipped !== it,
+			),
 		})
 	})
 	*/
@@ -133,7 +135,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 
 	const equippedFav = !!favsList.find((it) => it === equipped)
 
-	const extraInfo = useExtraItemInfo(equipped, { forEquipping: true })
+	const extraInfo = useExtraItemInfo(equipped, true, { forEquipping: true })
 	return (
 		<Picker header={`Change ${slotName}`}>
 			{extraInfo.extraOptions}

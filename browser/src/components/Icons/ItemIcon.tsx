@@ -3,6 +3,7 @@ import ChitterIcon from './ChitterIcon'
 import { Text, VStack } from '@chakra-ui/react'
 import { showItem } from '../../utils'
 import { Item } from 'kolmafia'
+import { $item } from 'libram'
 import { useExtraItemInfo } from '../../itemHelpers'
 
 interface ItemIconArgs {
@@ -20,10 +21,15 @@ export default function ItemIcon({
 	weirdFam,
 	forEquipping,
 }: ItemIconArgs) {
-	const extraInfo = useExtraItemInfo(item, {
+	const extraInfo = useExtraItemInfo(item, true, {
 		namePrefix: tooltipPrefix,
 		forEquipping,
 	})
+
+	// this check is done here rather than in the callback to avoid risking $item`none` being
+	// unknown as the callback is run, as unlikely as that is
+	const showItemCallback =
+		item !== $item`none` ? () => showItem(Number(item.descid)) : undefined
 
 	let weirdFamText
 	if (weirdFam && item) {
@@ -51,10 +57,7 @@ export default function ItemIcon({
 							}`,
 						}}
 					/>
-					{!weirdFam &&
-						extraInfo.desc.map((node) => (
-							<span className="popup-desc-line">{node}</span>
-						))}
+					{!weirdFam && extraInfo.desc}
 					{item &&
 						(weirdFam ? (
 							weirdFamText
@@ -68,13 +71,12 @@ export default function ItemIcon({
 			}
 			borderType={'normal'}
 			small={small}
-			onContextMenu={
-				item &&
-				((ev) => {
-					showItem(Number(extraInfo.item?.descid ?? 0))
-					ev.preventDefault()
-				})
-			}
+			onContextMenu={(ev) => {
+				if (showItemCallback) {
+					showItemCallback()
+				}
+				ev.preventDefault()
+			}}
 		/>
 	)
 }

@@ -46,6 +46,7 @@ export default function FlavourPicker() {
 									coords={`${flavourArea.x},${flavourArea.y},22`}
 									onClick={() => useSkill(spiritSkill)}
 									href="#"
+									key={`flavour${flavourArea.element}`}
 								/>
 							)
 						})}

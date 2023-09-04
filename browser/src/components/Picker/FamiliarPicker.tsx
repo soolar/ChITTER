@@ -89,10 +89,7 @@ export default function FamiliarPicker({
 			false,
 			type !== 'default',
 		)
-		return (
-			extraInfo.dropInfo &&
-			(extraInfo.dropInfo.left !== 0)
-		)
+		return extraInfo.dropInfo && extraInfo.dropInfo.left !== 0
 	})
 	const cmd =
 		type === 'crown'

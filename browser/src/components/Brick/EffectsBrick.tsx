@@ -82,7 +82,7 @@ function EffectList({ effMap }: EffectListArgs) {
 		<VStack>
 			<Divider />
 			{sortedEffects.map((eff) => (
-				<EffectLine effName={eff} turns={effMap[eff]} />
+				<EffectLine key={`efflist${eff}`} effName={eff} turns={effMap[eff]} />
 			))}
 		</VStack>
 	)

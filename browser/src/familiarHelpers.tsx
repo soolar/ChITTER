@@ -246,7 +246,11 @@ export function useExtraFamInfo(
 	isTooltip: boolean,
 	isBjorn: boolean,
 ): ExtraFamInfo {
-	const res: ExtraFamInfo = { borderType: 'normal', desc: [], mummeryCharacter: getMummeryCharacter(fam) }
+	const res: ExtraFamInfo = {
+		borderType: 'normal',
+		desc: [],
+		mummeryCharacter: getMummeryCharacter(fam),
+	}
 	if (!isBjorn) {
 		switch (fam.id) {
 			case $familiar`Fist Turkey`.id: {
@@ -264,10 +268,10 @@ export function useExtraFamInfo(
 						.map((entry) => `${entry[0]} ${entry[1]}`)
 						.join(', ')
 					if (isTooltip) {
-						res.desc.push(<Text>{statsLeftStr} left</Text>)
+						res.desc.push(<Text key="turkeystats">{statsLeftStr} left</Text>)
 					} else {
 						res.desc.push(
-							<Tooltip label={<Text>{statsLeftStr}</Text>}>
+							<Tooltip key="turkeystats" label={<Text>{statsLeftStr}</Text>}>
 								<Text>{statsLeft} stats left</Text>
 							</Tooltip>,
 						)
@@ -278,11 +282,11 @@ export function useExtraFamInfo(
 			case $familiar`Melodramedary`.id: {
 				const spit = get('camelSpit')
 				if (spit >= 100) {
-					res.desc.push('Ready to spit!')
+					res.desc.push(<Text key="camelspit">Ready to spit!</Text>)
 					res.extraClass = 'has-drops'
 				} else {
 					res.desc.push(
-						<VStack spacing="none">
+						<VStack spacing="none" key="camelspit">
 							<Text>{spit}% charged</Text>
 							<ProgressBar value={spit} max={100} desc="camel spit" />
 						</VStack>,
@@ -293,7 +297,7 @@ export function useExtraFamInfo(
 			case $familiar`Steam-Powered Cheerleader`.id: {
 				const steamPercent = Math.ceil(get('_cheerleaderSteam') / 2)
 				if (steamPercent > 0) {
-					res.desc.push(<Text>{steamPercent}% steam</Text>)
+					res.desc.push(<Text key="cheersteam">{steamPercent}% steam</Text>)
 					res.extraClass = steamPercent > 50 ? 'all-drops' : 'has-drops'
 				}
 				break
@@ -307,9 +311,9 @@ export function useExtraFamInfo(
 				if (hasFullness || hasStacksToDrop) {
 					res.desc.push(
 						<>
-							{hasFullness && <Text>~{fullness} fullness</Text>}
+							{hasFullness && <Text key="slimefull">~{fullness} fullness</Text>}
 							{hasStacksToDrop && (
-								<Text>
+								<Text key="slimestacks">
 									{stacksDropped}/{stacksDue} stacks dropped
 								</Text>
 							)}
@@ -322,7 +326,9 @@ export function useExtraFamInfo(
 				break
 			}
 			case $familiar`Gelatinous Cubeling`.id: {
-				res.desc.push(<Text>{get('cubelingProgress')}/12 to drop</Text>)
+				res.desc.push(
+					<Text key="cubelineprog">{get('cubelingProgress')}/12 to drop</Text>,
+				)
 				const needs = [
 					{ name: 'Pole', item: $item`eleven-foot pole` },
 					{ name: 'Ring', item: $item`ring of Detect Boring Doors` },
@@ -330,7 +336,9 @@ export function useExtraFamInfo(
 				].filter((need) => availableAmount(need.item) < 1)
 				if (needs.length > 0) {
 					res.desc.push(
-						<Text>Need {needs.map((need) => need.name).join(', ')}</Text>,
+						<Text key="cubelingneeds">
+							Need {needs.map((need) => need.name).join(', ')}
+						</Text>,
 					)
 					res.extraClass = 'all-drops'
 				}
@@ -345,26 +353,33 @@ export function useExtraFamInfo(
 						  haveEffect($effect`Everything Looks Red`) === 0
 				res.extraClass = 'all-drops'
 				if (readyToFire) {
-					res.desc.push(<Text>Ready to fire!</Text>)
+					res.desc.push(<Text key="shrubfire">Ready to fire!</Text>)
 				} else if (gifts === '') {
-					res.desc.push(<Text>Needs to be decorated!</Text>)
+					res.desc.push(<Text key="shrubdeco">Needs to be decorated!</Text>)
 				} else {
 					res.extraClass = undefined
 				}
 				break
 			}
 			case $familiar`Reagnimated Gnome`.id: {
-				res.desc.push(<Text>{get('_gnomeAdv')} adv gained</Text>)
+				res.desc.push(<Text key="gnomeadv">{get('_gnomeAdv')} adv gained</Text>)
 				break
 			}
 			case $familiar`Temporal Riftlet`.id: {
-				res.desc.push(<Text>{get('_riftletAdv')} adv gained</Text>)
+				res.desc.push(
+					<Text key="riftadv">{get('_riftletAdv')} adv gained</Text>,
+				)
 				break
 			}
 		}
 	}
 
-	const dropsLeft = fam.dropsLimit > 0 ? (fam.dropsLimit - fam.dropsToday) : fam.dropsLimit === 0 ? 0 : -1
+	const dropsLeft =
+		fam.dropsLimit > 0
+			? fam.dropsLimit - fam.dropsToday
+			: fam.dropsLimit === 0
+			? 0
+			: -1
 	let hasDrops = !isBjorn && dropsLeft !== 0
 	let allDrops = hasDrops && fam.dropsToday === 0
 	const dropName =
@@ -372,17 +387,13 @@ export function useExtraFamInfo(
 			? pluralize(fam.dropItem, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft)
 
-	if(fam === $familiar`Hobo in Sheep's Clothing`) {
-		console.log(`dingbob ${JSON.stringify(fam)}`)
-	}
-
 	if (hasDrops && dropName && !isBjorn) {
 		res.dropInfo = {
 			drop: fam.dropItem === $item.none ? fam.dropItem : fam.dropName,
 			left: dropsLeft,
 		}
 		res.desc.unshift(
-			<Text>
+			<Text key="dropinfo">
 				{dropsLeft >= 0 ? dropsLeft : '∞'} {dropName}
 			</Text>,
 		)
@@ -407,7 +418,7 @@ export function useExtraFamInfo(
 						left: left,
 					}
 					res.desc.unshift(
-						<Text>
+						<Text key="bjorndropinfo">
 							{left} {name}
 						</Text>,
 					)
@@ -415,7 +426,7 @@ export function useExtraFamInfo(
 			} else {
 				const name = typeof info.drop === 'string' ? info.drop : info.drop.name
 				res.dropInfo = { drop: info.drop }
-				res.desc.unshift(<Text>drops {name}</Text>)
+				res.desc.unshift(<Text key="bjorndropinfo">drops {name}</Text>)
 			}
 		}
 	}

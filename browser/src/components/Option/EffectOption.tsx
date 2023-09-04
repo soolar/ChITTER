@@ -11,14 +11,13 @@ interface EffectOptionArgs {
 }
 
 export default function EffectOption({ effect, enabled }: EffectOptionArgs) {
-	const name = effect.toString()
 	const mods = stringModifier(effect, 'Evaluated Modifiers')
 	return (
 		<ChitterOption
 			icon={<EffectIcon effect={effect} />}
 			enabled={enabled ?? true}
 		>
-			<OptionText subject={name} desc={parseMods(mods)} />
+			<OptionText subject={effect.name} desc={parseMods(mods)} />
 		</ChitterOption>
 	)
 }
