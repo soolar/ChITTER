@@ -10,13 +10,15 @@ export type BorderType =
 	| 'danger'
 	| 'none'
 
+export type IconSize = 'tiny' | 'small' | 'medium' | 'full'
+
 interface ChitterIconArgs {
 	image: string
 	tooltip: React.ReactNode
 	borderType?: BorderType
 	specialPath?: boolean
 	extraClass?: string
-	small?: boolean
+	size?: IconSize
 	onContextMenu?: React.MouseEventHandler<HTMLImageElement>
 	chitImage?: boolean
 }
@@ -27,7 +29,7 @@ export default function ChitterIcon({
 	borderType = 'normal',
 	specialPath = false,
 	extraClass = '',
-	small,
+	size = 'full',
 	onContextMenu,
 	chitImage,
 }: ChitterIconArgs) {
@@ -35,8 +37,8 @@ export default function ChitterIcon({
 	if (borderType !== 'normal') {
 		classes.push(`border-${borderType}`)
 	}
-	if (small) {
-		classes.push('small')
+	if (size && size !== 'full') {
+		classes.push(size)
 	}
 	if (extraClass) {
 		classes.push(extraClass)

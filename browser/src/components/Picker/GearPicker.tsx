@@ -159,7 +159,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 							<ChitterIcon
 								chitImage
 								image={`control_${equippedFav ? 'remove_red' : 'add_blue'}.png`}
-								small
+								size="small"
 								tooltip={`${equippedFav ? 'un' : ''}favorite ${equipped.name}`}
 							/>
 						</CommandLink>

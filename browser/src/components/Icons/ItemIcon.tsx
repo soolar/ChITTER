@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ChitterIcon from './ChitterIcon'
+import ChitterIcon, { IconSize } from './ChitterIcon'
 import { Text, VStack } from '@chakra-ui/react'
 import { showItem } from '../../utils'
 import { Item } from 'kolmafia'
@@ -8,7 +8,7 @@ import { useExtraItemInfo } from '../../itemHelpers'
 
 interface ItemIconArgs {
 	item: Item
-	small?: boolean
+	size?: IconSize
 	tooltipPrefix?: string
 	weirdFam?: boolean
 	forEquipping?: boolean
@@ -16,7 +16,7 @@ interface ItemIconArgs {
 
 export default function ItemIcon({
 	item,
-	small,
+	size,
 	tooltipPrefix,
 	weirdFam,
 	forEquipping,
@@ -70,7 +70,7 @@ export default function ItemIcon({
 				</VStack>
 			}
 			borderType={extraInfo.borderType}
-			small={small}
+			size={size}
 			onContextMenu={(ev) => {
 				if (showItemCallback) {
 					showItemCallback()

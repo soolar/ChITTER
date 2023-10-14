@@ -44,7 +44,7 @@ function EffectLine({ effName, turns }: EffectLineArgs) {
 		<>
 			<Flex key={effName} className="chit-effect">
 				<HStack>
-					<EffectIcon effect={eff} />
+					<EffectIcon effect={eff} size="medium" />
 					{eff ? <EffectLineText eff={eff} /> : <Text>Loading...</Text>}
 				</HStack>
 				<Spacer />

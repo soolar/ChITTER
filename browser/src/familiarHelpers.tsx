@@ -386,18 +386,18 @@ export function useExtraFamInfo(
 	let hasDrops = !isBjorn && dropsLeft !== 0
 	let allDrops = hasDrops && fam.dropsToday === 0
 	const dropName =
-		fam.dropItem !== $item.none && fam.dropItem
+		(fam.dropItem && fam.dropItem !== $item.none)
 			? pluralize(fam.dropItem, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft)
 
-	if (hasDrops && dropName && !isBjorn) {
+	if (fam.dropsLimit !== 0 && dropName && !isBjorn) {
 		res.dropInfo = {
 			drop: fam.dropItem === $item.none ? fam.dropItem : fam.dropName,
 			left: dropsLeft,
 		}
 		res.desc.unshift(
 			<Text key="dropinfo">
-				{dropsLeft >= 0 ? dropsLeft : '∞'} {dropName}
+				{dropsLeft >= 0 ? `${fam.dropsToday}/${fam.dropsLimit}` : 'drops'} {dropName}
 			</Text>,
 		)
 	}
@@ -406,7 +406,8 @@ export function useExtraFamInfo(
 		const info = bjornDrops[fam.id]
 		if (info) {
 			if (info.limit && info.prop) {
-				const left = info.limit - get(info.prop, 0)
+				const droppedToday = get(info.prop, 0)
+				const left = info.limit - droppedToday
 				if (left > 0) {
 					hasDrops = true
 					allDrops = left === info.limit
@@ -422,7 +423,7 @@ export function useExtraFamInfo(
 					}
 					res.desc.unshift(
 						<Text key="bjorndropinfo">
-							{left} {name}
+							{droppedToday}/{info.limit} {name}
 						</Text>,
 					)
 				}

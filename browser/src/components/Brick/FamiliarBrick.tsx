@@ -125,7 +125,7 @@ export default function FamiliarBrick() {
 									}
 									tooltip={mummery}
 									borderType="none"
-									small
+									size="small"
 								/>
 							</MainLink>
 						)}

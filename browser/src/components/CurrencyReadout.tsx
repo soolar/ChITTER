@@ -45,7 +45,7 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 					image={SpecialCurrencyDetails[item].image}
 					tooltip={SpecialCurrencyDetails[item].tooltip}
 					borderType="none"
-					small
+					size="tiny"
 				/>
 			</HStack>
 		)
@@ -53,7 +53,7 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 	return (
 		<HStack>
 			<Text>{itemAmount(item).toLocaleString()}</Text>
-			<ItemIcon item={item} small />
+			<ItemIcon item={item} size="tiny" />
 		</HStack>
 	)
 }
