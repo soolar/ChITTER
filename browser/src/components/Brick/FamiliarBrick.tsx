@@ -26,7 +26,6 @@ import {
 	familiarWeight,
 	itemAmount,
 	myFamiliar,
-	toInt,
 	toSlot,
 	toString,
 	weightAdjustment,
@@ -63,9 +62,7 @@ export default function FamiliarBrick() {
 		const famInfo = (
 			<VStack spacing="none">
 				<Tooltip label="Click for Familiar Haiku">
-					<Heading onClick={() => showFam(toInt(currFam))}>
-						{currFam.name}
-					</Heading>
+					<Heading onClick={() => showFam(currFam.id)}>{currFam.name}</Heading>
 				</Tooltip>
 				{extraInfo.desc && <Text>{extraInfo.desc}</Text>}
 			</VStack>

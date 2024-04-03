@@ -40,7 +40,6 @@ import {
 	storageAmount,
 	stringModifier,
 	toEffect,
-	toInt,
 	toItem,
 	toSlot,
 	toString,
@@ -180,23 +179,23 @@ function evaluateGearCondition(cond: GearCondition) {
 					stepStr === 'finished'
 						? 999
 						: stepStr === 'started'
-						? 0
-						: stepStr.startsWith('step')
-						? Number(stepStr.substring(5))
-						: -1
+							? 0
+							: stepStr.startsWith('step')
+								? Number(stepStr.substring(5))
+								: -1
 				const compStepNum = questStepNum(cond.value)
 				const realStepNum = questStepNum(prefVal)
 				return cond.comparison === '>'
 					? realStepNum > compStepNum
 					: cond.comparison === '>='
-					? realStepNum >= compStepNum
-					: cond.comparison === '<'
-					? realStepNum < compStepNum
-					: cond.comparison === '<='
-					? realStepNum <= compStepNum
-					: cond.comparison === '!'
-					? realStepNum !== compStepNum
-					: false
+						? realStepNum >= compStepNum
+						: cond.comparison === '<'
+							? realStepNum < compStepNum
+							: cond.comparison === '<='
+								? realStepNum <= compStepNum
+								: cond.comparison === '!'
+									? realStepNum !== compStepNum
+									: false
 			}
 			return prefVal === cond.value
 		}
@@ -243,23 +242,44 @@ export type GearCategorySlot =
 	| 'acc1'
 	| 'familiar'
 
-interface GearCategoryItems {
-	hat: Item[]
-	back: Item[]
-	shirt: Item[]
-	weapon: Item[]
-	['off-hand']: Item[]
-	pants: Item[]
-	acc1: Item[]
-	familiar: Item[]
+interface CategoryRecommendations {
+	items: Item[]
+	name: string
 }
 
-export interface ResultGearCategory {
-	name: string
-	items: GearCategoryItems
+type SlotRecommendations = CategoryRecommendations[]
+
+export interface AllRecommendations {
+	hat: SlotRecommendations
+	back: SlotRecommendations
+	shirt: SlotRecommendations
+	weapon: SlotRecommendations
+	['off-hand']: SlotRecommendations
+	pants: SlotRecommendations
+	acc1: SlotRecommendations
+	familiar: SlotRecommendations
+}
+
+const cachedRecommendations: AllRecommendations = {
+	hat: [],
+	back: [],
+	shirt: [],
+	weapon: [],
+	['off-hand']: [],
+	pants: [],
+	acc1: [],
+	familiar: [],
 }
 
 export function getGearRecommendations(slot: Slot) {
+	if (slot.identifierString === 'none') {
+		return []
+	}
+	const slotName = slot.identifierString as GearCategorySlot
+	if (cachedRecommendations[slotName].length > 0) {
+		return cachedRecommendations[slotName]
+	}
+
 	const bufferRead = fileToBuffer('chitter_gear_categories.json')
 	const gearCategories = (
 		bufferRead === '' ? [] : JSON.parse(bufferRead)
@@ -279,8 +299,7 @@ export function getGearRecommendations(slot: Slot) {
 			[$class`none`, myClass()].some((cl) => cl === classModifier(it, 'Class')),
 	)
 
-	const categories = new Map<string, Item[]>()
-	const categoryOrder: string[] = []
+	const slotRecommendations: SlotRecommendations = []
 
 	gearCategories.forEach((category) => {
 		if (!evaluateGearConditions(category.conditions, category.name)) {
@@ -298,21 +317,18 @@ export function getGearRecommendations(slot: Slot) {
 					const score =
 						(multi * numericModifier(it, mod.mod)) /
 						(weaponHands(it) > 1 ? 2 : 1)
-					scores.set(toInt(it), (scores.get(toInt(it)) ?? 0) + score)
+					scores.set(it.id, (scores.get(it.id) ?? 0) + score)
 				})
 			})
 		}
 		if (category.manual) {
 			const handleManualItem = (it: ManualGearItem) => {
 				if (typeof it === 'string') {
-					scores.set(
-						toInt(Item.get(it)),
-						(scores.get(toInt(Item.get(it))) ?? 0) + 1,
-					)
+					scores.set(Item.get(it).id, (scores.get(Item.get(it).id) ?? 0) + 1)
 				} else {
 					scores.set(
-						toInt(Item.get(it.name)),
-						(scores.get(toInt(Item.get(it.name))) ?? 0) + it.weight,
+						Item.get(it.name).id,
+						(scores.get(Item.get(it.name).id) ?? 0) + it.weight,
 					)
 				}
 			}
@@ -328,17 +344,28 @@ export function getGearRecommendations(slot: Slot) {
 			})
 		}
 		const best = filteredItems
-			.filter((it) => (scores.get(toInt(it)) ?? 0) > 0)
-			.sort(
-				(it1, it2) =>
-					(scores.get(toInt(it2)) ?? 0) - (scores.get(toInt(it1)) ?? 0),
-			)
+			.filter((it) => (scores.get(it.id) ?? 0) > 0)
+			.sort((it1, it2) => (scores.get(it2.id) ?? 0) - (scores.get(it1.id) ?? 0))
 		const sliced = best.slice(0, Math.min(8, best.length))
-		categories.set(category.name, sliced)
-		categoryOrder.push(category.name)
+		slotRecommendations.push({ items: sliced, name: category.name })
 	})
 
-	return { categories, categoryOrder }
+	const readyToCache =
+		slotRecommendations.some(
+			(categoryRecommendations) => categoryRecommendations.items.length > 0,
+		) &&
+		slotRecommendations.every((categoryRecommendations) =>
+			categoryRecommendations.items.every(
+				(item) => item && item !== $item`none`,
+			),
+		)
+
+	if (readyToCache) {
+		console.log(`caching ${slotName}`)
+		cachedRecommendations[slotName] = slotRecommendations
+	}
+
+	return slotRecommendations
 }
 
 type EquipVerb =
@@ -670,14 +697,14 @@ export function useExtraItemInfo(
 			const beards = $effects`Spectacle Moustache, Toiletbrush Moustache, Barbell Moustache, Grizzly Beard, Surrealist's Moustache, Musician's Musician's Moustache, Gull-Wing Moustache, Space Warlord's Beard, Pointy Wizard Beard, Cowboy Stache, Friendly Chops`
 			const currBeard = beards.find((beard) => have(beard))
 			const beardOrder: Effect[] = []
-			const classId = toInt(myClass())
+			const classId = myClass().id
 			const classIdMod = (classId <= 6 ? classId : classId + 1) % 6
 			const turnsOfCurrBeard = haveEffect(currBeard ?? toEffect(`none`))
 			const beardOffset = currBeard
 				? beards.indexOf(currBeard)
 				: lastBeard
-				? beards.indexOf(lastBeard) + 1
-				: 1
+					? beards.indexOf(lastBeard) + 1
+					: 1
 			if (classId !== 0) {
 				for (let i = 0; i < 11; ++i) {
 					beardOrder[i] = beards[(classIdMod * i + beardOffset) % 11]

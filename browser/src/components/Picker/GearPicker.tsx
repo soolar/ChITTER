@@ -35,7 +35,6 @@ import {
 	pullsRemaining,
 	Slot,
 	storageAmount,
-	toInt,
 	toItem,
 	toSlot,
 	toString,
@@ -51,19 +50,19 @@ type GearPickerArgs = {
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	const slotName = toString(slot as unknown as string)
 	const functionalSlot =
-		slot === $slot`acc2` || slot === $slot`acc3`
+		slot.identifierString === 'acc2' || slot.identifierString === 'acc3'
 			? $slot`acc1`
 			: slot === $slot`familiar`
-			? fam === $familiar`Disembodied Hand`
-				? $slot`weapon`
-				: fam === $familiar`Fancypants Scarecrow`
-				? $slot`pants`
-				: fam === $familiar`Mad Hatrack`
-				? $slot`hat`
-				: fam === $familiar`Left-Hand Man`
-				? $slot`off-hand`
-				: $slot`familiar`
-			: slot
+				? fam === $familiar`Disembodied Hand`
+					? $slot`weapon`
+					: fam === $familiar`Fancypants Scarecrow`
+						? $slot`pants`
+						: fam === $familiar`Mad Hatrack`
+							? $slot`hat`
+							: fam === $familiar`Left-Hand Man`
+								? $slot`off-hand`
+								: $slot`familiar`
+				: slot
 	const isWeirdFam =
 		fam === $familiar`Fancypants Scarecrow` || fam === $familiar`Mad Hatrack`
 	const equipped = equippedItem(slot)
@@ -92,7 +91,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		!(booleanModifier(item, 'Single Equip') && equippedAmount(item) > 0)
 	const favsProp = 'gear.favorites'
 	const favsList = ((getPropVal(favsProp) ?? []) as Item[])
-		.sort((a: Item, b: Item) => toInt(a) - toInt(b))
+		.sort((a: Item, b: Item) => a.id - b.id)
 		.filter(baseFilter)
 	const categories = [
 		{
@@ -102,12 +101,10 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	]
 	/*
 	const recommendations = getGearRecommendations(functionalSlot)
-	recommendations.categoryOrder.forEach((name) => {
+	recommendations.forEach((categoryRecommendations) => {
 		categories.push({
-			name,
-			items: (recommendations.categories.get(name) as Item[]).filter(
-				(it) => equipped !== it,
-			),
+			name: categoryRecommendations.name,
+			items: categoryRecommendations.items.filter((it) => equipped !== it),
 		})
 	})
 	*/

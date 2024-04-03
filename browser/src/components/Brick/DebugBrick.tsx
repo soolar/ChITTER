@@ -4,10 +4,16 @@ import CallbackLink from '../Link/CallbackLink'
 import Brick from './Brick'
 import { set } from 'libram'
 
+declare global {
+	interface Window {
+		children: { [key: string]: Node }
+		rootset: Window
+	}
+}
+
 export default function DebugBrick() {
 	const splitCallback = () => {
 		set('chit.usechitter', false)
-		/*
 		let top: Window = window
 		// infinite loop prevention measure if something weird happens
 		let safety = 100
@@ -15,14 +21,13 @@ export default function DebugBrick() {
 			top = top.parent
 			--safety
 		}
-		const rootset = top.frames['rootset'] as Window
+		const rootset = top.frames.rootset as Window
 		// TODO: Kill frame if it already exists
 		const newFrame = top.document.createElement("frame")
-		newFrame.name = "ChITTER"
-		newFrame.id = "ChITTER"
+		newFrame.name = "ChITTER Frame"
+		newFrame.id = "ChITTER Frame"
 		newFrame.src = "relay_ChITTER.js?relay=true"
 		document.insertBefore(newFrame, rootset.children["charpane"])
-		*/
 	}
 
 	return (

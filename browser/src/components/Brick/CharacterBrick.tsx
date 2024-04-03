@@ -2,7 +2,7 @@ import * as React from 'react'
 import { HStack, Text, VStack } from '@chakra-ui/react'
 import CurrencyReadout from '../CurrencyReadout'
 import Brick from './Brick'
-import { myLevel, myName, myPath, toInt } from 'kolmafia'
+import { myLevel, myName, myPath } from 'kolmafia'
 import { $item } from 'libram'
 
 export default function CharacterBrick() {
@@ -16,10 +16,10 @@ export default function CharacterBrick() {
 					{<Text>{myPath().name}</Text>}
 					<HStack>
 						{['meat' as const, $item`11-leaf clover`, $item`Freddy Kruegerand`]
-							.filter((it) => typeof it === 'string' || toInt(it) !== 0)
+							.filter((it) => typeof it === 'string' || it.id !== 0)
 							.map((it) => (
 								<CurrencyReadout
-									key={it === ('meat' as const) ? 0 : toInt(it)}
+									key={it === ('meat' as const) ? 0 : it.id}
 									item={it}
 								/>
 							))}

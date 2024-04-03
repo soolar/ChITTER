@@ -10,7 +10,6 @@ import {
 	familiarWeight,
 	haveEffect,
 	Item,
-	toInt,
 } from 'kolmafia'
 
 const mummeryCharacters = [
@@ -63,7 +62,7 @@ export function useWeirdoDivContents(fam: Familiar) {
 	switch (fam) {
 		case $familiar`Melodramedary`: {
 			const weight = familiarWeight(fam)
-			const famNum = toInt(fam)
+			const famNum = fam.identifierNumber
 			return (
 				<HStack
 					className={`chit-icon chit-icon-weird ${extraInfo?.extraClass}`}
@@ -94,136 +93,136 @@ interface BjornInfo {
 }
 
 const bjornDrops: { [fam: string]: BjornInfo } = {
-	[$familiar`Grimstone Golem`.toString()]: {
+	['Grimstone Golem']: {
 		limit: 1,
 		prop: '_grimstoneMaskDropsCrown',
 		drop: $item`grimstone mask`,
 	},
-	[$familiar`Grim Brother`.toString()]: {
+	['Grim Brother']: {
 		limit: 2,
 		prop: '_grimFairyTaleDropsCrown',
 		drop: $item`grim fairy tale`,
 	},
-	[$familiar`Trick-or-Treating Tot`.toString()]: {
+	['Trick-or-Treating Tot']: {
 		limit: 3,
 		prop: '_hoardedCandyDropsCrown',
 		drop: $item`hoarded candy wad`,
 	},
-	[$familiar`Optimistic Candle`.toString()]: {
+	['Optimistic Candle']: {
 		limit: 3,
 		prop: '_optimisticCandleDropsCrown',
 		drop: $item`glob of melted wax`,
 	},
-	[$familiar`Garbage Fire`.toString()]: {
+	['Garbage Fire']: {
 		limit: 3,
 		prop: '_garbageFireDropsCrown',
 		drop: $item`burning newspaper`,
 	},
-	[$familiar`Twitching Space Critter`.toString()]: {
+	['Twitching Space Critter']: {
 		limit: 1,
 		prop: '_spaceFurDropsCrown',
 		drop: $item`space beast fur`,
 	},
-	[$familiar`Machine Elf`.toString()]: {
+	['Machine Elf']: {
 		limit: 25,
 		prop: '_abstractionDropsCrown',
 		drop: 'abstractions',
 	},
-	[$familiar`Adventurous Spelunker`.toString()]: {
+	['Adventurous Spelunker']: {
 		limit: 6,
 		prop: '_oreDropsCrown',
 		drop: 'non-quest ore',
 	},
-	[$familiar`Puck Man`.toString()]: {
+	['Puck Man']: {
 		limit: 25,
 		prop: '_yellowPixelDropsCrown',
 		drop: $item`yellow pixel`,
 	},
-	[$familiar`Warbear Drone`.toString()]: {
+	['Warbear Drone']: {
 		drop: $item`warbear whosit`,
 	},
-	[$familiar`Li'l Xenomorph`.toString()]: {
+	["Li'l Xenomorph"]: {
 		drop: $item`lunar isotope`,
 	},
-	[$familiar`Pottery Barn Owl`.toString()]: {
+	['Pottery Barn Owl']: {
 		drop: $item`volcanic ash`,
 	},
-	[$familiar`Party Mouse`.toString()]: {
+	['Party Mouse']: {
 		drop: 'decent-good booze',
 	},
-	[$familiar`Yule Hound`.toString()]: {
+	['Yule Hound']: {
 		drop: $item`candy cane`,
 	},
-	[$familiar`Gluttonous Green Ghost`.toString()]: {
+	['Gluttonous Green Ghost']: {
 		drop: 'burritos',
 	},
-	[$familiar`Reassembled Blackbird`.toString()]: {
+	['Reassembled Blackbird']: {
 		drop: $item`blackberry`,
 	},
-	[$familiar`Reconstituted Crow`.toString()]: {
+	['Reconstituted Crow']: {
 		drop: $item`blackberry`,
 	},
-	[$familiar`Hunchbacked Minion`.toString()]: {
+	['Hunchbacked Minion']: {
 		drop: 'brain or bone',
 	},
-	[$familiar`Reanimated Reanimator`.toString()]: {
+	['Reanimated Reanimator']: {
 		drop: 'hot wings or skulls',
 	},
-	[$familiar`Attention-Deficit Demon`.toString()]: {
+	['Attention-Deficit Demon']: {
 		drop: 'some bad food',
 	},
-	[$familiar`Piano Cat`.toString()]: {
+	['Piano Cat']: {
 		drop: 'some bad booze',
 	},
-	[$familiar`Golden Monkey`.toString()]: {
+	['Golden Monkey']: {
 		drop: $item`gold nuggets`,
 	},
-	[$familiar`Robot Reindeer`.toString()]: {
+	['Robot Reindeer']: {
 		drop: 'hoay snacks',
 	},
-	[$familiar`Ancient Yuletide Troll`.toString()]: {
+	['Ancient Yuletide Troll']: {
 		drop: 'hoay snacks',
 	},
-	[$familiar`Sweet Nutcracker`.toString()]: {
+	['Sweet Nutcracker']: {
 		drop: 'hoay snacks',
 	},
-	[$familiar`Stocking Mimic`.toString()]: {
+	['Stocking Mimic']: {
 		drop: 'some simple candy',
 	},
-	[$familiar`BRICKO chick`.toString()]: {
+	['BRICKO chick']: {
 		drop: $item`BRICKO brick`,
 	},
-	[$familiar`Cotton Candy Carnie`.toString()]: {
+	['Cotton Candy Carnie']: {
 		drop: $item`cotton candy pinch`,
 	},
-	[$familiar`Untamed Turtle`.toString()]: {
+	['Untamed Turtle']: {
 		drop: 'turtle bits',
 	},
-	[$familiar`Astral Badger`.toString()]: {
+	['Astral Badger']: {
 		drop: 'shrooms',
 	},
-	[$familiar`Green Pixie`.toString()]: {
+	['Green Pixie']: {
 		drop: $item`bottle of tequila`,
 	},
-	[$familiar`Angry Goat`.toString()]: {
+	['Angry Goat']: {
 		drop: $item`goat cheese pizza`,
 	},
-	[$familiar`Adorable Seal Larva`.toString()]: {
+	['Adorable Seal Larva']: {
 		drop: 'elemental nuggets',
 	},
-	[$familiar`Frozen Gravy Fairy`.toString()]: {
+	['Frozen Gravy Fairy']: {
 		drop: $item`cold nuggets`,
 	},
-	[$familiar`Stinky Gravy Fairy`.toString()]: {
+	['Stinky Gravy Fairy']: {
 		drop: $item`stench nuggets`,
 	},
-	[$familiar`Sleazy Gravy Fairy`.toString()]: {
+	['Sleazy Gravy Fairy']: {
 		drop: $item`sleaze nuggets`,
 	},
-	[$familiar`Spooky Gravy Fairy`.toString()]: {
+	['Spooky Gravy Fairy']: {
 		drop: $item`spooky nuggets`,
 	},
-	[$familiar`Flaming Gravy Fairy`.toString()]: {
+	['Flaming Gravy Fairy']: {
 		drop: $item`hot nuggets`,
 	},
 }
@@ -353,7 +352,7 @@ export function useExtraFamInfo(
 					gifts === 'yellow'
 						? haveEffect($effect`Everything Looks Yellow`) === 0
 						: gifts === 'meat' &&
-						  haveEffect($effect`Everything Looks Red`) === 0
+							haveEffect($effect`Everything Looks Red`) === 0
 				res.extraClass = 'all-drops'
 				if (readyToFire) {
 					res.desc.push(<Text key="shrubfire">Ready to fire!</Text>)
@@ -381,12 +380,12 @@ export function useExtraFamInfo(
 		fam.dropsLimit > 0
 			? fam.dropsLimit - fam.dropsToday
 			: fam.dropsLimit === 0
-			? 0
-			: -1
+				? 0
+				: -1
 	let hasDrops = !isBjorn && dropsLeft !== 0
 	let allDrops = hasDrops && fam.dropsToday === 0
 	const dropName =
-		(fam.dropItem && fam.dropItem !== $item.none)
+		fam.dropItem && fam.dropItem !== $item.none
 			? pluralize(fam.dropItem, dropsLeft)
 			: pluralize(fam.dropName, dropsLeft)
 
@@ -397,7 +396,8 @@ export function useExtraFamInfo(
 		}
 		res.desc.unshift(
 			<Text key="dropinfo">
-				{dropsLeft >= 0 ? `${fam.dropsToday}/${fam.dropsLimit}` : 'drops'} {dropName}
+				{dropsLeft >= 0 ? `${fam.dropsToday}/${fam.dropsLimit}` : 'drops'}{' '}
+				{dropName}
 			</Text>,
 		)
 	}

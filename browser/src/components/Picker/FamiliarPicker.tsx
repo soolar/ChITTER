@@ -18,7 +18,6 @@ import {
 	myEnthronedFamiliar,
 	myFamiliar,
 	toFamiliar,
-	toInt,
 	useFamiliar,
 } from 'kolmafia'
 import CallbackLink from '../Link/CallbackLink'
@@ -33,7 +32,7 @@ interface FamiliarPickerFamArgs {
 }
 
 function FamiliarPickerFam({ fam, cmd, type }: FamiliarPickerFamArgs) {
-	const famNum = toInt(fam)
+	const famNum = fam.id
 	return famNum !== 0 ? (
 		<WrapItem key={famNum}>
 			<CallbackLink callback={() => cmd(fam)}>
@@ -65,14 +64,14 @@ export default function FamiliarPicker({
 		type === 'default'
 			? myFamiliar()
 			: type === 'bjorn'
-			? myBjornedFamiliar()
-			: myEnthronedFamiliar()
+				? myBjornedFamiliar()
+				: myEnthronedFamiliar()
 	const famsToShow = (
 		favoritesOnly
 			? Object.keys(favoriteFamiliars()).map((famName) => toFamiliar(famName))
 			: $familiars``.filter((fam) => haveFamiliar(fam as Familiar))
 	).filter((fam) => {
-		if (toInt(fam as Familiar) === 0) {
+		if (fam.id === 0) {
 			return false
 		}
 		if (!canEquip(fam as Familiar) && type === 'default') {
@@ -95,8 +94,8 @@ export default function FamiliarPicker({
 		type === 'crown'
 			? enthroneFamiliar
 			: type === 'bjorn'
-			? bjornifyFamiliar
-			: useFamiliar
+				? bjornifyFamiliar
+				: useFamiliar
 
 	return (
 		<Picker
@@ -129,7 +128,7 @@ export default function FamiliarPicker({
 			<Wrap spacing={0}>
 				{famsToShow.map((fam) => (
 					<FamiliarPickerFam
-						key={toInt(fam as Familiar)}
+						key={fam.id}
 						fam={fam as Familiar}
 						cmd={cmd}
 						type={type}

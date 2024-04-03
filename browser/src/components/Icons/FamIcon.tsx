@@ -3,7 +3,7 @@ import ChitterIcon from './ChitterIcon'
 import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { useExtraFamInfo, useWeirdoDivContents } from '../../familiarHelpers'
 import { showFam } from '../../utils'
-import { Familiar, familiarWeight, toInt, toString } from 'kolmafia'
+import { Familiar, familiarWeight, toString } from 'kolmafia'
 
 interface FamIconArgs {
 	fam?: Familiar
@@ -19,7 +19,7 @@ export default function FamIcon({
 	if (fam) {
 		const extraInfo = useExtraFamInfo(fam, true, !!isBjorn)
 		const weight = familiarWeight(fam)
-		const famNum = toInt(fam)
+		const famNum = fam.id
 		const tooltip = tooltipOverride || (
 			<VStack spacing="none">
 				<Text>{fam.name}</Text>

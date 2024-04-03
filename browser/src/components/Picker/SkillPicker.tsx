@@ -1,4 +1,4 @@
-import { Skill, toInt } from 'kolmafia'
+import { Skill } from 'kolmafia'
 import * as React from 'react'
 import SkillOption from '../Option/SkillOption'
 import Picker from './Picker'
@@ -12,7 +12,7 @@ export default function SkillPicker({ skills, header }: SkillPickerArgs) {
 	return (
 		<Picker header={header}>
 			{skills.map((skill) => (
-				<SkillOption key={toInt(skill)} skill={skill} />
+				<SkillOption key={skill.id} skill={skill} />
 			))}
 		</Picker>
 	)
