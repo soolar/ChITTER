@@ -1,5 +1,5 @@
-import { Image, Tooltip } from '@chakra-ui/react'
 import * as React from 'react'
+import { Image, Tooltip } from '@chakra-ui/react'
 
 export type BorderType =
 	| 'normal'
@@ -26,7 +26,7 @@ export default function ChitterIcon({
 	tooltip,
 	borderType = 'normal',
 	specialPath = false,
-	extraClass = '',
+	extraClass,
 	small,
 	onContextMenu,
 	chitImage,
@@ -49,8 +49,8 @@ export default function ChitterIcon({
 					specialPath
 						? image
 						: chitImage
-						? `/images/relayimages/chit/${image}`
-						: `/images/itemimages/${image}`
+							? `/images/relayimages/chit/${image}`
+							: `/images/itemimages/${image}`
 				}
 				className={classes.join(' ')}
 				alt={image}

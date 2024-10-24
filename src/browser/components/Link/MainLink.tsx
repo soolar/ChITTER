@@ -1,11 +1,9 @@
 import * as React from 'react'
 import { Link } from '@chakra-ui/react'
-import { BrowserCharacter } from '../../../character'
-
-declare const my: BrowserCharacter
+import { myHash } from 'kolmafia'
 
 function modifyHref(href: string) {
-	return href.replace(/([&?]pwd)(&|$)/, `$1=${my.hash}$2`)
+	return href.replace(/([&?]pwd)(&|$)/, `$1=${myHash()}$2`)
 }
 
 interface MainLinkArgs {

@@ -31,7 +31,7 @@ const theme = extendTheme(
 	withDefaultSize({
 		size: 's',
 		components: ['Heading'],
-	})
+	}),
 )
 
 export default theme
