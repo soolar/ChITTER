@@ -14,18 +14,20 @@ import {
 	familiarWeight,
 	itemAmount,
 	myFamiliar,
-	toString,
 	weightAdjustment,
 } from 'kolmafia'
 import { $item, MummingTrunk } from 'libram'
 import MainLink from '../Link/MainLink'
 import ChitterIcon from '../Icons/ChitterIcon'
+import FamIcon from '../Icons/FamIcon'
+import PickerLauncher from '../Picker/PickerLauncher'
+import FamiliarPicker from '../Picker/FamiliarPicker'
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()
 	const baseWeight = familiarWeight(currFam)
 	const buffedWeight = baseWeight + weightAdjustment()
-	const famType = toString(currFam)
+	const famType = currFam.identifierString
 
 	const famInfo = (
 		<VStack spacing="none">
@@ -36,7 +38,16 @@ export default function FamiliarBrick() {
 		</VStack>
 	)
 
-	const famIcon = <Text>TODO: famIcon</Text>
+	const famIcon = (
+		<PickerLauncher
+			WrappedPicker={FamiliarPicker}
+			pickerProps={{
+				type: 'familiar' as const,
+			}}
+		>
+			<FamIcon fam={currFam} style="familiar" />
+		</PickerLauncher>
+	)
 	const famEquip = <Text>TODO: famEquip</Text>
 
 	const layout = useBreakpointValue({
@@ -63,7 +74,6 @@ export default function FamiliarBrick() {
 	const costumes = MummingTrunk.currentCostumes()
 	const currCostume = costumes.get(currFam)
 	const costumeModifier = currCostume && currCostume[0]
-	console.log(`currCostume: ${costumeModifier}`)
 
 	const mummeryTooltip = (
 		<VStack spacing="none">

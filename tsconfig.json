@@ -1,4 +1,24 @@
 {
-	"files": [],
-	"references": [{ "path": "./tsconfig.app.json" }]
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"outDir": "types",
+		"jsx": "react-jsx",
+		"typeRoots": ["node_modules/@chakra-ui", "node_modules/@types"],
+		"paths": {
+			"kolmafia": ["./node_modules/tome-kolmafia/dist/kolmafia"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["**/node_modules", "**/.*/"]
 }
