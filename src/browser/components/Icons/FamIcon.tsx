@@ -2,8 +2,10 @@ import * as React from 'react'
 
 import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { $familiar } from 'libram'
+import { getFamInfo, getWeirdoDivContents } from '../../../util/familiarHelpers'
+import { showFam } from '../../../util'
 
 export type FamiliarVerb = 'familiar' | 'bjornify' | 'enthrone'
 
@@ -30,21 +32,34 @@ export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
 	if (fam && fam !== $familiar`none`) {
 		const weight = familiarWeight(fam)
 		const type = fam.identifierString
-		const extraInfo = <Text>TODO: getExtraFamInfo</Text>
+		const extraInfo = getFamInfo(fam, true, style)
 		const tooltip = tooltipOverride || (
 			<VStack spacing="none">
 				<Text>{fam.name}</Text>
 				<Text>
 					the {weight}lb {type}
 				</Text>
-				{extraInfo}
+				{extraInfo.desc}
 			</VStack>
 		)
 
-		// todo: weirdos
+		const weirdoDivContents = getWeirdoDivContents(fam)
+
+		if (weirdoDivContents) {
+			return <Tooltip label={tooltip}>{weirdoDivContents}</Tooltip>
+		}
 
 		return (
-			<ChitterIcon image={fam.image} tooltip={tooltip} borderType="normal" />
+			<ChitterIcon
+				image={fam.image}
+				tooltip={tooltip}
+				borderType={extraInfo.borderType}
+				extraClass={extraInfo.extraClass}
+				onContextMenu={(ev) => {
+					showFam(fam.id)
+					ev.preventDefault()
+				}}
+			/>
 		)
 	} else {
 		return <ChitterIcon image="antianti.gif" tooltip={getSadMessage(style)} />

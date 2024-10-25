@@ -22,19 +22,24 @@ import ChitterIcon from '../Icons/ChitterIcon'
 import FamIcon from '../Icons/FamIcon'
 import PickerLauncher from '../Picker/PickerLauncher'
 import FamiliarPicker from '../Picker/FamiliarPicker'
+import { getFamInfo, nextLevelInfo } from '../../../util/familiarHelpers'
+import ProgressBar from '../ProgressBar'
+import { showFam } from '../../../util'
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()
 	const baseWeight = familiarWeight(currFam)
 	const buffedWeight = baseWeight + weightAdjustment()
 	const famType = currFam.identifierString
+	const extraInfo = getFamInfo(currFam, false, 'familiar')
+	const nextInfo = nextLevelInfo(currFam)
 
 	const famInfo = (
 		<VStack spacing="none">
-			<Tooltip label="Click for Familiar Haiku (TODO)">
-				<Heading>{currFam.name}</Heading>
+			<Tooltip label="Click for Familiar Haiku">
+				<Heading onClick={() => showFam(currFam.id)}>{currFam.name}</Heading>
 			</Tooltip>
-			<Text>TODO: extra info</Text>
+			{extraInfo.desc}
 		</VStack>
 	)
 
@@ -109,7 +114,15 @@ export default function FamiliarBrick() {
 					<Spacer />
 				</Flex>
 			}
-			footer={<Text>TODO: ProgressBar with fam xp</Text>}
+			footer={
+				baseWeight < 20 && (
+					<ProgressBar
+						value={nextInfo.progress}
+						max={nextInfo.goal}
+						desc={`exp to ${baseWeight + 1}lbs`}
+					/>
+				)
+			}
 		>
 			{layout}
 		</Brick>
