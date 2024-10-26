@@ -285,7 +285,7 @@ export function parseMods(mods: string, verbose = false) {
 			const trueEffName = effNameMatch ? effNameMatch[1] : effName
 			const eff = toEffect(trueEffName)
 			if (eff) {
-				const effMods = stringModifier(eff, 'Modifiers')
+				const effMods = stringModifier(eff, 'Evaluated Modifiers')
 				const parsedEffMods = parseMods(effMods)
 				if (parsedEffMods !== '') {
 					return `${beginning}${effName} [${parsedEffMods}]${ending}`

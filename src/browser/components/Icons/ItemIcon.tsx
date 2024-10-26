@@ -26,7 +26,7 @@ export default function ItemIcon({
 		displayName: `${tooltipPrefix ? `${tooltipPrefix} ` : ''}${item?.identifierString ?? 'none'}`,
 		borderType: 'normal' as const,
 	}
-	const mods = item ? stringModifier(item, 'Modifiers') : ''
+	const mods = item ? stringModifier(item, 'Evaluated Modifiers') : ''
 
 	let weirdFamText
 	if (weirdFam && item) {

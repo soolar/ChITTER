@@ -17,7 +17,7 @@ import {
 	myFamiliar,
 	weightAdjustment,
 } from 'kolmafia'
-import { $item, MummingTrunk } from 'libram'
+import { $item, $slot, MummingTrunk } from 'libram'
 import MainLink from '../Link/MainLink'
 import ChitterIcon from '../Icons/ChitterIcon'
 import FamIcon from '../Icons/FamIcon'
@@ -27,6 +27,7 @@ import { getFamInfo, nextLevelInfo } from '../../../util/familiarHelpers'
 import ProgressBar from '../ProgressBar'
 import { showFam } from '../../../util'
 import ItemIcon from '../Icons/ItemIcon'
+import GearPicker from '../Picker/GearPicker'
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()
@@ -57,7 +58,14 @@ export default function FamiliarBrick() {
 	)
 
 	const equippedItem = familiarEquippedEquipment(currFam)
-	const famEquip = <ItemIcon item={equippedItem} />
+	const famEquip = (
+		<PickerLauncher
+			WrappedPicker={GearPicker}
+			pickerProps={{ slot: $slot`familiar`, fam: currFam }}
+		>
+			<ItemIcon item={equippedItem} />
+		</PickerLauncher>
+	)
 
 	const layout = useBreakpointValue({
 		base: (
