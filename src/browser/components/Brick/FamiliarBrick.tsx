@@ -11,6 +11,7 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import {
+	familiarEquippedEquipment,
 	familiarWeight,
 	itemAmount,
 	myFamiliar,
@@ -25,6 +26,7 @@ import FamiliarPicker from '../Picker/FamiliarPicker'
 import { getFamInfo, nextLevelInfo } from '../../../util/familiarHelpers'
 import ProgressBar from '../ProgressBar'
 import { showFam } from '../../../util'
+import ItemIcon from '../Icons/ItemIcon'
 
 export default function FamiliarBrick() {
 	const currFam = myFamiliar()
@@ -53,7 +55,9 @@ export default function FamiliarBrick() {
 			<FamIcon fam={currFam} style="familiar" />
 		</PickerLauncher>
 	)
-	const famEquip = <Text>TODO: famEquip</Text>
+
+	const equippedItem = familiarEquippedEquipment(currFam)
+	const famEquip = <ItemIcon item={equippedItem} />
 
 	const layout = useBreakpointValue({
 		base: (
