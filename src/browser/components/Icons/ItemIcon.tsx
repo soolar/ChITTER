@@ -3,6 +3,7 @@ import { Item, stringModifier } from 'kolmafia'
 import { Text, VStack } from '@chakra-ui/react'
 import ChitterIcon from './ChitterIcon'
 import { parseMods, showItem } from '../../../util'
+import { getItemInfo } from '../../../util/itemHelpers'
 
 interface ItemIconArgs {
 	item?: Item
@@ -19,13 +20,11 @@ export default function ItemIcon({
 	weirdFam,
 	forEquipping,
 }: ItemIconArgs) {
-	const extraInfo = {
-		desc: [<Text>TODO: Extra Info</Text>],
-		image: item?.image ?? 'blank.gif',
-		equipVerb: 'equip',
-		displayName: `${tooltipPrefix ? `${tooltipPrefix} ` : ''}${item?.identifierString ?? 'none'}`,
-		borderType: 'normal' as const,
-	}
+	const extraInfo = getItemInfo(item, {
+		namePrefix: tooltipPrefix,
+		forEquipping,
+	})
+
 	const mods = item ? stringModifier(item, 'Evaluated Modifiers') : ''
 
 	let weirdFamText

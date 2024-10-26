@@ -234,15 +234,35 @@ export function getFamInfo(
 	if (type !== 'familiar') {
 		const modifiers = stringModifier(
 			`Throne:${fam.identifierString}`,
-			'Modifiers',
+			'Evaluated Modifiers',
 		)
 		const parsedModifiers = parseMods(modifiers)
-		res.desc.push(<Text>{parsedModifiers}</Text>)
+		res.desc.push(
+			<Text dangerouslySetInnerHTML={{ __html: parsedModifiers }} />,
+		)
 		const riderInfo = CrownOfThrones.ridingFamiliars.find(
 			(value) => value.familiar === fam,
 		)
 		if (riderInfo && (!riderInfo.dropPredicate || riderInfo.dropPredicate())) {
-			// TODO: Stuff
+			let dropText
+			if (typeof riderInfo.drops === 'number') {
+				dropText = `${riderInfo.drops} meat`
+			} else if (Array.isArray(riderInfo.drops)) {
+				dropText = riderInfo.drops.map((it) => it.identifierString).join(', ')
+			} else {
+				const dropList: string[] = []
+				riderInfo.drops.forEach((chance, it) =>
+					dropList.push(`${it.identifierString} (${chance * 100}%)`),
+				)
+				dropText = dropList.join(', ')
+			}
+			const forNow = riderInfo.dropPredicate ? ' for now' : ''
+			res.desc.unshift(
+				<Text>
+					drops {dropText}
+					{forNow}
+				</Text>,
+			)
 		}
 	}
 

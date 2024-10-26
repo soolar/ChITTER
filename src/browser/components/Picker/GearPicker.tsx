@@ -29,6 +29,7 @@ import {
 import ChitterOption from '../Option/ChitterOption'
 import ItemIcon from '../Icons/ItemIcon'
 import ActionLink from '../Link/ActionLink'
+import { getItemInfo } from '../../../util/itemHelpers'
 
 interface GearCategory {
 	name: string
@@ -113,9 +114,10 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			? 'Change familiar equipment'
 			: `Change ${slot.identifierString}`
 
+	const extraInfo = getItemInfo(equipped)
 	return (
 		<Picker header={header}>
-			<Text>TODO: extra options</Text>
+			{extraInfo.extraOptions}
 			{equipped !== $item.none && (
 				<ChitterOption icon={<ItemIcon item={equipped} />}>
 					<HStack>
