@@ -30,6 +30,7 @@ import ChitterOption from '../Option/ChitterOption'
 import ItemIcon from '../Icons/ItemIcon'
 import ActionLink from '../Link/ActionLink'
 import { getItemInfo } from '../../../util/itemHelpers'
+import OptionText from '../Option/OptionText'
 
 interface GearCategory {
 	name: string
@@ -122,13 +123,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 				<ChitterOption icon={<ItemIcon item={equipped} />}>
 					<HStack>
 						<ActionLink callback={() => equip($item.none, slot)}>
-							<Text>
-								<Text as="b">unequip</Text>&nbsp;
-								<Text
-									as="span"
-									dangerouslySetInnerHTML={{ __html: equipped.name }}
-								/>
-							</Text>
+							<OptionText verb="unequip" subject={equipped.name} />
 						</ActionLink>
 						<Text>TODO: changefav</Text>
 					</HStack>
