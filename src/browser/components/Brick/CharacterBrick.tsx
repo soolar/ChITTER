@@ -1,7 +1,7 @@
 import React from 'react'
 import Brick from './Brick'
 import { myLevel, myName, myPath } from 'kolmafia'
-import { HStack, Text, VStack } from '@chakra-ui/react'
+import { Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/react'
 import { $item, $path } from 'libram'
 import CurrencyReadout from '../CurrencyReadout'
 
@@ -11,7 +11,7 @@ export default function CharacterBrick() {
 	const level = myLevel()
 	return (
 		<Brick name="character" header={myName()}>
-			<HStack>
+			<Flex>
 				{/* Character avatar here... */}
 				<VStack>
 					{/* Character title here... */}
@@ -23,12 +23,13 @@ export default function CharacterBrick() {
 						))}
 					</HStack>
 				</VStack>
+				<Spacer />
 				<VStack>
 					<Text>{level}</Text>
 					<CurrencyReadout item="fites" />
 					<CurrencyReadout item="advs" />
 				</VStack>
-			</HStack>
+			</Flex>
 		</Brick>
 	)
 }
