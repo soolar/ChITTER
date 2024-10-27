@@ -1,4 +1,4 @@
-import { getFrames } from './util/frames'
+import { getFrames, getParent } from './util/frames'
 
 declare global {
 	interface Window {
@@ -29,7 +29,13 @@ function load() {
 		return
 	}
 
-	charpane.location.href = '/chitter/index.html'
+	const chitterFrame = getParent().document.createElement('frame')
+	chitterFrame.id = 'chitterpane'
+	chitterFrame.src = '/chitter/index.html'
+
+	rootset.insertBefore(chitterFrame, charpane.frameElement)
+	// TODO: Play nice with Yorick/tourguide when they exist alongside chat
+	rootset.cols = ['20%', '0%', '55%', '25%'].join(',')
 
 	const mainpane = allFrames.mainpane
 	if (mainpane) {
