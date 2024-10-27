@@ -7,9 +7,6 @@ import EffectIcon from '../Icons/EffectIcon'
 import { parseMods } from '../../../util'
 
 export default function EffectsBrick() {
-	const nameBlock = (eff: Effect) => (
-		<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
-	)
 	const myEffs = getActiveEffects().sort((eff1, eff2) => {
 		const turnsDiff = haveEffect(eff1) - haveEffect(eff2)
 		return turnsDiff === 0
@@ -23,13 +20,16 @@ export default function EffectsBrick() {
 				{myEffs.map((eff) => {
 					const turnsLeft = haveEffect(eff)
 					const mods = parseMods(stringModifier(eff, 'Evaluated Modifiers'))
+					const nameBlock = (
+						<Text dangerouslySetInnerHTML={{ __html: eff.name }} />
+					)
 					return (
 						<>
 							<Flex key={`eff${eff.name}`} className="chit-effect">
 								<HStack>
 									<EffectIcon effect={eff} />
 									<VStack spacing={0} className="chit-effect-description">
-										{nameBlock(eff)}
+										{nameBlock}
 										{mods.length > 0 && (
 											<Text
 												className="desc-line"
