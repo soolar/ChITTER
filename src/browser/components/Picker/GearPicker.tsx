@@ -1,8 +1,9 @@
 import React from 'react'
 import {
-	availableAmount,
 	booleanModifier,
 	canEquip,
+	closetAmount,
+	creatableAmount,
 	equip,
 	equippedAmount,
 	equippedItem,
@@ -10,7 +11,10 @@ import {
 	familiarEquipment,
 	getRelated,
 	Item,
+	itemAmount,
+	pullsRemaining,
 	Slot,
+	storageAmount,
 	toItem,
 	toSlot,
 	weaponHands,
@@ -29,7 +33,7 @@ import {
 import ChitterOption from '../Option/ChitterOption'
 import ItemIcon from '../Icons/ItemIcon'
 import ActionLink from '../Link/ActionLink'
-import { getItemInfo } from '../../../util/itemHelpers'
+import { foldableAmount, getItemInfo } from '../../../util/itemHelpers'
 import OptionText from '../Option/OptionText'
 
 interface GearCategory {
@@ -64,7 +68,12 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		item !== $item.none &&
 		canEquip(item) &&
 		equipped !== item &&
-		availableAmount(item) > 0 && // TODO: Enhance for pull/create/fold checking
+		itemAmount(item) +
+			closetAmount(item) +
+			(pullsRemaining() !== 0 ? storageAmount(item) : 0) +
+			creatableAmount(item) +
+			foldableAmount(item) >
+			0 &&
 		!(booleanModifier(item, 'Single Equip') && equippedAmount(item) > 0) &&
 		(toSlot(item) === functionalSlot ||
 			(toSlot(item) === $slot`weapon` &&

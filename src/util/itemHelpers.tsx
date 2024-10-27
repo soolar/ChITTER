@@ -30,6 +30,13 @@ type EquipVerb =
 	| 'pull'
 	| 'somehow equip'
 
+export function foldableAmount(item: Item) {
+	return Object.keys(getRelated(item, 'fold'))
+		.filter((foldableName) => foldableName !== item.identifierString)
+		.map((foldableName) => toItem(foldableName))
+		.reduce((partial, foldable) => partial + availableAmount(foldable), 0)
+}
+
 interface ItemInfo {
 	displayName: string
 	desc: React.ReactNode[]
@@ -115,10 +122,7 @@ export function getItemInfo(
 	const inv = itemAmount(item)
 	if (inv === 0 && optionals.forEquipping) {
 		const clos = closetAmount(item)
-		const fold = Object.keys(getRelated(item, 'fold'))
-			.filter((foldableName) => foldableName !== item.identifierString)
-			.map((foldableName) => toItem(foldableName))
-			.reduce((partial, foldable) => partial + availableAmount(foldable), 0)
+		const fold = foldableAmount(item)
 		const storage = storageAmount(item)
 		const pulls = pullsRemaining()
 		const make = creatableAmount(item)
