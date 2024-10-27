@@ -49,7 +49,7 @@ export default function Layout() {
 
 	const brickOrder: BrickOrder = {
 		roof: ['gear'],
-		walls: [],
+		walls: ['effects'],
 		floor: ['familiar'],
 	}
 

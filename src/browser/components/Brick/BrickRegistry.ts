@@ -1,7 +1,9 @@
+import EffectsBrick from './EffectsBrick'
 import FamiliarBrick from './FamiliarBrick'
 import GearBrick from './GearBrick'
 
 const brickRegistry: { [brickName: string]: () => JSX.Element } = {
+	effects: EffectsBrick,
 	familiar: FamiliarBrick,
 	gear: GearBrick,
 } as const
