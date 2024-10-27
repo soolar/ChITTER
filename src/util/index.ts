@@ -48,6 +48,8 @@ const modShorthands: ModShorthand[] = [
 	[/[^,]+ \+?0(?:,|$)/g, ''],
 	// remove free pull too
 	[/Free Pull/, ''],
+	// Get rid of wiki name
+	[/Wiki Name: "[^"]+"/, ''],
 	[/Lasts Until Rollover(: true)?/, 'Melts'],
 	[/ Percent/g, '%'],
 	[/Muscle/g, 'Mus'],
