@@ -13,6 +13,7 @@ import {
 	storageAmount,
 	stringModifier,
 	toItem,
+	totalFreeRests,
 	weaponHands,
 } from 'kolmafia'
 import { $familiar, $item, $skills, clamp, get } from 'libram'
@@ -23,6 +24,7 @@ import ItemIcon from '../browser/components/Icons/ItemIcon'
 import FamiliarPicker from '../browser/components/Picker/FamiliarPicker'
 import { Text } from '@chakra-ui/react'
 import MainLinkOption from '../browser/components/Option/MainLinkOption'
+import SkillPicker from '../browser/components/Picker/SkillPicker'
 
 type EquipVerb =
 	| 'equip'
@@ -160,6 +162,37 @@ export function getItemInfo(
 					/>,
 				)
 			}
+			break
+		}
+		case $item`Cincho de Mayo`.identifierString:
+		case $item`replica Cincho de Mayo`.identifierString: {
+			const cinch = 100 - clamp(get('_cinchUsed'), 0, 100)
+			const restsTaken = get('_cinchoRests')
+			const cinchToGain = clamp(30 - 5 * (restsTaken - 4), 5, 30)
+			const freeRestsLeft = totalFreeRests() - get('timesRested')
+			const cinchWasted = cinchToGain + cinch - 100
+			res.desc.push(<Text>{cinch} cinch available</Text>)
+			res.desc.push(
+				<Text>
+					{restsTaken} rests taken, will gain {cinchToGain} cinch{' '}
+					{cinchWasted > 0 && `(wasting ${cinchWasted})`}
+				</Text>,
+			)
+			res.desc.push(
+				<Text>{freeRestsLeft > 0 ? freeRestsLeft : 'no'} free rests left</Text>,
+			)
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={SkillPicker}
+					pickerProps={{
+						skills: $skills`Cincho: Confetti Extravaganza, Cincho: Dispense Salt and Lime, Cincho: Fiesta Exit, Cincho: Party Foul, Cincho: Party Soundtrack, Cincho: Projectile Piñata`,
+						header: `Use some cinch (${cinch} available)`,
+					}}
+					verb="use"
+					subject="some cinch"
+				/>,
+			)
 			break
 		}
 	}
