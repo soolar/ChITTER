@@ -15,12 +15,14 @@ import {
 	toItem,
 	weaponHands,
 } from 'kolmafia'
-import { $familiar, $item } from 'libram'
+import { $familiar, $item, $skills, clamp, get } from 'libram'
 import { parseMods } from '.'
 import { getFamInfo } from './familiarHelpers'
 import PickerOption from '../browser/components/Option/PickerOption'
 import ItemIcon from '../browser/components/Icons/ItemIcon'
 import FamiliarPicker from '../browser/components/Picker/FamiliarPicker'
+import { Text } from '@chakra-ui/react'
+import MainLinkOption from '../browser/components/Option/MainLinkOption'
 
 type EquipVerb =
 	| 'equip'
@@ -115,6 +117,49 @@ export function getItemInfo(
 					subject="a rider"
 				/>,
 			)
+			break
+		}
+		case $item`cursed monkey's paw`.identifierString: {
+			// sorted such that index = wishes used to unlock that skill
+			const pawSkills = $skills`Monkey Slap, Monkey Tickle, Evil Monkey Eye, Monkey Peace Sign, Monkey Point, Monkey Punch`
+			const pawSkillDescs = [
+				'Batter up-like',
+				'Delevel',
+				<>
+					<Text className="modSpooky">Spooky damage</Text> + delevel
+				</>,
+				'Heal',
+				'Olfaction-like',
+				'Physical damage',
+			]
+			const wishesUsed = clamp(get('_monkeyPawWishesUsed'), 0, 5)
+			res.desc.push(<Text>{wishesUsed} / 5 wishes used</Text>)
+			if (wishesUsed < 5) {
+				res.borderType = 'has-drops'
+			}
+			res.image = `monkeypaw${wishesUsed}.gif`
+			res.desc.push(
+				<Text>
+					Current skill: {pawSkills[wishesUsed].identifierString} (
+					{pawSkillDescs[wishesUsed]})
+				</Text>,
+			)
+			if (wishesUsed < 5) {
+				res.desc.push(
+					<Text>
+						Next skill: {pawSkills[wishesUsed + 1].identifierString} (
+						{pawSkillDescs[wishesUsed + 1]})
+					</Text>,
+				)
+				res.extraOptions.push(
+					<MainLinkOption
+						icon={<ItemIcon item={item} />}
+						href="/main.php?pwd&action=cmonk"
+						verb="wish"
+						subject="for an item or effect"
+					/>,
+				)
+			}
 			break
 		}
 	}
