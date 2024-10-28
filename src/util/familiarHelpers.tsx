@@ -217,7 +217,6 @@ export function getFamInfo(
 	const dropName = pluralize(drop, 1)
 
 	if (dropName) {
-		console.log(`${fam.identifierString}: ${dropName}`)
 		if (hasDrops) {
 			res.dropInfo = { drop, dropped: fam.dropsToday, limit: fam.dropsLimit }
 			res.desc.unshift(
