@@ -214,7 +214,7 @@ export function getFamInfo(
 	let allDrops = hasDrops && fam.dropsToday === 0
 	const drop =
 		fam.dropItem.identifierString !== 'none' ? fam.dropItem : fam.dropName
-	const dropName = pluralize(drop, fam.dropsLimit)
+	const dropName = pluralize(drop, 1)
 
 	if (dropName) {
 		console.log(`${fam.identifierString}: ${dropName}`)
@@ -222,7 +222,7 @@ export function getFamInfo(
 			res.dropInfo = { drop, dropped: fam.dropsToday, limit: fam.dropsLimit }
 			res.desc.unshift(
 				<Text>
-					{fam.dropsToday}/{fam.dropsLimit} {dropName}
+					{fam.dropsToday} / {fam.dropsLimit} {dropName}
 				</Text>,
 			)
 		} else {
