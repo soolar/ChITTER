@@ -10,6 +10,7 @@ import {
 	Familiar,
 	familiarEquipment,
 	getRelated,
+	isUnrestricted,
 	Item,
 	itemAmount,
 	pullsRemaining,
@@ -18,8 +19,9 @@ import {
 	toItem,
 	toSlot,
 	weaponHands,
+	weaponType,
 } from 'kolmafia'
-import { $familiar, $item, $skill, $slot, get, have, set } from 'libram'
+import { $familiar, $item, $skill, $slot, $stat, get, have, set } from 'libram'
 import Picker from './Picker'
 import {
 	ButtonGroup,
@@ -67,6 +69,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 	const equipped = equippedItem(slot)
 	const baseFilter = (item: Item) =>
 		item !== $item.none &&
+		isUnrestricted(item) &&
 		canEquip(item) &&
 		equipped !== item &&
 		itemAmount(item) +
@@ -80,7 +83,9 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			(toSlot(item) === $slot`weapon` &&
 				slot === $slot`off-hand` &&
 				have($skill`Double-fisted skull smashing`) &&
-				weaponHands(item) <= 1))
+				weaponHands(item) <= 1 &&
+				(weaponType(item) === $stat`Moxie`) ===
+					(weaponType(equippedItem($slot`weapon`)) === $stat`Moxie`)))
 
 	let favsProp = 'chit.gear.favorites'
 
