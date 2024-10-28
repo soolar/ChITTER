@@ -144,6 +144,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						</ActionLink>
 						<ActionLink
 							callback={() => set('chit.gear.favorites', changedFavsStr)}
+							dirty
 						>
 							<ChitterIcon
 								chitImage

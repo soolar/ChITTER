@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from '@chakra-ui/react'
+import { RefreshContext } from 'tome-kolmafia'
 
 interface ActionLinkArgs {
 	callback: () => void
 	children: React.ReactNode
+	dirty?: boolean
 }
 
-export default function ActionLink({ callback, children }: ActionLinkArgs) {
-	return <Link onClick={callback}>{children}</Link>
+export default function ActionLink({
+	callback,
+	children,
+	dirty,
+}: ActionLinkArgs) {
+	const refContext = useContext(RefreshContext)
+	const wrappedCallback = dirty
+		? () => {
+				callback()
+				refContext.triggerHardRefresh()
+			}
+		: callback
+	return <Link onClick={wrappedCallback}>{children}</Link>
 }
