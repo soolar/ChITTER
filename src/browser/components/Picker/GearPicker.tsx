@@ -19,7 +19,7 @@ import {
 	toSlot,
 	weaponHands,
 } from 'kolmafia'
-import { $familiar, $item, $skill, $slot, get, have } from 'libram'
+import { $familiar, $item, $skill, $slot, get, have, set } from 'libram'
 import Picker from './Picker'
 import {
 	ButtonGroup,
@@ -35,6 +35,7 @@ import ItemIcon from '../Icons/ItemIcon'
 import ActionLink from '../Link/ActionLink'
 import { foldableAmount, getItemInfo } from '../../../util/itemHelpers'
 import OptionText from '../Option/OptionText'
+import ChitterIcon from '../Icons/ChitterIcon'
 
 interface GearCategory {
 	name: string
@@ -109,14 +110,21 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		}
 	}
 
-	const favoriteItems = get(favsProp, '')
+	const allFavorites = get(favsProp, '')
 		.split('|')
 		.map((itemName) => toItem(itemName))
-		.filter(baseFilter)
+	const filteredFavorites = allFavorites.filter(baseFilter)
+
+	const isFavorite =
+		equipped && allFavorites.find((it) => it === equipped) !== undefined
+	const changedFavs = isFavorite
+		? allFavorites.filter((it) => it !== equipped)
+		: [...allFavorites, equipped]
+	const changedFavsStr = changedFavs.map((it) => it.identifierString).join('|')
 
 	categories.unshift({
 		name: 'favorites',
-		items: favoriteItems,
+		items: filteredFavorites,
 	})
 
 	const header =
@@ -134,7 +142,16 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						<ActionLink callback={() => equip($item.none, slot)}>
 							<OptionText verb="unequip" subject={equipped.name} />
 						</ActionLink>
-						<Text>TODO: changefav</Text>
+						<ActionLink
+							callback={() => set('chit.gear.favorites', changedFavsStr)}
+						>
+							<ChitterIcon
+								chitImage
+								image={`control_${isFavorite ? 'remove_red' : 'add_blue'}.png`}
+								small
+								tooltip={`${isFavorite ? 'un' : ''}favorite ${equipped.name}`}
+							/>
+						</ActionLink>
 					</HStack>
 				</ChitterOption>
 			)}
