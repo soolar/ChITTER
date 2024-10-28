@@ -7,7 +7,10 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			kolmafia: 'tome-kolmafia/kolmafia',
+			kolmafia: path.resolve(
+				__dirname,
+				'node_modules/tome-kolmafia/dist/kolmafia/index.js',
+			),
 		},
 	},
 	optimizeDeps: {
