@@ -1,8 +1,8 @@
 import { Divider, Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
-import { Effect, haveEffect, haveSkill } from 'kolmafia'
+import { Effect, haveEffect } from 'kolmafia'
 import Brick from './Brick'
-import { $effects, $skill, getActiveEffects } from 'libram'
+import { $effects, $skill, getActiveEffects, have } from 'libram'
 import EffectIcon from '../Icons/EffectIcon'
 import { getEffectInfo } from '../../../util/effectHelpers'
 import PickerLauncher from '../Picker/PickerLauncher'
@@ -52,12 +52,17 @@ interface EffectDisplayArgs {
 }
 
 function EffectDisplay({ eff }: EffectDisplayArgs) {
-	const turnsLeft = haveEffect(eff)
 	const extraInfo = getEffectInfo(eff)
 	return (
 		<RawDisplay
-			turnsLeft={turnsLeft === 2147483647 ? <>&infin;</> : turnsLeft}
-			name={<Text dangerouslySetInnerHTML={{ __html: eff.name }} />}
+			turnsLeft={extraInfo.displayTurns}
+			name={
+				typeof extraInfo.displayName === 'string' ? (
+					<Text dangerouslySetInnerHTML={{ __html: extraInfo.displayName }} />
+				) : (
+					extraInfo.displayName
+				)
+			}
 			desc={extraInfo.mods.length > 0 ? extraInfo.mods : undefined}
 			icon={<EffectIcon effect={eff} />}
 			launches={extraInfo.launches}
@@ -74,7 +79,7 @@ export default function EffectsBrick() {
 	})
 	const spirits = $effects`Spirit of Bacon Grease, Spirit of Peppermint, Spirit of Wormwood, Spirit of Cayenne, Spirit of Garlic`
 	const needSpirit =
-		haveSkill($skill`Flavour of Magic`) &&
+		have($skill`Flavour of Magic`) &&
 		spirits.find((eff) => haveEffect(eff) > 0) === undefined
 	return (
 		<Brick name="effects" header="Effects">
