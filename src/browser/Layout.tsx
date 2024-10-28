@@ -48,7 +48,7 @@ export default function Layout() {
 	useContext(RefreshContext)
 
 	const brickOrder: BrickOrder = {
-		roof: ['character', 'stats', 'gear'],
+		roof: ['character', 'stats', 'gear', 'trail'],
 		walls: ['effects'],
 		floor: ['familiar'],
 	}
