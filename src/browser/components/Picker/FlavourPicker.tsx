@@ -66,8 +66,8 @@ export default function FlavourPicker() {
 	]
 	const activeArea = areas.find((area) => haveEffect(area.effect) > 0)
 	const activeElement = activeArea
-		? activeArea.element.identifierString
-		: 'none'
+		? activeArea.element.identifierString.toLowerCase()
+		: ''
 	return (
 		<Picker header="Change Your Flavour">
 			<Container maxW="full" centerContent>
