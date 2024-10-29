@@ -1,8 +1,9 @@
 import { useContext } from 'react'
-import { Container, Flex } from '@chakra-ui/react'
+import { Container, Flex, IconButton, Link } from '@chakra-ui/react'
 import { RefreshContext } from 'tome-kolmafia'
 import brickRegistry, { BrickName } from './components/Brick/BrickRegistry'
 import ErrorBrick from './components/Brick/ErrorBrick'
+import { RepeatIcon } from '@chakra-ui/icons'
 
 interface BrickOrder {
 	roof: BrickName[]
@@ -61,6 +62,11 @@ export default function Layout() {
 					bricks={brickOrder[sectionName]}
 				/>
 			))}
+			<Container maxW="full" id="chit_toolbar" p="2px" className="chit-footer">
+				<Link href="/chitter/index.html">
+					<IconButton aria-label="Reload" size="xs" icon={<RepeatIcon />} />
+				</Link>
+			</Container>
 		</Flex>
 	)
 }

@@ -182,13 +182,22 @@ export function getFamInfo(
 				res.extraClass = 'all-drops'
 				if (readyToFire) {
 					res.desc.push(<Text>Ready to fire!</Text>)
-				} else if (gifts === '') {
+				}
+				if (!get('_shrubDecorated')) {
+					const decorated = get('shrubGifts') !== ''
 					res.desc.push(
 						<Text>
-							<MainLink href="/inv_use.php?pwd&which=3&whichitem=7958">
-								Decorate
-							</MainLink>{' '}
-							your shrub!
+							{isTooltip ? (
+								decorated ? (
+									'Can decorate'
+								) : (
+									'Can redecorate'
+								)
+							) : (
+								<MainLink href="/inv_use.php?pwd&which=3&whichitem=7958">
+									{decorated ? 'Can redecorate' : 'Decorate your shrub!'}
+								</MainLink>
+							)}
 						</Text>,
 					)
 				} else {
