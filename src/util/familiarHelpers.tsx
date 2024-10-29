@@ -245,7 +245,9 @@ export function getFamInfo(
 		if (riderInfo && (!riderInfo.dropPredicate || riderInfo.dropPredicate())) {
 			let dropText
 			if (typeof riderInfo.drops === 'number') {
-				dropText = `${riderInfo.drops} meat`
+				if (riderInfo.drops !== 0) {
+					dropText = `${riderInfo.drops} meat`
+				}
 			} else if (Array.isArray(riderInfo.drops)) {
 				dropText = riderInfo.drops.map((it) => it.identifierString).join(', ')
 			} else {
@@ -259,12 +261,15 @@ export function getFamInfo(
 			if (forNow !== '') {
 				hasDrops = true
 			}
-			res.desc.unshift(
+			res.desc.push(
 				<Text>
 					drops {dropText}
 					{forNow}
 				</Text>,
 			)
+			if (dropText) {
+				res.dropInfo = { drop: dropText }
+			}
 		}
 	}
 

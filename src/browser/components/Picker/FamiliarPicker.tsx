@@ -29,6 +29,7 @@ import ActionLink from '../Link/ActionLink'
 import ChitterIcon from '../Icons/ChitterIcon'
 import useToggle from '../../hooks/useToggle'
 import SettingToggle from '../SettingToggle'
+import { getFamInfo } from '../../../util/familiarHelpers'
 
 interface FamiliarPickerArgs {
 	type?: FamiliarVerb
@@ -57,7 +58,13 @@ export default function FamiliarPicker({
 			? Object.keys(favoriteFamiliars()).map((famName) => toFamiliar(famName))
 			: $familiars``
 	).filter((fam) => {
-		return haveFamiliar(fam) && isUnrestricted(fam) && fam !== activeFam
+		const info = getFamInfo(fam, true, type)
+		return (
+			haveFamiliar(fam) &&
+			isUnrestricted(fam) &&
+			fam !== activeFam &&
+			(!dropsOnly || !!info.dropInfo)
+		)
 	})
 
 	const changeFunc =
