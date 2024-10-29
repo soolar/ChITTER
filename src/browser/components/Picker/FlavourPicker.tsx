@@ -9,7 +9,7 @@ import {
 import { $effect, $element, $skill } from 'libram'
 import React from 'react'
 import Picker from './Picker'
-import { Container, Image } from '@chakra-ui/react'
+import { Container, Image, Text, Tooltip } from '@chakra-ui/react'
 
 interface FlavourArea {
 	element: Element
@@ -82,13 +82,21 @@ export default function FlavourPicker() {
 					{areas
 						.filter((area) => area !== activeArea)
 						.map((area) => (
-							<area
-								shape="circle"
-								alt={area.element.identifierString}
-								title={`${area.skill.identifierString} (${area.element.identifierString})`}
-								coords={`${area.x},${area.y},22`}
-								onClick={() => useSkill(area.skill)}
-							/>
+							<Tooltip
+								label={
+									<Text>
+										{area.skill.identifierString} (
+										{area.element.identifierString})
+									</Text>
+								}
+							>
+								<area
+									shape="circle"
+									alt={area.element.identifierString}
+									coords={`${area.x},${area.y},22`}
+									onClick={() => useSkill(area.skill)}
+								/>
+							</Tooltip>
 						))}
 				</map>
 			</Container>

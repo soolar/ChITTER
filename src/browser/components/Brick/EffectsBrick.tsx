@@ -100,6 +100,7 @@ export default function EffectsBrick() {
 							name={<Text>Choose a Flavour</Text>}
 							icon={
 								<ChitterIcon
+									medium
 									image={'flavorofmagic.gif'}
 									tooltip={<Text>Choose a Flavour</Text>}
 								/>
