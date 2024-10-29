@@ -64,7 +64,7 @@ function EffectDisplay({ eff }: EffectDisplayArgs) {
 				)
 			}
 			desc={extraInfo.mods.length > 0 ? extraInfo.mods : undefined}
-			icon={<EffectIcon effect={eff} />}
+			icon={<EffectIcon effect={eff} medium />}
 			launches={extraInfo.launches}
 		/>
 	)
@@ -83,7 +83,7 @@ export default function EffectsBrick() {
 		spirits.find((eff) => haveEffect(eff) > 0) === undefined
 	return (
 		<Brick name="effects" header="Effects">
-			<VStack>
+			<VStack spacing={0}>
 				<Divider />
 				{myEffs.map((eff) => {
 					return (

@@ -26,7 +26,7 @@ export default function Brick({
 			<>{header}</>
 		)
 	return (
-		<Box p={1} shadow="md" borderWidth="1px">
+		<Box p={1} shadow="md" borderWidth="1px" className="chit-brick">
 			<SimpleGrid id={`chit-brick-${name}`}>
 				<GridItem bgColor="#efefef">
 					{headerHref ? (

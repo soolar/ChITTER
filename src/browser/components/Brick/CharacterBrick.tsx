@@ -1,9 +1,10 @@
 import React from 'react'
 import Brick from './Brick'
 import { myLevel, myName, myPath } from 'kolmafia'
-import { Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/react'
+import { Flex, HStack, Spacer, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { $item, $path } from 'libram'
 import CurrencyReadout from '../CurrencyReadout'
+import MainLink from '../Link/MainLink'
 
 export default function CharacterBrick() {
 	const path = myPath()
@@ -25,7 +26,11 @@ export default function CharacterBrick() {
 				</VStack>
 				<Spacer />
 				<VStack>
-					<Text>{level}</Text>
+					<MainLink href="/council.php">
+						<Tooltip label={<Text>Visit the council</Text>}>
+							<Text>Level {level}</Text>
+						</Tooltip>
+					</MainLink>
 					<CurrencyReadout item="fites" />
 					<CurrencyReadout item="advs" />
 				</VStack>

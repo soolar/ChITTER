@@ -11,7 +11,7 @@ export default function GearBrick() {
 	const gearSlots = $slots`hat, back, shirt, weapon, off-hand, pants, acc1, acc2, acc3`
 	return (
 		<Brick name="gear" header="Gear">
-			<Wrap justify="center" spacing="2px">
+			<Wrap justify="center" spacing="1px">
 				{gearSlots.map((slot) => {
 					const equipped = equippedItem(slot)
 					return (

@@ -91,6 +91,7 @@ export function getItemInfo(
 				res.image = bjornFam.image
 				const bjornInfo = getFamInfo(bjornFam, true, 'bjornify')
 				res.desc.push(...bjornInfo.desc)
+				res.borderType = bjornInfo.borderType
 			}
 			res.extraOptions.push(
 				<PickerOption
@@ -109,6 +110,7 @@ export function getItemInfo(
 				res.image = throneFam.image
 				const throneInfo = getFamInfo(throneFam, true, 'enthrone')
 				res.desc.push(...throneInfo.desc)
+				res.borderType = throneInfo.borderType
 			}
 			res.extraOptions.push(
 				<PickerOption

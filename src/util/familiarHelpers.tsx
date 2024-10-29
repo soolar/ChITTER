@@ -224,7 +224,7 @@ export function getFamInfo(
 					{fam.dropsToday} / {fam.dropsLimit} {dropName}
 				</Text>,
 			)
-		} else {
+		} else if (type === 'familiar') {
 			res.dropInfo = { drop }
 			res.desc.unshift(<Text>drops {dropName}</Text>)
 		}
@@ -256,6 +256,9 @@ export function getFamInfo(
 				dropText = dropList.join(', ')
 			}
 			const forNow = riderInfo.dropPredicate ? ' for now' : ''
+			if (forNow !== '') {
+				hasDrops = true
+			}
 			res.desc.unshift(
 				<Text>
 					drops {dropText}

@@ -52,8 +52,6 @@ $picker-bg: #f8f8f8;
 }
 
 .chit-brick {
-	background-color: white;
-	border-collapse: separate;
 	border: 1px solid #d0d0d0;
 	empty-cells: show;
 	font-size: 12px;
@@ -62,7 +60,6 @@ $picker-bg: #f8f8f8;
 	width: 100%;
 	padding: 1px 1px 0px;
 	border-spacing: 0px;
-	text-align: center;
 }
 
 .chit-brick th {
@@ -112,6 +109,11 @@ $picker-bg: #f8f8f8;
 .chit-icon.small {
 	max-width: 16px;
 	max-height: 16px;
+}
+
+.chit-icon.medium {
+	max-width: 20px;
+	max-height: 20px;
 }
 
 table.chit-picker {
@@ -198,4 +200,8 @@ table.chit-picker {
 
 .chit-effect-description {
 	align-items: flex-start !important;
+}
+
+.chit-effect-description .desc-line {
+	font-size: 10px;
 }

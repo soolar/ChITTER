@@ -91,7 +91,7 @@ export default function FamiliarPicker({
 						/>
 					</VStack>
 					<Spacer />
-					<ActionLink callback={() => changeFunc($familiar`none`)}>
+					<ActionLink callback={() => changeFunc($familiar`none`)} dirty>
 						<ChitterIcon image="antianti.gif" tooltip="Use no familiar" />
 					</ActionLink>
 				</Flex>
@@ -100,7 +100,7 @@ export default function FamiliarPicker({
 			<Wrap spacing={0}>
 				{famsToShow.map((fam) => (
 					<WrapItem key={fam.id}>
-						<ActionLink callback={() => changeFunc(fam)}>
+						<ActionLink callback={() => changeFunc(fam)} dirty>
 							<FamIcon fam={fam} style={type} />
 						</ActionLink>
 					</WrapItem>

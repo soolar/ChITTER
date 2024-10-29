@@ -17,6 +17,7 @@ interface ChitterIconArgs {
 	specialPath?: boolean
 	extraClass?: string
 	small?: boolean
+	medium?: boolean
 	onContextMenu?: React.MouseEventHandler<HTMLImageElement>
 	chitImage?: boolean
 }
@@ -28,6 +29,7 @@ export default function ChitterIcon({
 	specialPath = false,
 	extraClass,
 	small,
+	medium,
 	onContextMenu,
 	chitImage,
 }: ChitterIconArgs) {
@@ -37,6 +39,8 @@ export default function ChitterIcon({
 	}
 	if (small) {
 		classes.push('small')
+	} else if (medium) {
+		classes.push('medium')
 	}
 	if (extraClass) {
 		classes.push(extraClass)

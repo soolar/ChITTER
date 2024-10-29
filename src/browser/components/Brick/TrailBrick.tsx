@@ -1,7 +1,7 @@
 import { myLocation, toUrl } from 'kolmafia'
 import React from 'react'
 import Brick from './Brick'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import MainLink from '../Link/MainLink'
 
 export default function TrailBrick() {
