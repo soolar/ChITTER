@@ -30,7 +30,7 @@ export function showFam(famNum: number) {
 
 export function showItem(descId: number) {
 	const wind = window.open(
-		`/desc_item.php?which=${descId}`,
+		`/desc_item.php?whichitem=${descId}`,
 		'item',
 		'height=200,width=400',
 	)
