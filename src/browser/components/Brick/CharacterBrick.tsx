@@ -2,6 +2,7 @@ import React from 'react'
 import Brick from './Brick'
 import {
 	canInteract,
+	getClanName,
 	inBadMoon,
 	inHardcore,
 	myLevel,
@@ -22,8 +23,9 @@ export default function CharacterBrick() {
 		<Brick name="character" header={myName()}>
 			<Flex>
 				{/* Character avatar here... */}
-				<VStack>
+				<VStack spacing={0} align="left">
 					{/* Character title here... */}
+					<Text>{getClanName()}</Text>
 					{onPath && <Text>{path.identifierString}</Text>}
 					{get('kingLiberated') ? (
 						<Text>Aftercore</Text>
@@ -48,7 +50,7 @@ export default function CharacterBrick() {
 					</HStack>
 				</VStack>
 				<Spacer />
-				<VStack>
+				<VStack spacing={0} align="right">
 					<MainLink href="/council.php">
 						<Tooltip label={<Text>Visit the council</Text>}>
 							<Text>Level {level}</Text>
