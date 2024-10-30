@@ -1,8 +1,16 @@
 import React from 'react'
 import Brick from './Brick'
-import { myLevel, myName, myPath } from 'kolmafia'
+import {
+	canInteract,
+	inBadMoon,
+	inHardcore,
+	myLevel,
+	myName,
+	myPath,
+	turnsPlayed,
+} from 'kolmafia'
 import { Flex, HStack, Spacer, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { $item, $path } from 'libram'
+import { $item, $path, get } from 'libram'
 import CurrencyReadout from '../CurrencyReadout'
 import MainLink from '../Link/MainLink'
 
@@ -16,8 +24,23 @@ export default function CharacterBrick() {
 				{/* Character avatar here... */}
 				<VStack>
 					{/* Character title here... */}
-					{/* Restrictions here... */}
 					{onPath && <Text>{path.identifierString}</Text>}
+					{get('kingLiberated') ? (
+						<Text>Aftercore</Text>
+					) : inBadMoon() ? (
+						<Text>Bad Moon</Text>
+					) : inHardcore() ? (
+						<Text>Hardcore</Text>
+					) : canInteract() ? (
+						<Text>Casual</Text>
+					) : (
+						<Text>
+							<MainLink href="/storage.php">
+								<Tooltip label={<Text>Visit Hagnk</Text>}>Ronin</Tooltip>
+							</MainLink>
+							: {(1000 - turnsPlayed()).toLocaleString()}
+						</Text>
+					)}
 					<HStack>
 						{['meat' as const, $item`11-leaf clover`].map((it) => (
 							<CurrencyReadout item={it} />
