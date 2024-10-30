@@ -1,14 +1,29 @@
 import { useContext } from 'react'
-import { Container, Flex, IconButton, Link } from '@chakra-ui/react'
+import {
+	Container,
+	Flex,
+	IconButton,
+	Link,
+	Popover,
+	PopoverArrow,
+	PopoverBody,
+	PopoverCloseButton,
+	PopoverContent,
+	PopoverTrigger,
+	Spacer,
+	Text,
+	Tooltip,
+} from '@chakra-ui/react'
 import { RefreshContext } from 'tome-kolmafia'
 import brickRegistry, { BrickName } from './components/Brick/BrickRegistry'
 import ErrorBrick from './components/Brick/ErrorBrick'
-import { RepeatIcon } from '@chakra-ui/icons'
+import { CloseIcon, RepeatIcon, WarningIcon } from '@chakra-ui/icons'
 
 interface BrickOrder {
 	roof: BrickName[]
 	walls: BrickName[]
 	floor: BrickName[]
+	toolbar: BrickName[]
 }
 
 type SectionName = keyof BrickOrder
@@ -18,7 +33,7 @@ interface ChitterBrickArgs {
 }
 
 function ChitterBrick({ brickName }: ChitterBrickArgs) {
-	const CurrBrick = brickRegistry[brickName]
+	const CurrBrick = brickRegistry[brickName].brick
 	if (CurrBrick === undefined) {
 		return <ErrorBrick name={brickName.toString()} />
 	}
@@ -52,6 +67,7 @@ export default function Layout() {
 		roof: ['character', 'stats', 'gear', 'trail'],
 		walls: ['effects'],
 		floor: ['familiar'],
+		toolbar: ['modifiers'],
 	}
 
 	return (
@@ -63,9 +79,47 @@ export default function Layout() {
 				/>
 			))}
 			<Container maxW="full" id="chit_toolbar" p="2px" className="chit-footer">
-				<Link href="/chitter/index.html">
-					<IconButton aria-label="Reload" size="xs" icon={<RepeatIcon />} />
-				</Link>
+				<Flex>
+					<Link href="/chitter/index.html">
+						<Tooltip label={<Text>Reload ChITTER</Text>}>
+							<IconButton aria-label="Reload" size="xs" icon={<RepeatIcon />} />
+						</Tooltip>
+					</Link>
+					<Spacer />
+					{brickOrder.toolbar.map((brickName) => {
+						const brickInfo = brickRegistry[brickName]
+						const icon = brickInfo.icon ?? <WarningIcon />
+						const ThisBrick = brickInfo.brick
+						return (
+							<Popover>
+								<PopoverTrigger>
+									<IconButton
+										aria-label={`Open ${brickName} brick`}
+										size="xs"
+										icon={icon}
+									/>
+								</PopoverTrigger>
+								<PopoverContent>
+									<PopoverArrow />
+									<PopoverCloseButton />
+									<PopoverBody>
+										<ThisBrick />
+									</PopoverBody>
+								</PopoverContent>
+							</Popover>
+						)
+					})}
+					<Spacer />
+					<Tooltip
+						label={<Text>TODO: Close ChITTER with this button lol</Text>}
+					>
+						<IconButton
+							aria-label="Close (TODO)"
+							size="xs"
+							icon={<CloseIcon />}
+						/>
+					</Tooltip>
+				</Flex>
 			</Container>
 		</Flex>
 	)

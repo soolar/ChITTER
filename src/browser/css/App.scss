@@ -205,3 +205,7 @@ table.chit-picker {
 .chit-effect-description .desc-line {
 	font-size: 10px;
 }
+
+.alternating-row:nth-of-type(even) {
+	background-color: #eee;
+}
