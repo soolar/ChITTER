@@ -1,10 +1,12 @@
 import React from 'react'
 import { HStack, Text } from '@chakra-ui/react'
 import {
+	getFuel,
 	Item,
 	itemAmount,
 	myAdventures,
 	myMeat,
+	pullsRemaining,
 	pvpAttacksLeft,
 	urlEncode,
 } from 'kolmafia'
@@ -12,6 +14,7 @@ import ChitterIcon from './Icons/ChitterIcon'
 import ItemIcon from './Icons/ItemIcon'
 import MainLink from './Link/MainLink'
 import { getItemInfo } from '../../util/itemHelpers'
+import { $item, clamp, get } from 'libram'
 
 const SpecialCurrencyDetails = {
 	meat: {
@@ -32,24 +35,92 @@ const SpecialCurrencyDetails = {
 		suffix: 'PvP Fights remaining',
 		link: { href: '/peevpee.php', desc: 'visit Huggler Memorial Colosseum' },
 	},
+	pulls: {
+		image: 'wblprom.gif',
+		getter: pullsRemaining,
+		suffix: 'pulls remaining',
+		link: { href: '/storage.php', desc: 'visit Hagnk' },
+	},
+	timespinnerminutes: {
+		image: 'timespinner.gif',
+		getter: () => 10 - clamp(get('_timeSpinnerMinutesUsed'), 0, 10),
+		suffix: 'Time-Spinner minutes',
+		link: {
+			href: '/inv_use.php?pwd&whichitem=9104',
+			desc: 'spin your Time-Spinner',
+		},
+	},
+	asdonfuel: {
+		image: 'tank.gif',
+		getter: getFuel,
+		suffix: 'Asdon Martin fuel',
+		link: {
+			href: '/campground.php?action=fuelconvertor',
+			desc: 'check your fuel tank',
+		},
+	},
+	embers: {
+		image: 'fire.gif',
+		getter: () => get('availableSeptEmbers'),
+		suffix: 'Sept-Embers',
+		link: {
+			href: '/shop.php?whichshop=september',
+			desc: 'stoke your Sept-Ember Censer',
+		},
+	},
 } as const
 
 type SpecialCurrency = keyof typeof SpecialCurrencyDetails
 
 interface CurrencyReadoutArgs {
 	item: Item | SpecialCurrency
+	skipZero?: boolean
 }
 
-export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
+export const currencyList: (Item | SpecialCurrency)[] = [
+	'meat',
+	'pulls',
+	$item`11-leaf clover`,
+	$item`rad`,
+	$item`hobo nickel`,
+	$item`Freddy Kruegerand`,
+	$item`Chroner`,
+	$item`Beach Buck`,
+	$item`Coinspiracy`,
+	$item`FunFunds&trade;`,
+	$item`Volcoino`,
+	$item`Wal-Mart gift certificate`,
+	$item`BACON`,
+	$item`buffalo dime`,
+	$item`Source essence`,
+	$item`cop dollar`,
+	'timespinnerminutes',
+	$item`sprinkles`,
+	$item`Spacegate Research`,
+	'asdonfuel',
+	$item`Rubee&trade;`,
+	$item`stick of firewood`,
+	$item`inflammable leaf`,
+	'embers',
+]
+
+export default function CurrencyReadout({
+	item,
+	skipZero,
+}: CurrencyReadoutArgs) {
 	if (typeof item === 'string') {
 		const details = SpecialCurrencyDetails[item]
-		const amount = details.getter().toLocaleString()
+		const amount = details.getter()
+		if (amount <= 0 && skipZero) {
+			return undefined
+		}
+		const amountStr = amount.toLocaleString()
 		const icon = (
 			<ChitterIcon
 				image={details.image}
 				tooltip={
 					<Text>
-						{amount} {details.suffix}{' '}
+						{amountStr} {details.suffix}{' '}
 						{details.link && `(Click to ${details.link.desc})`}
 					</Text>
 				}
@@ -58,7 +129,7 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 		)
 		return (
 			<HStack>
-				<Text>{amount}</Text>
+				<Text>{amountStr}</Text>
 				{details.link ? (
 					<MainLink href={details.link.href}>{icon}</MainLink>
 				) : (
@@ -68,6 +139,9 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 		)
 	}
 	const amount = itemAmount(item)
+	if (amount <= 0 && skipZero) {
+		return undefined
+	}
 	const info = getItemInfo(item)
 	const link = info.currencyLink ?? {
 		href: `/inventory.php?ftext=${urlEncode(item.identifierString)}`,

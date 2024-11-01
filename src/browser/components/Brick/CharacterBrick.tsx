@@ -10,10 +10,26 @@ import {
 	myPath,
 	turnsPlayed,
 } from 'kolmafia'
-import { Flex, HStack, Spacer, Text, Tooltip, VStack } from '@chakra-ui/react'
+import {
+	Flex,
+	HStack,
+	IconButton,
+	Popover,
+	PopoverArrow,
+	PopoverBody,
+	PopoverCloseButton,
+	PopoverContent,
+	PopoverHeader,
+	PopoverTrigger,
+	Spacer,
+	Text,
+	Tooltip,
+	VStack,
+} from '@chakra-ui/react'
 import { $item, $path, get } from 'libram'
-import CurrencyReadout from '../CurrencyReadout'
+import CurrencyReadout, { currencyList } from '../CurrencyReadout'
 import MainLink from '../Link/MainLink'
+import { ChevronDownIcon } from '@chakra-ui/icons'
 
 export default function CharacterBrick() {
 	const path = myPath()
@@ -44,11 +60,36 @@ export default function CharacterBrick() {
 						</Text>
 					)}
 					<HStack>
-						{[
-							'meat' as const,
-							$item`11-leaf clover`,
-							$item`Freddy Kruegerand`,
-						].map((it) => (
+						<Popover>
+							<PopoverTrigger>
+								<IconButton
+									icon={<ChevronDownIcon />}
+									size="xs"
+									aria-label="open currency selector"
+								/>
+							</PopoverTrigger>
+							<PopoverContent>
+								<PopoverArrow />
+								<PopoverCloseButton />
+								<PopoverHeader>Currencies</PopoverHeader>
+								<PopoverBody>
+									<VStack>
+										{currencyList.map((currency) => (
+											<CurrencyReadout
+												key={`cdrop${
+													typeof currency === 'string'
+														? currency
+														: currency.identifierString
+												}`}
+												item={currency}
+												skipZero
+											/>
+										))}
+									</VStack>
+								</PopoverBody>
+							</PopoverContent>
+						</Popover>
+						{['meat' as const].map((it) => (
 							<CurrencyReadout item={it} />
 						))}
 					</HStack>
