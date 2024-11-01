@@ -27,7 +27,7 @@ export function nextLevelInfo(fam: Familiar) {
 
 export function getWeirdoDivContents(fam: Familiar) {
 	switch (fam.identifierString) {
-		case $familiar`Melodramedary`.identifierString:
+		case $familiar`Melodramedary`.identifierString: {
 			// TODO: Add extraClass for melodramedary from getFamInfo
 			const weight = familiarWeight(fam)
 			return (
@@ -46,6 +46,7 @@ export function getWeirdoDivContents(fam: Familiar) {
 					<Image src="/images/otherimages/camelfam_right.gif" border={0} />
 				</HStack>
 			)
+		}
 	}
 
 	return null
@@ -220,7 +221,7 @@ export function getFamInfo(
 
 	const dropsLeft = fam.dropsLimit - fam.dropsToday
 	let hasDrops = type === 'familiar' && dropsLeft > 0
-	let allDrops = hasDrops && fam.dropsToday === 0
+	const allDrops = hasDrops && fam.dropsToday === 0
 	const drop =
 		fam.dropItem.identifierString !== 'none' ? fam.dropItem : fam.dropName
 	const dropName = pluralize(drop, 1)

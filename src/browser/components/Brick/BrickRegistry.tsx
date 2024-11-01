@@ -10,7 +10,7 @@ import ModifierBrick from './ModifierBrick'
 
 interface BrickInfo {
 	brick: () => JSX.Element
-	icon?: React.ReactElement<any, string | JSXElementConstructor<any>>
+	icon?: React.ReactElement<unknown, string | JSXElementConstructor<unknown>>
 }
 
 const brickRegistry: { [brickName: string]: BrickInfo } = {

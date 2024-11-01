@@ -76,21 +76,21 @@ const modShorthands: ModShorthand[] = [
 	[/PvP Fights/g, 'Fites'],
 	// Combine regen min and max in to a range
 	[
-		/((HP|MP|HP\/MP) Regen )Min: ([+-]?[\d\.]+), \1Max: \+?(-?[\d\.]+)/g,
+		/((HP|MP|HP\/MP) Regen )Min: ([+-]?[\d.]+), \1Max: \+?(-?[\d.]+)/g,
 		'$1$3-$4',
 	],
 	// simplify regen ranges that are identical
-	[/\b([\d\.]+)-\1\b/g, '$1'],
+	[/\b([\d.]+)-\1\b/g, '$1'],
 	// Exp%: +5 -> Exp +5% (there is sometimes no : for some reason)
-	[/%:? ([+-]?[\d\.]+)/g, ' $1%'],
+	[/%:? ([+-]?[\d.]+)/g, ' $1%'],
 	// Wpn +5% looks too extend it back to Weapon +5% for the drops case
 	[/Wpn Drop/g, 'Weapon Drop'],
 	// Item Drop: +5 -> Item +5% and such
-	[/Drop: ([+-]?[\d\.]+)/g, ' $1%'],
+	[/Drop: ([+-]?[\d.]+)/g, ' $1%'],
 	// remove colons (dang, that sounds hardcore)
 	[/:/g, ''],
 	// Add missing + for some positives, but not ranges
-	[/ ([\d\.]+)([^-\d\.]|$)/g, ' +$1$2'],
+	[/ ([\d.]+)([^-\d.]|$)/g, ' +$1$2'],
 	// Reformat rolover effects and hope this is really always in this order
 	[
 		/Rollover Effect "([^"]+)", Rollover Effect Duration \+(\d+)/g,

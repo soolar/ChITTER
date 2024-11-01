@@ -3,7 +3,6 @@ import FamIcon, { FamiliarVerb } from '../Icons/FamIcon'
 import {
 	bjornifyFamiliar,
 	enthroneFamiliar,
-	Familiar,
 	favoriteFamiliars,
 	haveFamiliar,
 	isUnrestricted,
@@ -15,15 +14,7 @@ import {
 } from 'kolmafia'
 import { $familiar, $familiars } from 'libram'
 import Picker from './Picker'
-import {
-	Box,
-	Flex,
-	Spacer,
-	Text,
-	VStack,
-	Wrap,
-	WrapItem,
-} from '@chakra-ui/react'
+import { Flex, Spacer, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import MainLink from '../Link/MainLink'
 import ActionLink from '../Link/ActionLink'
 import ChitterIcon from '../Icons/ChitterIcon'

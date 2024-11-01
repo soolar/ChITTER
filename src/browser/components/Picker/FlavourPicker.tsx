@@ -1,11 +1,4 @@
-import {
-	Effect,
-	Element,
-	haveEffect,
-	Skill,
-	toEffect,
-	useSkill,
-} from 'kolmafia'
+import { Effect, Element, haveEffect, Skill, useSkill } from 'kolmafia'
 import { $effect, $element, $skill } from 'libram'
 import React from 'react'
 import Picker from './Picker'
