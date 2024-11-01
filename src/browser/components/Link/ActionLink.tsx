@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link } from '@chakra-ui/react'
-import { RefreshContext } from 'tome-kolmafia'
+import { RefreshContext } from 'tome-kolmafia-react'
 
 interface ActionLinkArgs {
 	callback: () => void

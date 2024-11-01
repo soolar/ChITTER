@@ -5,18 +5,6 @@ import { defineConfig } from 'vite'
 export default defineConfig({
 	base: '/chitter/',
 	plugins: [react()],
-	resolve: {
-		alias: {
-			kolmafia: path.resolve(
-				__dirname,
-				'node_modules/tome-kolmafia/dist/kolmafia/index.js',
-			),
-		},
-	},
-	optimizeDeps: {
-		include: ['kolmafia > dataloader', 'tome-kolmafia > dataloader'],
-		exclude: ['kolmafia', 'tome-kolmafia'],
-	},
 	build: {
 		outDir: 'build/relay/chitter',
 		rollupOptions: {

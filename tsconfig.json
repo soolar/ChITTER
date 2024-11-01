@@ -14,10 +14,7 @@
 		"noEmit": true,
 		"outDir": "types",
 		"jsx": "react-jsx",
-		"typeRoots": ["node_modules/@chakra-ui", "node_modules/@types"],
-		"paths": {
-			"kolmafia": ["./node_modules/tome-kolmafia/dist/kolmafia"]
-		}
+		"typeRoots": ["node_modules/@chakra-ui", "node_modules/@types"]
 	},
 	"include": ["src"],
 	"exclude": ["**/node_modules", "**/.*/"]

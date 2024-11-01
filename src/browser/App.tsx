@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { ChakraProvider } from '@chakra-ui/react'
-import { RefreshContextProvider } from 'tome-kolmafia'
+import { RefreshContextProvider } from 'tome-kolmafia-react'
 import theme from './theme'
 import Layout from './Layout'
 

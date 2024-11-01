@@ -14,7 +14,7 @@ import {
 	Text,
 	Tooltip,
 } from '@chakra-ui/react'
-import { RefreshContext } from 'tome-kolmafia'
+import { RefreshContext } from 'tome-kolmafia-react'
 import brickRegistry, { BrickName } from './components/Brick/BrickRegistry'
 import ErrorBrick from './components/Brick/ErrorBrick'
 import { CloseIcon, RepeatIcon, WarningIcon } from '@chakra-ui/icons'
