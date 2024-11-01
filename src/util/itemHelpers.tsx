@@ -50,6 +50,7 @@ interface ItemInfo {
 	extraClass?: string
 	borderType: BorderType
 	equipVerb: EquipVerb
+	currencyLink?: { href: string; desc: string }
 }
 
 interface GetItemInfoOptionalArgs {
@@ -195,6 +196,13 @@ export function getItemInfo(
 					subject="some cinch"
 				/>,
 			)
+			break
+		}
+		case $item`Freddy Kruegerand`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=dv',
+				desc: 'visit The Terrified Eagle Inn',
+			}
 			break
 		}
 	}

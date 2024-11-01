@@ -9,6 +9,7 @@ interface ItemIconArgs {
 	item?: Item
 	small?: boolean
 	tooltipPrefix?: string
+	tooltipDesc?: string
 	weirdFam?: boolean
 	forEquipping?: boolean
 }
@@ -17,6 +18,7 @@ export default function ItemIcon({
 	item,
 	small,
 	tooltipPrefix,
+	tooltipDesc,
 	weirdFam,
 	forEquipping,
 }: ItemIconArgs) {
@@ -50,7 +52,7 @@ export default function ItemIcon({
 						dangerouslySetInnerHTML={{
 							__html: `${forEquipping ? `${extraInfo.equipVerb} ` : ''}${
 								extraInfo.displayName
-							}`,
+							}${tooltipDesc ? ` (${tooltipDesc})` : ''}`,
 						}}
 					/>
 					{!weirdFam &&

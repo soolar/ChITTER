@@ -6,10 +6,12 @@ import {
 	myAdventures,
 	myMeat,
 	pvpAttacksLeft,
+	urlEncode,
 } from 'kolmafia'
 import ChitterIcon from './Icons/ChitterIcon'
 import ItemIcon from './Icons/ItemIcon'
 import MainLink from './Link/MainLink'
+import { getItemInfo } from '../../util/itemHelpers'
 
 const SpecialCurrencyDetails = {
 	meat: {
@@ -51,7 +53,6 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 						{details.link && `(Click to ${details.link.desc})`}
 					</Text>
 				}
-				borderType="none"
 				small
 			/>
 		)
@@ -67,10 +68,21 @@ export default function CurrencyReadout({ item }: CurrencyReadoutArgs) {
 		)
 	}
 	const amount = itemAmount(item)
+	const info = getItemInfo(item)
+	const link = info.currencyLink ?? {
+		href: `/inventory.php?ftext=${urlEncode(item.identifierString)}`,
+		desc: undefined,
+	}
 	return (
 		<HStack>
 			<Text>{amount.toLocaleString()}</Text>
-			<ItemIcon item={item} small />
+			<MainLink href={link.href}>
+				<ItemIcon
+					item={item}
+					small
+					tooltipDesc={link.desc && `Click to ${link.desc}`}
+				/>
+			</MainLink>
 		</HStack>
 	)
 }

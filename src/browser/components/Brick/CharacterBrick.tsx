@@ -44,7 +44,11 @@ export default function CharacterBrick() {
 						</Text>
 					)}
 					<HStack>
-						{['meat' as const, $item`11-leaf clover`].map((it) => (
+						{[
+							'meat' as const,
+							$item`11-leaf clover`,
+							$item`Freddy Kruegerand`,
+						].map((it) => (
 							<CurrencyReadout item={it} />
 						))}
 					</HStack>
