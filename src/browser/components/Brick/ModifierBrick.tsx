@@ -1,7 +1,13 @@
 import React from 'react'
 import Brick from './Brick'
 import { Flex, Spacer, Text, Tooltip } from '@chakra-ui/react'
-import { Modifier, numericModifier } from 'kolmafia'
+import {
+	damageAbsorptionPercent,
+	elementalResistance,
+	Modifier,
+	numericModifier,
+	toElement,
+} from 'kolmafia'
 import { $modifier, $modifiers } from 'libram'
 
 interface RawModLineArgs {
@@ -30,38 +36,58 @@ interface ModLineArgs {
 	percentile?: boolean
 	isSecondary?: boolean
 	hideIfZero?: boolean
+	elemental?: boolean
 }
 
 function handleMod(
 	mod: Modifier,
 	percentile?: boolean,
 	hideIfZero?: boolean,
-	isArray?: boolean,
+	elemental?: boolean,
 ) {
 	const value = numericModifier(mod)
 	if (value === 0 && hideIfZero) {
 		return undefined
 	}
+	const elementStr = elemental ? mod.identifierString.split(' ')[0] : undefined
+	const isEleRes = elementStr
+		? mod.identifierString.split(' ')[1] === 'Resistance'
+		: undefined
 	const text = (
-		<Text as="span">
+		<Text as="span" className={elemental ? `mod${elementStr}` : undefined}>
 			{value > 0 && '+'}
 			{value.toLocaleString()}
-			{percentile && '%'}
+			{(percentile || mod.identifierString.endsWith('Percent')) && '%'}
 		</Text>
 	)
-	if (!isArray) {
-		return text
-	}
-	return <Tooltip label={<Text>{mod.identifierString}</Text>}>{text}</Tooltip>
+	return (
+		<Tooltip
+			label={
+				<Text>
+					{mod.identifierString}
+					{isEleRes &&
+						`: ${elementalResistance(toElement(elementStr as string)).toLocaleString()}% reduction to incoming ${(elementStr as string).toLowerCase()} damage`}
+				</Text>
+			}
+		>
+			{text}
+		</Tooltip>
+	)
 }
 
-function ModLine({ mod, percentile, isSecondary, hideIfZero }: ModLineArgs) {
+function ModLine({
+	mod,
+	percentile,
+	isSecondary,
+	hideIfZero,
+	elemental,
+}: ModLineArgs) {
 	if ('value' in mod) {
-		return <RawModLine {...mod} />
+		return mod.value && <RawModLine {...mod} />
 	}
 	const value = Array.isArray(mod)
 		? mod
-				.map((m) => handleMod(m, percentile, hideIfZero, true))
+				.map((m) => handleMod(m, percentile, hideIfZero, elemental))
 				.filter((m) => m)
 				.map((m, i) => (
 					<>
@@ -69,18 +95,15 @@ function ModLine({ mod, percentile, isSecondary, hideIfZero }: ModLineArgs) {
 						{m}
 					</>
 				))
-		: handleMod(mod, percentile, hideIfZero, false)
-	if (!value) {
+		: handleMod(mod, percentile, hideIfZero, elemental)
+	if ((Array.isArray(value) && value.length === 0) || !value) {
 		return undefined
 	}
-	const firstMod = Array.isArray(mod) ? mod[0] : mod
-	return (
-		<RawModLine
-			name={firstMod.identifierString}
-			value={value}
-			isSecondary={isSecondary}
-		/>
-	)
+	const firstModName = (Array.isArray(mod) ? mod[0] : mod).identifierString
+	const modName = elemental
+		? `Elemental ${firstModName.substring(firstModName.indexOf(' ') + 1, firstModName.length)}`
+		: firstModName
+	return <RawModLine name={modName} value={value} isSecondary={isSecondary} />
 }
 
 interface DropLineArgs {
@@ -106,7 +129,18 @@ function DropLine({ mod, isSecondary }: DropLineArgs) {
 	return (
 		<RawModLine
 			name={lineText}
-			value={`${forcedAt}%`}
+			value={
+				<Tooltip
+					label={
+						<Text>
+							{mod.identifierString}s with at least {forcedAt}% chance are
+							guaranteed to drop
+						</Text>
+					}
+				>
+					<Text as="span">{forcedAt.toLocaleString()}%</Text>
+				</Tooltip>
+			}
 			isSecondary={isSecondary}
 		/>
 	)
@@ -132,8 +166,9 @@ function arg(
 	mod: Modifier | Modifier[],
 	percentile?: boolean,
 	hideIfZero?: boolean,
+	elemental?: boolean,
 ): ModLineArgs {
-	return { mod, percentile, hideIfZero }
+	return { mod, percentile, hideIfZero, elemental }
 }
 
 function args(mods: Modifier[], percentile?: boolean): ModLineArgs[] {
@@ -157,10 +192,94 @@ export default function ModifierBrick() {
 		{ primary: arg($modifier`Initiative`, true) },
 		{
 			primary: {
-				mod: { name: 'Modified Init', value: <Text>{modifiedInit()}%</Text> },
+				mod: {
+					name: 'Modified Init',
+					value: numericModifier($modifier`Monster Level`) > 20 && (
+						<Tooltip
+							label={
+								<Text>
+									This is your effective initiative after accounting for ML
+									adjustment
+								</Text>
+							}
+						>
+							<Text>{modifiedInit()}%</Text>
+						</Tooltip>
+					),
+				},
+				hideIfZero: true,
 			},
 		},
 		{ primary: arg($modifier`Combat Rate`, true) },
+		{
+			primary: {
+				mod: {
+					name: 'Damage Absorb',
+					value: numericModifier($modifier`Damage Absorption`) > 0 && (
+						<Tooltip
+							label={
+								<Text>
+									Thanks to your{' '}
+									{numericModifier(
+										$modifier`Damage Absorption`,
+									).toLocaleString()}{' '}
+									Damage Absorption, you are reducing incoming damage by{' '}
+									{damageAbsorptionPercent().toLocaleString()}%
+								</Text>
+							}
+						>
+							<Text>
+								{damageAbsorptionPercent().toLocaleString()}% (
+								{numericModifier($modifier`Damage Absorption`).toLocaleString()}
+								)
+							</Text>
+						</Tooltip>
+					),
+				},
+			},
+		},
+		{ primary: arg($modifier`Damage Reduction`, false, true) },
+		{
+			primary: arg(
+				$modifiers`Weapon Damage, Weapon Damage Percent`,
+				false,
+				true,
+			),
+		},
+		{
+			primary: arg($modifiers`Spell Damage, Spell Damage Percent`, false, true),
+		},
+		{
+			primary: arg(
+				$modifiers`Ranged Damage, Ranged Damage Percent`,
+				false,
+				true,
+			),
+		},
+		{
+			primary: arg(
+				$modifiers`Hot Resistance, Cold Resistance, Spooky Resistance, Stench Resistance, Sleaze Resistance`,
+				false,
+				true,
+				true,
+			),
+		},
+		{
+			primary: arg(
+				$modifiers`Hot Damage, Cold Damage, Spooky Damage, Stench Damage, Sleaze Damage`,
+				false,
+				true,
+				true,
+			),
+		},
+		{
+			primary: arg(
+				$modifiers`Hot Spell Damage, Cold Spell Damage, Spooky Spell Damage, Stench Spell Damage, Sleaze Spell Damage`,
+				false,
+				true,
+				true,
+			),
+		},
 	]
 	return (
 		<Brick name="modifiers" header="Modifiers">
