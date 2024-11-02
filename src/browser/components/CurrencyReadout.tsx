@@ -70,39 +70,12 @@ const SpecialCurrencyDetails = {
 	},
 } as const
 
-type SpecialCurrency = keyof typeof SpecialCurrencyDetails
+export type SpecialCurrency = keyof typeof SpecialCurrencyDetails
 
 interface CurrencyReadoutArgs {
 	item: Item | SpecialCurrency
 	skipZero?: boolean
 }
-
-export const currencyList: (Item | SpecialCurrency)[] = [
-	'meat',
-	'pulls',
-	$item`11-leaf clover`,
-	$item`rad`,
-	$item`hobo nickel`,
-	$item`Freddy Kruegerand`,
-	$item`Chroner`,
-	$item`Beach Buck`,
-	$item`Coinspiracy`,
-	$item`FunFunds&trade;`,
-	$item`Volcoino`,
-	$item`Wal-Mart gift certificate`,
-	$item`BACON`,
-	$item`buffalo dime`,
-	$item`Source essence`,
-	$item`cop dollar`,
-	'timespinnerminutes',
-	$item`sprinkles`,
-	$item`Spacegate Research`,
-	'asdonfuel',
-	$item`Rubee&trade;`,
-	$item`stick of firewood`,
-	$item`inflammable leaf`,
-	'embers',
-]
 
 export default function CurrencyReadout({
 	item,

@@ -14,22 +14,17 @@ import {
 	Flex,
 	HStack,
 	IconButton,
-	Popover,
-	PopoverArrow,
-	PopoverBody,
-	PopoverCloseButton,
-	PopoverContent,
-	PopoverHeader,
-	PopoverTrigger,
 	Spacer,
 	Text,
 	Tooltip,
 	VStack,
 } from '@chakra-ui/react'
-import { $item, $path, get } from 'libram'
-import CurrencyReadout, { currencyList } from '../CurrencyReadout'
+import { $path, get } from 'libram'
+import CurrencyReadout from '../CurrencyReadout'
 import MainLink from '../Link/MainLink'
 import { ChevronDownIcon } from '@chakra-ui/icons'
+import PickerLauncher from '../Picker/PickerLauncher'
+import CurrencyPicker from '../Picker/CurrencyPicker'
 
 export default function CharacterBrick() {
 	const path = myPath()
@@ -38,7 +33,7 @@ export default function CharacterBrick() {
 	return (
 		<Brick name="character" header={myName()}>
 			<Flex>
-				{/* Character avatar here... */}
+				{/* Avatar some day */}
 				<VStack spacing={0} align="left">
 					{/* Character title here... */}
 					<Text>{getClanName()}</Text>
@@ -60,35 +55,13 @@ export default function CharacterBrick() {
 						</Text>
 					)}
 					<HStack>
-						<Popover>
-							<PopoverTrigger>
-								<IconButton
-									icon={<ChevronDownIcon />}
-									size="xs"
-									aria-label="open currency selector"
-								/>
-							</PopoverTrigger>
-							<PopoverContent>
-								<PopoverArrow />
-								<PopoverCloseButton />
-								<PopoverHeader>Currencies</PopoverHeader>
-								<PopoverBody>
-									<VStack>
-										{currencyList.map((currency) => (
-											<CurrencyReadout
-												key={`cdrop${
-													typeof currency === 'string'
-														? currency
-														: currency.identifierString
-												}`}
-												item={currency}
-												skipZero
-											/>
-										))}
-									</VStack>
-								</PopoverBody>
-							</PopoverContent>
-						</Popover>
+						<PickerLauncher WrappedPicker={CurrencyPicker} pickerProps={{}}>
+							<IconButton
+								icon={<ChevronDownIcon />}
+								size="xs"
+								aria-label="open currency selector"
+							/>
+						</PickerLauncher>
 						{['meat' as const].map((it) => (
 							<CurrencyReadout item={it} />
 						))}
