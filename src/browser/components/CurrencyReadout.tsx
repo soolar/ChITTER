@@ -118,17 +118,13 @@ export default function CurrencyReadout({
 	const info = getItemInfo(item)
 	const link = info.currencyLink ?? {
 		href: `/inventory.php?ftext=${urlEncode(item.identifierString)}`,
-		desc: undefined,
+		desc: `Click to contemplate your ${item.plural}`,
 	}
 	return (
 		<HStack>
 			<Text>{amount.toLocaleString()}</Text>
 			<MainLink href={link.href}>
-				<ItemIcon
-					item={item}
-					small
-					tooltipDesc={link.desc && `Click to ${link.desc}`}
-				/>
+				<ItemIcon item={item} small tooltipDesc={link.desc} />
 			</MainLink>
 		</HStack>
 	)

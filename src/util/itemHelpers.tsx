@@ -9,6 +9,7 @@ import {
 	itemAmount,
 	myBjornedFamiliar,
 	myEnthronedFamiliar,
+	myPath,
 	pullsRemaining,
 	storageAmount,
 	stringModifier,
@@ -16,7 +17,7 @@ import {
 	totalFreeRests,
 	weaponHands,
 } from 'kolmafia'
-import { $familiar, $item, $skills, clamp, get } from 'libram'
+import { $familiar, $item, $path, $skills, clamp, get } from 'libram'
 import { parseMods } from '.'
 import { getFamInfo } from './familiarHelpers'
 import PickerOption from '../browser/components/Option/PickerOption'
@@ -198,10 +199,139 @@ export function getItemInfo(
 			)
 			break
 		}
+		case $item`hobo nickel`.identifierString: {
+			res.currencyLink = {
+				href: '/clan_hobopolis.php',
+				desc: 'Click to wander on over to hobopolis',
+			}
+			break
+		}
 		case $item`Freddy Kruegerand`.identifierString: {
 			res.currencyLink = {
 				href: '/shop.php?whichshop=dv',
-				desc: 'visit The Terrified Eagle Inn',
+				desc: 'Click to visit The Terrified Eagle Inn',
+			}
+			break
+		}
+		case $item`Beach Buck`.identifierString: {
+			res.currencyLink = {
+				href: '/place.php?whichplace=airport_sleaze',
+				desc: 'Click to take a trip to Spring Break Beach',
+			}
+			break
+		}
+		case $item`Coinspiracy`.identifierString: {
+			res.currencyLink = {
+				href: '/place.php?whichplace=airport_spooky_bunker',
+				desc: 'Click to hop down the hatch to the Conspiracy Island bunker',
+			}
+			break
+		}
+		case $item`FunFunds&trade;`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=landfillstore',
+				desc: 'Click to shop for some souvenirs at the Dinsey Company Store',
+			}
+			break
+		}
+		case $item`Volcoino`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=infernodisco',
+				desc: 'Click to boogie right on down to Disco GiftCo',
+			}
+			break
+		}
+		case $item`Wal-Mart gift certificate`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=glaciest',
+				desc: 'Click to browse the goods at Wal-Mart',
+			}
+			break
+		}
+		case $item`rad`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=mutate',
+				desc: 'Click to fiddle with your genes',
+			}
+			break
+		}
+		case $item`BACON`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=bacon',
+				desc: 'Born too late to explore the Earth... Born too soon to explore the galaxy... Born just in time to click to BROWSE DANK MEMES',
+			}
+			break
+		}
+		case $item`buffalo dime`.identifierString: {
+			res.currencyLink = {
+				href: '/place.php?whichplace=town_right&action=townright_ltt',
+				desc: 'Click to visit your local LT&T Office',
+			}
+			break
+		}
+		case $item`Source essence`.identifierString: {
+			const inNA = myPath() === $path`Nuclear Autumn`
+			res.currencyLink = {
+				href: inNA
+					? '/place.php?whichplace=falloutshelter&action=vault_term'
+					: '/campground.php?action=terminal',
+				desc: 'Click to boot up your Source Terminal',
+			}
+			break
+		}
+		case $item`cop dollar`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=detective',
+				desc: 'Click to visit the quartermaster',
+			}
+			break
+		}
+		case $item`sprinkles`.identifierString: {
+			res.currencyLink = {
+				href: '/place.php?whichplace=gingerbreadcity',
+				desc: 'Click to take a tour of Gingerbread City',
+			}
+			break
+		}
+		case $item`Spacegate Research`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=spacegate',
+				desc: 'Click to exchange your research at the Fabrication Facility',
+			}
+			break
+		}
+		case $item`X`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=xo',
+				desc: 'Click to eXpend some Xes',
+			}
+			break
+		}
+		case $item`O`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=xo',
+				desc: 'Click to blOw some Os',
+			}
+			break
+		}
+		case $item`Rubee&trade;`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=fantasyrealm',
+				desc: 'Click to spend some Rubees&trade;',
+			}
+			break
+		}
+		case $item`stick of firewood`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=campfire',
+				desc: 'Click to stop by your campfire',
+			}
+			break
+		}
+		case $item`inflammable leaf`.identifierString: {
+			res.currencyLink = {
+				href: '/campground.php?preaction=leaves',
+				desc: 'Click to look at your pile of burning leaves',
 			}
 			break
 		}

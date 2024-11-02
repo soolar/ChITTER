@@ -26,6 +26,8 @@ export const currencyList: (Item | SpecialCurrency)[] = [
 	$item`sprinkles`,
 	$item`Spacegate Research`,
 	'asdonfuel',
+	$item`X`,
+	$item`O`,
 	$item`Rubee&trade;`,
 	$item`stick of firewood`,
 	$item`inflammable leaf`,
