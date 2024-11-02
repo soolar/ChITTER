@@ -199,6 +199,13 @@ export function getItemInfo(
 			)
 			break
 		}
+		case $item`Shore Inc. Ship Trip Scrip`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=shore',
+				desc: "Click to drop by The Shore's Gift Shop",
+			}
+			break
+		}
 		case $item`hobo nickel`.identifierString: {
 			res.currencyLink = {
 				href: '/clan_hobopolis.php',
@@ -283,6 +290,13 @@ export function getItemInfo(
 			res.currencyLink = {
 				href: '/shop.php?whichshop=detective',
 				desc: 'Click to visit the quartermaster',
+			}
+			break
+		}
+		case $item`cashew`.identifierString: {
+			res.currencyLink = {
+				href: '/shop.php?whichshop=thankshop',
+				desc: 'Click to cash in your cashews',
 			}
 			break
 		}
