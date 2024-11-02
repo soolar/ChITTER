@@ -87,6 +87,25 @@ export function getItemInfo(
 	}
 
 	switch (item.identifierString) {
+		case $item`Crown of Thrones`.identifierString: {
+			const throneFam = myEnthronedFamiliar()
+			if (throneFam !== $familiar.none) {
+				res.image = throneFam.image
+				const throneInfo = getFamInfo(throneFam, true, 'enthrone')
+				res.desc.push(...throneInfo.desc)
+				res.borderType = throneInfo.borderType
+			}
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={FamiliarPicker}
+					pickerProps={{ type: 'enthrone' as const }}
+					verb="pick"
+					subject="a rider"
+				/>,
+			)
+			break
+		}
 		case $item`Buddy Bjorn`.identifierString: {
 			const bjornFam = myBjornedFamiliar()
 			if (bjornFam !== $familiar.none) {
@@ -106,21 +125,33 @@ export function getItemInfo(
 			)
 			break
 		}
-		case $item`Crown of Thrones`.identifierString: {
-			const throneFam = myEnthronedFamiliar()
-			if (throneFam !== $familiar.none) {
-				res.image = throneFam.image
-				const throneInfo = getFamInfo(throneFam, true, 'enthrone')
-				res.desc.push(...throneInfo.desc)
-				res.borderType = throneInfo.borderType
+		case $item`June cleaver`.identifierString: {
+			const fightsLeft = get('_juneCleaverFightsLeft')
+			if (fightsLeft === 0) {
+				res.desc.push(<Text>noncom now!</Text>)
+				res.borderType = 'good'
+			} else {
+				res.desc.push(<Text>{fightsLeft} to noncom</Text>)
+			}
+			break
+		}
+		case $item`designer sweatpants`.identifierString: {
+			const sweat = clamp(get('sweat'), 0, 100)
+			const sweatBoozeLeft = clamp(3 - get('_sweatOutSomeBoozeUsed'), 0, 3)
+			res.desc.push(<Text>{sweat}% sweaty</Text>)
+			if (sweatBoozeLeft > 0) {
+				res.desc.push(<Text>{sweatBoozeLeft} booze sweats</Text>)
 			}
 			res.extraOptions.push(
 				<PickerOption
 					icon={<ItemIcon item={item} />}
-					WrappedPicker={FamiliarPicker}
-					pickerProps={{ type: 'enthrone' as const }}
-					verb="pick"
-					subject="a rider"
+					WrappedPicker={SkillPicker}
+					pickerProps={{
+						skills: $skills`Sip Some Sweat, Drench Yourself in Sweat, Sweat Out Some Booze, Make Sweat-Ade, Sweat Flick, Sweat Spray, Sweat Flood, Sweat Sip`,
+						header: `Use some sweat (${sweat} left)`,
+					}}
+					verb="use"
+					subject="some sweat"
 				/>,
 			)
 			break
