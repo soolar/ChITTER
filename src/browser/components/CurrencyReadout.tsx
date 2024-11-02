@@ -14,7 +14,7 @@ import ChitterIcon from './Icons/ChitterIcon'
 import ItemIcon from './Icons/ItemIcon'
 import MainLink from './Link/MainLink'
 import { getItemInfo } from '../../util/itemHelpers'
-import { $item, clamp, get } from 'libram'
+import { clamp, get } from 'libram'
 
 const SpecialCurrencyDetails = {
 	meat: {
