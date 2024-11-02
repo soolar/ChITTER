@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 
 import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'

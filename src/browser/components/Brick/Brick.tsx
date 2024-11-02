@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Box, Center, GridItem, Heading, SimpleGrid } from '@chakra-ui/react'
 import MainLink from '../Link/MainLink'
 
