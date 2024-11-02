@@ -32,7 +32,7 @@ export default function OptionText({
 						className="desc-line"
 					/>
 				) : (
-					<VStack>{desc}</VStack>
+					<VStack spacing={0}>{desc}</VStack>
 				))}
 		</VStack>
 	)
