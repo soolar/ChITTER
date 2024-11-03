@@ -1,9 +1,16 @@
-import { Effect, haveEffect, stringModifier } from 'kolmafia'
-import { $effect, get } from 'libram'
+import {
+	Effect,
+	equippedItem,
+	haveEffect,
+	myFamiliar,
+	stringModifier,
+} from 'kolmafia'
+import { $effect, $familiar, $item, $slot, get } from 'libram'
 import React from 'react'
 import FlavourPicker from '../browser/components/Picker/FlavourPicker'
-import { parseMods } from '.'
+import { evaluatedModifiers, parseMods } from '.'
 import { Text } from '@chakra-ui/react'
+import { getItemInfo } from './itemHelpers'
 
 interface EffectInfo {
 	mods: string
@@ -124,6 +131,31 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 		case $effect`Super Skill`.identifierString: {
 			res.mods = 'Combat skills/spells cost 0 MP'
 			doParse = false
+			break
+		}
+		case $effect`Offhand Remarkable`.identifierString: {
+			const myOffhand = equippedItem($slot`off-hand`)
+			const myFamOffhand =
+				myFamiliar() === $familiar`Left-Hand Man`
+					? equippedItem($slot`familiar`)
+					: $item.none
+			const myOffhands = [
+				...(myOffhand !== $item.none ? [myOffhand] : []),
+				...(myFamOffhand !== $item.none ? [myFamOffhand] : []),
+			]
+			doParse = false
+			res.mods = 'Doubles off-hands (Currently: '
+			if (myOffhands.length > 0) {
+				res.mods += parseMods(
+					myOffhands
+						.map((offhand) => evaluatedModifiers(offhand))
+						.filter((modifier) => modifier.length > 0)
+						.join(', '),
+				)
+			} else {
+				res.mods += 'Nothing'
+			}
+			res.mods += ')'
 			break
 		}
 	}

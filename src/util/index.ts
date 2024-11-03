@@ -180,6 +180,44 @@ export function parseMods(mods: string, verbose = false) {
 
 	const originalValue = mods
 
+	// combine duplicate mods (only for weird cases like combining mods of multiple items)
+	mods
+		.matchAll(/(^|, )([^:]+): ([^,]+)(?=,|$)/g)
+		.forEach(([match, start, modifier, value, end]) => {
+			void end
+			verbosePrint(`Dupe searching with '${start}${modifier}: ${value}'`)
+			if (value.startsWith('"')) {
+				let done = false
+				mods = mods.replace(RegExp(match, 'g'), (match) => {
+					if (!done) {
+						done = true
+						return match
+					}
+					return ''
+				})
+			} else {
+				const regex = RegExp(`(^|, )${modifier}: ([^,]+)(?=,|$)`, 'g')
+				let score = 0
+				let matches = 0
+				mods.matchAll(regex).forEach(([innerMatch, ...groups]) => {
+					void innerMatch
+					const thisValue = groups[1]
+					score += Number(thisValue)
+					++matches
+				})
+				if (matches > 1) {
+					verbosePrint(
+						`Found ${matches} matches for dupe '${modifier}', totaling ${score}`,
+					)
+					const scoreStr = `${score > 0 ? '+' : ''}${score}`
+					mods = mods.replace(match, `${start}${modifier}: ${scoreStr}`)
+					verbosePrint(`mods after replacing first score in dupe: '${mods}'`)
+					mods = mods.replace(regex, (match, ...groups) =>
+						Number(groups[1]) !== score ? '' : match,
+					)
+				}
+			}
+		})
 	// Capitalize all words
 	mods = mods.replace(/\b[a-z]/g, (letter) => letter.toUpperCase())
 	verbosePrint(`Capitalized: ${mods}`)
