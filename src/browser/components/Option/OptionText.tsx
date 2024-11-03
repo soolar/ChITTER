@@ -3,7 +3,7 @@ import React from 'react'
 
 interface OptionTextArgs {
 	verb?: string
-	subject: string
+	subject: string | React.ReactNode
 	append?: string
 	desc?: React.ReactNode[] | string
 }

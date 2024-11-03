@@ -27,27 +27,47 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 			break
 		}
 		case $effect`Spirit of Bacon Grease`.identifierString: {
-			res.displayName = <Text color="blueviolet">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="blueviolet">
+					{eff.name}
+				</Text>
+			)
 			res.launches = FlavourPicker
 			break
 		}
 		case $effect`Spirit of Peppermint`.identifierString: {
-			res.displayName = <Text color="blue">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="blue">
+					{eff.name}
+				</Text>
+			)
 			res.launches = FlavourPicker
 			break
 		}
 		case $effect`Spirit of Wormwood`.identifierString: {
-			res.displayName = <Text color="grey">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="grey">
+					{eff.name}
+				</Text>
+			)
 			res.launches = FlavourPicker
 			break
 		}
 		case $effect`Spirit of Cayenne`.identifierString: {
-			res.displayName = <Text color="red">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="red">
+					{eff.name}
+				</Text>
+			)
 			res.launches = FlavourPicker
 			break
 		}
 		case $effect`Spirit of Garlic`.identifierString: {
-			res.displayName = <Text color="green">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="green">
+					{eff.name}
+				</Text>
+			)
 			res.launches = FlavourPicker
 			break
 		}
@@ -57,23 +77,43 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 			break
 		}
 		case $effect`Everything Looks Blue`.identifierString: {
-			res.displayName = <Text color="blue">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="blue">
+					{eff.name}
+				</Text>
+			)
 			break
 		}
 		case $effect`Everything Looks Red`.identifierString: {
-			res.displayName = <Text color="red">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="red">
+					{eff.name}
+				</Text>
+			)
 			break
 		}
 		case $effect`Everything Looks Yellow`.identifierString: {
-			res.displayName = <Text color="olive">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="olive">
+					{eff.name}
+				</Text>
+			)
 			break
 		}
 		case $effect`Everything Looks Green`.identifierString: {
-			res.displayName = <Text color="green">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="green">
+					{eff.name}
+				</Text>
+			)
 			break
 		}
 		case $effect`Everything Looks Purple`.identifierString: {
-			res.displayName = <Text color="purple">{eff.name}</Text>
+			res.displayName = (
+				<Text as="span" color="purple">
+					{eff.name}
+				</Text>
+			)
 			break
 		}
 		case $effect`On the Trail`.identifierString: {

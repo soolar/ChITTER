@@ -4,12 +4,15 @@ import {
 	availableAmount,
 	closetAmount,
 	creatableAmount,
+	Effect,
 	equippedItem,
 	getRelated,
+	haveEffect,
 	Item,
 	itemAmount,
 	Modifier,
 	myBjornedFamiliar,
+	myClass,
 	myEnthronedFamiliar,
 	myPath,
 	pullsRemaining,
@@ -19,6 +22,8 @@ import {
 	weaponHands,
 } from 'kolmafia'
 import {
+	$effect,
+	$effects,
 	$familiar,
 	$item,
 	$modifiers,
@@ -28,6 +33,7 @@ import {
 	$slots,
 	clamp,
 	get,
+	have,
 } from 'libram'
 import { evaluatedModifiers, parseMods } from '.'
 import { getFamInfo } from './familiarHelpers'
@@ -38,6 +44,8 @@ import { Text } from '@chakra-ui/react'
 import MainLinkOption from '../browser/components/Option/MainLinkOption'
 import SkillPicker from '../browser/components/Picker/SkillPicker'
 import GAPPicker from '../browser/components/Picker/GAPPicker'
+import EffectListPseudoPicker from '../browser/components/Picker/EffectListPseudoPicker'
+import { getEffectInfo } from './effectHelpers'
 
 type EquipVerb =
 	| 'equip'
@@ -502,6 +510,60 @@ export function getItemInfo(
 			res.desc.push(<Text>{freeChance}% free run chance</Text>)
 			if (freeChance >= 100) {
 				res.borderType = 'all-drops'
+			}
+			break
+		}
+		case $item`Daylight Shavings Helmet`.identifierString: {
+			const beards = $effects`Spectacle Moustache, Toiletbrush Moustache, Barbell Moustache, Grizzly Beard, Surrealist's Moustache, Musician's Musician's Moustache, Gull-Wing Moustache, Space Warlord's Beard, Pointy Wizard Beard, Cowboy Stache, Friendly Chops`
+			const beardOrder: Effect[] = []
+			const classId = myClass().id
+			const classIdMod = classId <= 6 ? classId : (classId + 1) % 6
+			const lastBeardId = get('lastBeardBuff')
+			const lastBeard = beards.find((beard) => beard.id === lastBeardId)
+			const currBeard = beards.find((beard) => have(beard))
+			for (let i = 0; i < 11; ++i) {
+				beardOrder[i] = beards[(classIdMod * i) % 11]
+			}
+			const lastBeardPos = beardOrder.indexOf(
+				currBeard ?? lastBeard ?? beardOrder[0],
+			)
+			const nextBeard = beardOrder[(lastBeardPos + 1) % 11]
+			const offsetBeardOrder: Effect[] = []
+			const beardOffset = currBeard ? lastBeardPos : lastBeardPos + 1
+			for (let i = 0; i < 11; ++i) {
+				offsetBeardOrder[i] = beardOrder[(i + beardOffset) % 11]
+			}
+			res.extraOptions.push(
+				<PickerOption
+					icon={<ItemIcon item={item} />}
+					WrappedPicker={EffectListPseudoPicker}
+					pickerProps={{
+						header: 'Beard schedule',
+						effects: offsetBeardOrder,
+						enabled: (eff: Effect) => eff !== currBeard,
+					}}
+					verb="check"
+					subject="upcoming beards"
+				/>,
+			)
+			res.extraOptions.push(
+				<MainLinkOption
+					icon={<ItemIcon item={item} />}
+					verb="adjust"
+					subject="your facial hair"
+					href="/account_facialhair.php"
+				/>,
+			)
+			const nextBeardInfo = getEffectInfo(nextBeard)
+			res.desc.push(
+				<Text
+					dangerouslySetInnerHTML={{
+						__html: `${nextBeard.name} [${nextBeardInfo.mods}] due ${currBeard ? `in ${haveEffect(currBeard)} turns` : 'now'}`,
+					}}
+				/>,
+			)
+			if (!currBeard) {
+				res.borderType = 'good'
 			}
 			break
 		}
