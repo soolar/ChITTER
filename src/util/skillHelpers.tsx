@@ -7,9 +7,11 @@ import {
 	myLightning,
 	myMp,
 	myRain,
+	mySoulsauce,
 	myThunder,
 	rainCost,
 	Skill,
+	soulsauceCost,
 	thunderCost,
 } from 'kolmafia'
 import { $skill, clamp, get } from 'libram'
@@ -55,6 +57,7 @@ export function getSkillInfo(skill: Skill): SkillInfo {
 	unusableReason(skill.combat, 'Combat only')
 	unusableResource(myMp(), mpCost(skill), 'MP')
 	unusableResource(myHp(), hpCost(skill), 'HP')
+	unusableResource(mySoulsauce(), soulsauceCost(skill), 'soulsauce')
 	unusableResource(myLightning(), lightningCost(skill), 'lightning')
 	unusableResource(myThunder(), thunderCost(skill), 'thunder')
 	unusableResource(myRain(), rainCost(skill), 'rain')
