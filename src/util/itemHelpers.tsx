@@ -609,6 +609,26 @@ export function getItemInfo(
 			res.desc.push(<Text>{fliesSummoned} / 30 swarms summoned</Text>)
 			break
 		}
+		// @ts-expect-error intentional fallthrough
+		case $item`stinky cheese eye`.identifierString: {
+			if (!get('_stinkyCheeseBanisherUsed')) {
+				res.desc.push(<Text>Stink eye (banish) available</Text>)
+			}
+			// intentional fallthrough to get stinkiness
+		}
+		case $item`stinky cheese sword`.identifierString:
+		case $item`stinky cheese diaper`.identifierString:
+		case $item`stinky cheese wheel`.identifierString:
+		case $item`Staff of Queso Escusado`.identifierString: {
+			const stinkiness = get('_stinkyCheeseCount')
+			if (stinkiness < 100) {
+				res.desc.push(<Text>{stinkiness} / 100 stinkiness</Text>)
+				res.borderType = 'has-drops'
+			} else {
+				res.desc.push(<Text>All stunk up</Text>)
+			}
+			break
+		}
 	}
 
 	const inv = itemAmount(item)
