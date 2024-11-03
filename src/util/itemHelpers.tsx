@@ -601,6 +601,14 @@ export function getItemInfo(
 			}
 			break
 		}
+		case $item`mayfly bait necklace`.identifierString: {
+			const fliesSummoned = clamp(get('_mayflySummons'), 0, 30)
+			if (fliesSummoned < 30) {
+				res.borderType = 'has-drops'
+			}
+			res.desc.push(<Text>{fliesSummoned} / 30 swarms summoned</Text>)
+			break
+		}
 	}
 
 	const inv = itemAmount(item)
