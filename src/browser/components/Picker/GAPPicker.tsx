@@ -68,7 +68,7 @@ export default function GAPPicker({ usesRemaining }: GAPPickerArgs) {
 							/>
 						}
 					>
-						<ActionLink callback={() => cliExecute(`gap ${power.name}`)}>
+						<ActionLink callback={() => cliExecute(`gap ${power.name}`)} dirty>
 							<OptionText
 								verb="Activate"
 								subject={power.eff.identifierString}
