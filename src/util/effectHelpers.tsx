@@ -81,6 +81,11 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 			doParse = false
 			break
 		}
+		case $effect`Super Skill`.identifierString: {
+			res.mods = 'Combat skills/spells cost 0 MP'
+			doParse = false
+			break
+		}
 	}
 
 	if (doParse) {
