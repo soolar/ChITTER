@@ -22,7 +22,6 @@ import {
 	weaponHands,
 } from 'kolmafia'
 import {
-	$effect,
 	$effects,
 	$familiar,
 	$item,
