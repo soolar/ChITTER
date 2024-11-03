@@ -567,6 +567,33 @@ export function getItemInfo(
 			}
 			break
 		}
+		case $item`Pantsgiving`.identifierString: {
+			const turnsUsed = get('_pantsgivingCount')
+			const fullnessGained = get('_pantsgivingFullness')
+			let turnsNeeded = 5
+			for (let i = 0; i < fullnessGained; ++i) {
+				turnsNeeded *= 10
+			}
+			if (turnsUsed < turnsNeeded) {
+				res.desc.push(
+					<Text>
+						{turnsUsed} / {turnsNeeded} towards next fullness
+					</Text>,
+				)
+			} else {
+				res.desc.push(<Text>Fullness ready!</Text>)
+				res.borderType = 'good'
+			}
+			const crumbs = 10 - clamp(get('_pantsgivingCrumbs'), 0, 10)
+			const banishes = 5 - clamp(get('_pantsgivingBanish'), 0, 5)
+			if (crumbs > 0) {
+				res.desc.push(<Text>{crumbs} crumbs left</Text>)
+			}
+			if (banishes > 0) {
+				res.desc.push(<Text>{banishes} banishes left</Text>)
+			}
+			break
+		}
 	}
 
 	const inv = itemAmount(item)
