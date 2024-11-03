@@ -4,9 +4,11 @@ import {
 	availableAmount,
 	closetAmount,
 	creatableAmount,
+	equippedItem,
 	getRelated,
 	Item,
 	itemAmount,
+	Modifier,
 	myBjornedFamiliar,
 	myEnthronedFamiliar,
 	myPath,
@@ -17,8 +19,18 @@ import {
 	totalFreeRests,
 	weaponHands,
 } from 'kolmafia'
-import { $familiar, $item, $path, $skills, clamp, get } from 'libram'
-import { parseMods } from '.'
+import {
+	$familiar,
+	$item,
+	$modifiers,
+	$path,
+	$skills,
+	$slot,
+	$slots,
+	clamp,
+	get,
+} from 'libram'
+import { evaluatedModifiers, parseMods } from '.'
 import { getFamInfo } from './familiarHelpers'
 import PickerOption from '../browser/components/Option/PickerOption'
 import ItemIcon from '../browser/components/Icons/ItemIcon'
@@ -66,7 +78,7 @@ export function getItemInfo(
 ): ItemInfo {
 	const isSomething = item && item !== $item.none
 	const name = isSomething ? item.name : 'empty'
-	const mods = isSomething ? stringModifier(item, 'Evaluated Modifiers') : ''
+	const mods = isSomething ? evaluatedModifiers(item) : ''
 	const res: ItemInfo = {
 		displayName: optionals.namePrefix ? `${optionals.namePrefix}${name}` : name,
 		desc: [],
@@ -378,6 +390,80 @@ export function getItemInfo(
 				href: '/campground.php?preaction=leaves',
 				desc: 'Click to look at your pile of burning leaves',
 			}
+			break
+		}
+		case $item`scratch 'n' sniff sword`.identifierString:
+		case $item`scratch 'n' sniff crossbow`.identifierString: {
+			function stickerAmount(sticker: Item) {
+				return $slots`sticker1, sticker2, sticker3`.reduce(
+					(acc, slot) => acc + (equippedItem(slot) === sticker ? 1 : 0),
+					0,
+				)
+			}
+			function addSticker(sticker: Item, value: number, modifiers: Modifier[]) {
+				const sa = stickerAmount(sticker)
+				if (sa > 0) {
+					modifiers.forEach((modifier) => {
+						res.mods += `, ${modifier.identifierString}: +${sa * value}`
+					})
+				}
+			}
+			addSticker(
+				$item`scratch 'n' sniff unicorn sticker`,
+				25,
+				$modifiers`Item Drop`,
+			)
+			addSticker(
+				$item`scratch 'n' sniff apple sticker`,
+				2,
+				$modifiers`Experience`,
+			)
+			addSticker(
+				$item`scratch 'n' sniff UPC sticker`,
+				25,
+				$modifiers`Meat Drop`,
+			)
+			addSticker(
+				$item`scratch 'n' sniff wrestler sticker`,
+				10,
+				$modifiers`Muscle Percent, Mysticality Percent, Moxie Percent`,
+			)
+			addSticker(
+				$item`scratch 'n' sniff dragon sticker`,
+				3,
+				$modifiers`Hot Damage, Cold Damage, Stench Damage, Spooky Damage, Sleaze Damage`,
+			)
+			addSticker(
+				$item`scratch 'n' sniff rock band sticker`,
+				20,
+				$modifiers`Weapon Damage, Spell Damage`,
+			)
+			res.mods += ', Breakable'
+			break
+		}
+		case $item`The Crown of Ed the Undying`.identifierString: {
+			res.mods += `, ${evaluatedModifiers(`Edpiece:${get('edPiece')}`)}`
+			break
+		}
+		case $item`over-the-shoulder Folder Holder`.identifierString: {
+			$slots`folder1, folder2, folder3, folder4, folder5`.forEach((folder) => {
+				res.mods += `, ${evaluatedModifiers(equippedItem(folder))}`
+			})
+			break
+		}
+		case $item`card sleeve`.identifierString: {
+			res.mods += `, ${evaluatedModifiers(equippedItem($slot`card-sleeve`))}`
+			break
+		}
+		case $item`your cowboy boots`.identifierString: {
+			$slots`bootskin, bootspur`.forEach(
+				(slot) => (res.mods += `, ${evaluatedModifiers(equippedItem(slot))}`),
+			)
+			break
+		}
+		case $item`mafia thumb ring`.identifierString: {
+			const thumbAdvs = get('_mafiaThumbRingAdvs')
+			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
 			break
 		}
 	}
