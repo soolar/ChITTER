@@ -1,4 +1,15 @@
-import { Item, stringModifier, toEffect } from 'kolmafia'
+import { Effect, Item, stringModifier, toEffect } from 'kolmafia'
+
+export function evaluatedModifiers(modsOf: string | Item | Effect) {
+	// This looks silly but it's necessary for typescript's disambiguation
+	if (modsOf instanceof Item) {
+		return stringModifier(modsOf, 'Evaluated Modifiers')
+	}
+	if (modsOf instanceof Effect) {
+		return stringModifier(modsOf, 'Evaluated Modifiers')
+	}
+	return stringModifier(modsOf, 'Evaluated Modifiers')
+}
 
 export function pluralize(thing: string | Item, amount: number) {
 	if (typeof thing === 'string') {
@@ -287,7 +298,7 @@ export function parseMods(mods: string, verbose = false) {
 			const trueEffName = effNameMatch ? effNameMatch[1] : effName
 			const eff = toEffect(trueEffName)
 			if (eff) {
-				const effMods = stringModifier(eff, 'Evaluated Modifiers')
+				const effMods = evaluatedModifiers(eff)
 				const parsedEffMods = parseMods(effMods)
 				if (parsedEffMods !== '') {
 					return `${beginning}${effName} [${parsedEffMods}]${ending}`
