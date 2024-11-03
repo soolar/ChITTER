@@ -593,6 +593,14 @@ export function getItemInfo(
 			}
 			break
 		}
+		case $item`V for Vivala mask`.identifierString: {
+			const advGained = get('_vmaskAdv')
+			res.desc.push(<Text>{advGained} / 10 adv gained</Text>)
+			if (advGained < 10) {
+				res.borderType = 'has-drops'
+			}
+			break
+		}
 	}
 
 	const inv = itemAmount(item)
