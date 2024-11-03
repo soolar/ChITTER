@@ -14,7 +14,6 @@ import {
 	myPath,
 	pullsRemaining,
 	storageAmount,
-	stringModifier,
 	toItem,
 	totalFreeRests,
 	weaponHands,
@@ -38,6 +37,7 @@ import FamiliarPicker from '../browser/components/Picker/FamiliarPicker'
 import { Text } from '@chakra-ui/react'
 import MainLinkOption from '../browser/components/Option/MainLinkOption'
 import SkillPicker from '../browser/components/Picker/SkillPicker'
+import GAPPicker from '../browser/components/Picker/GAPPicker'
 
 type EquipVerb =
 	| 'equip'
@@ -464,6 +464,45 @@ export function getItemInfo(
 		case $item`mafia thumb ring`.identifierString: {
 			const thumbAdvs = get('_mafiaThumbRingAdvs')
 			res.desc.push(<Text>{thumbAdvs} adv gained</Text>)
+			break
+		}
+		case $item`bone abacus`.identifierString: {
+			const victories = get('boneAbacusVictories')
+			if (victories < 1000) {
+				res.desc.push(<Text>{victories} / 1000 wins</Text>)
+				res.borderType = 'has-drops'
+			} else {
+				res.desc.push(<Text>You did it!</Text>)
+			}
+			break
+		}
+		// @ts-expect-error intentional fallthrough
+		case $item`Greatest American Pants`.identifierString: {
+			const buffsLeft = 5 - clamp(get('_gapBuffs'), 0, 5)
+			if (buffsLeft > 0) {
+				res.desc.push(<Text>{buffsLeft} super powers</Text>)
+				res.borderType = 'has-drops'
+				res.extraOptions.push(
+					<PickerOption
+						icon={<ItemIcon item={item} />}
+						verb="activate"
+						subject="super power"
+						WrappedPicker={GAPPicker}
+						pickerProps={{ usesRemaining: buffsLeft }}
+					/>,
+				)
+			}
+			// intentional lack of break
+		}
+		// eslint-disable-next-line no-fallthrough
+		case $item`navel ring of navel gazing`.identifierString: {
+			const runsUsed = get('_navelRunaways')
+			const freeChance =
+				runsUsed < 3 ? 100 : runsUsed < 6 ? 80 : runsUsed < 9 ? 50 : 20
+			res.desc.push(<Text>{freeChance}% free run chance</Text>)
+			if (freeChance >= 100) {
+				res.borderType = 'all-drops'
+			}
 			break
 		}
 	}

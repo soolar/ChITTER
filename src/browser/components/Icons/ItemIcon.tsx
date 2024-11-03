@@ -2,7 +2,7 @@ import React from 'react'
 import { Item, stringModifier } from 'kolmafia'
 import { Text, VStack } from '@chakra-ui/react'
 import ChitterIcon from './ChitterIcon'
-import { parseMods, showItem } from '../../../util'
+import { showItem } from '../../../util'
 import { getItemInfo } from '../../../util/itemHelpers'
 
 interface ItemIconArgs {
