@@ -41,8 +41,6 @@ export default function ItemIcon({
 		}
 	}
 
-	const parsedMods = parseMods(mods)
-
 	return (
 		<ChitterIcon
 			image={extraInfo.image}
@@ -65,7 +63,7 @@ export default function ItemIcon({
 						) : (
 							<Text
 								className="popup-desc-line"
-								dangerouslySetInnerHTML={{ __html: parsedMods }}
+								dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
 							/>
 						))}
 				</VStack>
