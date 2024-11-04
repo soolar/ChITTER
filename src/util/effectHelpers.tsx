@@ -1,16 +1,31 @@
 import {
+	cliExecute,
 	Effect,
 	equippedItem,
 	haveEffect,
+	isRemovable,
+	isShruggable,
+	itemAmount,
+	mpCost,
 	myFamiliar,
+	myMp,
 	stringModifier,
 } from 'kolmafia'
-import { $effect, $familiar, $item, $slot, get } from 'libram'
+import {
+	$effect,
+	$familiar,
+	$item,
+	$skill,
+	$slot,
+	clamp,
+	get,
+	have,
+} from 'libram'
 import React from 'react'
 import FlavourPicker from '../browser/components/Picker/FlavourPicker'
 import { evaluatedModifiers, parseMods } from '.'
-import { Text } from '@chakra-ui/react'
-import { getItemInfo } from './itemHelpers'
+import { Text, Tooltip } from '@chakra-ui/react'
+import ActionLink from '../browser/components/Link/ActionLink'
 
 interface EffectInfo {
 	mods: string
@@ -27,8 +42,20 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 		displayTurns: turnsLeft === 2147483647 ? <>&infin;</> : turnsLeft,
 	}
 	let doParse = true
+	let doCleanse = true
+	let cleanser = ''
 
 	switch (eff.identifierString) {
+		case $effect`Beaten Up`.identifierString: {
+			if (
+				have($skill`Tongue of the Walrus`) &&
+				myMp() >= mpCost($skill`Tongue of the Walrus`)
+			) {
+				cleanser = `${mpCost($skill`Tongue of the Walrus`)} MP to cast Tongue of the Walrus`
+			}
+			// TODO: Others
+			break
+		}
 		case $effect`Video... Games?`.identifierString: {
 			res.mods = 'Basically Everything +5'
 			break
@@ -40,6 +67,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</Text>
 			)
 			res.launches = FlavourPicker
+			doCleanse = false
 			break
 		}
 		case $effect`Spirit of Peppermint`.identifierString: {
@@ -49,6 +77,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</Text>
 			)
 			res.launches = FlavourPicker
+			doCleanse = false
 			break
 		}
 		case $effect`Spirit of Wormwood`.identifierString: {
@@ -58,6 +87,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</Text>
 			)
 			res.launches = FlavourPicker
+			doCleanse = false
 			break
 		}
 		case $effect`Spirit of Cayenne`.identifierString: {
@@ -67,6 +97,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</Text>
 			)
 			res.launches = FlavourPicker
+			doCleanse = false
 			break
 		}
 		case $effect`Spirit of Garlic`.identifierString: {
@@ -76,6 +107,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</Text>
 			)
 			res.launches = FlavourPicker
+			doCleanse = false
 			break
 		}
 		case $effect`Citizen of a Zone`.identifierString: {
@@ -162,6 +194,41 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 
 	if (doParse) {
 		res.mods = parseMods(res.mods)
+	}
+
+	if (doCleanse) {
+		const shruggable = isShruggable(eff)
+		const sgeeas = itemAmount($item`soft green echo eyedrop antidote`)
+		const hotTubs = have($item`Clan VIP Lounge key`)
+			? 5 - clamp(get('_hotTubSoaks'), 0, 5)
+			: 0
+		const removable =
+			isRemovable(eff) && (sgeeas > 0 || (eff.quality === 'bad' && hotTubs > 0))
+		if (shruggable || removable || cleanser !== '') {
+			res.displayTurns = (
+				<ActionLink callback={() => cliExecute(`uneffect ${eff.name}`)} dirty>
+					<Tooltip
+						label={
+							shruggable ? (
+								<Text>Shrug {eff.name}</Text>
+							) : (
+								<Text>
+									Use{' '}
+									{cleanser !== ''
+										? cleanser
+										: eff.quality === 'bad' && hotTubs > 0
+											? `1 of your ${hotTubs} hot tub soaks`
+											: `1 of your ${sgeeas} SGEEAs`}{' '}
+									to remove {eff.name}
+								</Text>
+							)
+						}
+					>
+						<Text>{res.displayTurns}</Text>
+					</Tooltip>
+				</ActionLink>
+			)
+		}
 	}
 
 	return res

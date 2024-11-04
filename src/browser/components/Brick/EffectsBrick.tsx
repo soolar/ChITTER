@@ -1,6 +1,15 @@
-import { Divider, Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/react'
+import {
+	Divider,
+	Flex,
+	HStack,
+	IconButton,
+	Spacer,
+	Text,
+	Tooltip,
+	VStack,
+} from '@chakra-ui/react'
 import React from 'react'
-import { Effect, haveEffect } from 'kolmafia'
+import { cliExecute, Effect, haveEffect } from 'kolmafia'
 import Brick from './Brick'
 import { $effects, $skill, getActiveEffects, have } from 'libram'
 import EffectIcon from '../Icons/EffectIcon'
@@ -8,16 +17,26 @@ import { getEffectInfo } from '../../../util/effectHelpers'
 import PickerLauncher from '../Picker/PickerLauncher'
 import ChitterIcon from '../Icons/ChitterIcon'
 import FlavourPicker from '../Picker/FlavourPicker'
+import ActionLink from '../Link/ActionLink'
+import { ArrowUpIcon } from '@chakra-ui/icons'
 
 interface RawDisplayArgs {
 	turnsLeft: number | React.ReactNode
 	name: React.ReactNode
 	desc?: string
+	extendCommand?: string
 	icon: React.ReactNode
 	launches?: React.ComponentType<Record<string, never>>
 }
 
-function RawDisplay({ turnsLeft, name, desc, icon, launches }: RawDisplayArgs) {
+function RawDisplay({
+	turnsLeft,
+	name,
+	desc,
+	extendCommand,
+	icon,
+	launches,
+}: RawDisplayArgs) {
 	return (
 		<Flex className="chit-effect">
 			<HStack>
@@ -40,8 +59,18 @@ function RawDisplay({ turnsLeft, name, desc, icon, launches }: RawDisplayArgs) {
 			</HStack>
 			<Spacer />
 			<HStack>
+				{extendCommand && (
+					<ActionLink callback={() => cliExecute(extendCommand)}>
+						<Tooltip label={<Text>{extendCommand}</Text>}>
+							<IconButton
+								icon={<ArrowUpIcon />}
+								size="xs"
+								aria-label="extend effect"
+							/>
+						</Tooltip>
+					</ActionLink>
+				)}
 				<Text className="chit-effect-turns">{turnsLeft}</Text>
-				<Text className="chit-effect-extender">^</Text>
 			</HStack>
 		</Flex>
 	)
@@ -64,6 +93,7 @@ function EffectDisplay({ eff }: EffectDisplayArgs) {
 				)
 			}
 			desc={extraInfo.mods.length > 0 ? extraInfo.mods : undefined}
+			extendCommand={eff.default !== '' ? eff.default : undefined}
 			icon={<EffectIcon effect={eff} medium />}
 			launches={extraInfo.launches}
 		/>
