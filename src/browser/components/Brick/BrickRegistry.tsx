@@ -7,9 +7,10 @@ import StatsBrick from './StatsBrick'
 import TrailBrick from './TrailBrick'
 import { CalendarIcon } from '@chakra-ui/icons'
 import ModifierBrick from './ModifierBrick'
+import ThrallBrick from './ThrallBrick'
 
 interface BrickInfo {
-	brick: () => JSX.Element
+	brick: () => JSX.Element | undefined
 	icon?: React.ReactElement<unknown, string | JSXElementConstructor<unknown>>
 }
 
@@ -20,6 +21,7 @@ const brickRegistry: { [brickName: string]: BrickInfo } = {
 	gear: { brick: GearBrick },
 	modifiers: { brick: ModifierBrick, icon: <CalendarIcon /> },
 	stats: { brick: StatsBrick },
+	thrall: { brick: ThrallBrick },
 	trail: { brick: TrailBrick },
 } as const
 

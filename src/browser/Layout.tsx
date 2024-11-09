@@ -65,7 +65,7 @@ export default function Layout() {
 
 	const brickOrder: BrickOrder = {
 		roof: ['character', 'stats', 'gear', 'trail'],
-		walls: ['effects'],
+		walls: ['thrall', 'effects'],
 		floor: ['familiar'],
 		toolbar: ['modifiers'],
 	}
