@@ -34,6 +34,7 @@ handle_dir () {
 }
 
 echo "relinking"
+rm -rf ~/.kolmafia/relay/chitter
 handle_dir "KoLmafia" ~/.kolmafia "dironly"
 handle_dir "build" ~/.kolmafia "dironly"
 echo "done"
