@@ -4,7 +4,7 @@ import { Wrap, WrapItem } from '@chakra-ui/react'
 import PickerLauncher from '../Picker/PickerLauncher'
 import GearPicker from '../Picker/GearPicker'
 import ItemIcon from '../Icons/ItemIcon'
-import { equippedItem, haveSkill, print } from 'kolmafia'
+import { equippedItem, haveSkill } from 'kolmafia'
 import { $skill, $slot, $slots } from 'libram'
 import ChitterIcon from '../Icons/ChitterIcon'
 
