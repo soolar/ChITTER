@@ -61,6 +61,10 @@ const modShorthands: ModShorthand[] = [
 	[/Free Pull/, ''],
 	// Get rid of wiki name
 	[/Wiki Name: "[^"]+"/, ''],
+	// Hide skills granted
+	[/(Inventory|Equipped) Conditional Skill: "[^"]+"/g, ''],
+	// Hide Last Available
+	[/Last Available: "[^"]+"/, ''],
 	[/Lasts Until Rollover(: true)?/, 'Melts'],
 	[/ Percent/g, '%'],
 	[/Muscle/g, 'Mus'],
