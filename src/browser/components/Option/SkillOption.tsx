@@ -1,10 +1,9 @@
 import { Skill, useSkill } from 'kolmafia'
-import React from 'react'
 import ChitterOption from './ChitterOption'
 import SkillIcon from '../Icons/SkillIcon'
 import ActionLink from '../Link/ActionLink'
 import OptionText from './OptionText'
-import { getSkillInfo } from '../../../util/skillHelpers'
+import { getSkillInfo } from '../../../util/helpers'
 
 interface SkillOptionArgs {
 	skill: Skill

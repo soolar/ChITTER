@@ -4,11 +4,24 @@ import {
 	creatableAmount,
 	Familiar,
 	getRelated,
+	hpCost,
 	Item,
 	itemAmount,
+	lightningCost,
+	mpCost,
+	myHp,
+	myLightning,
+	myMp,
+	myRain,
+	mySoulsauce,
+	myThunder,
 	pullsRemaining,
+	rainCost,
+	Skill,
+	soulsauceCost,
 	storageAmount,
 	stringModifier,
+	thunderCost,
 	toItem,
 	weaponHands,
 } from 'kolmafia'
@@ -19,6 +32,7 @@ import itemList from './resources/itemList'
 import { FamiliarVerb } from '../browser/components/Icons/FamIcon'
 import { Text } from '@chakra-ui/react'
 import famList from './resources/famList'
+import skillList from './resources/skillList'
 
 // ITEMS
 
@@ -237,6 +251,78 @@ export function getFamInfo(
 		res.borderType = 'all-drops'
 	} else if (hasDrops) {
 		res.borderType = 'has-drops'
+	}
+
+	return res
+}
+
+// SKILLS
+
+export interface SkillInfo {
+	skill: Skill
+	desc: React.ReactNode[]
+	append?: string
+	usable: boolean
+}
+
+export type SkillInfoModifier = (skillInfo: SkillInfo) => void
+
+function unusableReason(
+	skillInfo: SkillInfo,
+	unusable: boolean,
+	reason: string,
+) {
+	if (unusable) {
+		skillInfo.usable = false
+		skillInfo.desc.push(<Text>{reason}</Text>)
+		return true
+	}
+	return false
+}
+
+export function unusableResource(
+	skillInfo: SkillInfo,
+	current: number,
+	cost: number,
+	name: string,
+) {
+	if (
+		!unusableReason(
+			skillInfo,
+			current < cost,
+			`Costs ${cost.toLocaleString()} / ${current.toLocaleString()} ${name} (not enough!)`,
+		) &&
+		cost > 0
+	) {
+		skillInfo.desc.push(
+			<Text>
+				Costs {cost.toLocaleString()} / {current.toLocaleString()} {name}
+			</Text>,
+		)
+	}
+}
+
+export function getSkillInfo(skill: Skill): SkillInfo {
+	const res: SkillInfo = {
+		skill,
+		desc: [],
+		usable: true,
+	}
+
+	unusableReason(res, skill.combat, 'Combat only')
+	unusableResource(res, myMp(), mpCost(skill), 'MP')
+	unusableResource(res, myHp(), hpCost(skill), 'HP')
+	unusableResource(res, mySoulsauce(), soulsauceCost(skill), 'soulsauce')
+	unusableResource(res, myLightning(), lightningCost(skill), 'lightning')
+	unusableResource(res, myThunder(), thunderCost(skill), 'thunder')
+	unusableResource(res, myRain(), rainCost(skill), 'rain')
+
+	const skillInfoModifierEntry = skillList.find(
+		(value) => value[0] === skill.identifierString,
+	)
+
+	if (skillInfoModifierEntry) {
+		skillInfoModifierEntry[1](res)
 	}
 
 	return res
