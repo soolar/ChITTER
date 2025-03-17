@@ -3,7 +3,7 @@ import { Item, stringModifier } from 'kolmafia'
 import { Text, VStack } from '@chakra-ui/react'
 import ChitterIcon from './ChitterIcon'
 import { showItem } from '../../../util'
-import { getItemInfo } from '../../../util/itemHelpers'
+import { getItemInfo } from '../../../util/helpers'
 
 interface ItemIconArgs {
 	item?: Item

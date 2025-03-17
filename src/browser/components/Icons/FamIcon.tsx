@@ -6,8 +6,9 @@ import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { $familiar } from 'libram'
 import { getFamInfo, getWeirdoDivContents } from '../../../util/familiarHelpers'
 import { showFam } from '../../../util'
+import { CarryVerb } from '../../../util/resources/2010/crownOfThrones'
 
-export type FamiliarVerb = 'familiar' | 'bjornify' | 'enthrone'
+export type FamiliarVerb = 'familiar' | CarryVerb
 
 function getSadMessage(style: FamiliarVerb) {
 	switch (style) {

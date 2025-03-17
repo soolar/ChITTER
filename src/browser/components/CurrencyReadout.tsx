@@ -13,7 +13,7 @@ import {
 import ChitterIcon from './Icons/ChitterIcon'
 import ItemIcon from './Icons/ItemIcon'
 import MainLink from './Link/MainLink'
-import { getItemInfo } from '../../util/itemHelpers'
+import { getItemInfo } from '../../util/helpers'
 import { clamp, get } from 'libram'
 
 const SpecialCurrencyDetails = {

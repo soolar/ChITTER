@@ -35,7 +35,7 @@ import {
 import ChitterOption from '../Option/ChitterOption'
 import ItemIcon from '../Icons/ItemIcon'
 import ActionLink from '../Link/ActionLink'
-import { foldableAmount, getItemInfo } from '../../../util/itemHelpers'
+import { foldableAmount, getItemInfo } from '../../../util/helpers'
 import OptionText from '../Option/OptionText'
 import ChitterIcon from '../Icons/ChitterIcon'
 
