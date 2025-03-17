@@ -1,7 +1,6 @@
 import { $familiar, $item } from 'libram'
-import { ItemInfo } from '../../helpers'
+import { getFamInfo, ItemInfo } from '../../helpers'
 import { myBjornedFamiliar, myEnthronedFamiliar } from 'kolmafia'
-import { getFamInfo } from '../../familiarHelpers'
 import PickerOption from '../../../browser/components/Option/PickerOption'
 import FamiliarPicker from '../../../browser/components/Picker/FamiliarPicker'
 import ItemIcon from '../../../browser/components/Icons/ItemIcon'

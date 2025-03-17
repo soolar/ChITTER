@@ -20,7 +20,7 @@ import ActionLink from '../Link/ActionLink'
 import ChitterIcon from '../Icons/ChitterIcon'
 import useToggle from '../../hooks/useToggle'
 import SettingToggle from '../SettingToggle'
-import { getFamInfo } from '../../../util/familiarHelpers'
+import { getFamInfo } from '../../../util/helpers'
 
 interface FamiliarPickerArgs {
 	type?: FamiliarVerb

@@ -4,7 +4,7 @@ import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'
 import { Text, Tooltip, VStack } from '@chakra-ui/react'
 import { $familiar } from 'libram'
-import { getFamInfo, getWeirdoDivContents } from '../../../util/familiarHelpers'
+import { getFamInfo } from '../../../util/helpers'
 import { showFam } from '../../../util'
 import { CarryVerb } from '../../../util/resources/2010/crownOfThrones'
 
@@ -44,10 +44,8 @@ export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
 			</VStack>
 		)
 
-		const weirdoDivContents = getWeirdoDivContents(fam)
-
-		if (weirdoDivContents) {
-			return <Tooltip label={tooltip}>{weirdoDivContents}</Tooltip>
+		if (extraInfo.weirdoDiv) {
+			return <Tooltip label={tooltip}>{extraInfo.weirdoDiv}</Tooltip>
 		}
 
 		return (
