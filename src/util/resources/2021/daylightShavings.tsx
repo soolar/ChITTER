@@ -1,4 +1,4 @@
-import { $effects, $item, get } from 'libram'
+import { $effects, $item, get, have } from 'libram'
 import { ItemListEntry } from '../itemList'
 import { Effect, haveEffect, myClass } from 'kolmafia'
 import PickerOption from '../../../browser/components/Option/PickerOption'
@@ -17,7 +17,7 @@ const daylightShavings: ItemListEntry = [
 		const classIdMod = classId <= 6 ? classId : (classId + 1) % 6
 		const lastBeardId = get('lastBeardBuff')
 		const lastBeard = beards.find((beard) => beard.id === lastBeardId)
-		const currBeard = beards.find((beard) => haveEffect(beard) > 0)
+		const currBeard = beards.find((beard) => have(beard))
 		for (let i = 0; i < 11; ++i) {
 			beardOrder[i] = beards[(classIdMod * i) % 11]
 		}

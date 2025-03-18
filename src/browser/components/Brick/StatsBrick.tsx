@@ -1,5 +1,4 @@
 import { Divider, GridItem, Heading, SimpleGrid, Text } from '@chakra-ui/react'
-import React from 'react'
 import ProgressBar from '../ProgressBar'
 import Brick from './Brick'
 import {

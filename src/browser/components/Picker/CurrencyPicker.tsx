@@ -1,5 +1,4 @@
 import { Item } from 'kolmafia'
-import React from 'react'
 import CurrencyReadout, { SpecialCurrency } from '../CurrencyReadout'
 import { $item } from 'libram'
 import Picker from './Picker'

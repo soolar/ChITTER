@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'
 import { Text, Tooltip, VStack } from '@chakra-ui/react'

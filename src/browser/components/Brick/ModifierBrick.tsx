@@ -1,4 +1,3 @@
-import React from 'react'
 import Brick from './Brick'
 import { Flex, Spacer, Text, Tooltip } from '@chakra-ui/react'
 import {

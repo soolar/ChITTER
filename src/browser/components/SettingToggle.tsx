@@ -1,5 +1,4 @@
 import { Flex, Switch, Text } from '@chakra-ui/react'
-import React from 'react'
 
 interface SettingToggleArgs {
 	displayText: string

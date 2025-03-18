@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor } from 'react'
+import { JSXElementConstructor } from 'react'
 import CharacterBrick from './CharacterBrick'
 import EffectsBrick from './EffectsBrick'
 import FamiliarBrick from './FamiliarBrick'

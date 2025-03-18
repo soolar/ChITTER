@@ -1,4 +1,3 @@
-import React from 'react'
 import ChitterOption from './ChitterOption'
 import MainLink from '../Link/MainLink'
 import OptionText from './OptionText'

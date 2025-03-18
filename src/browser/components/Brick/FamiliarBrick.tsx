@@ -1,4 +1,3 @@
-import React from 'react'
 import Brick from './Brick'
 import {
 	Flex,
@@ -13,11 +12,10 @@ import {
 import {
 	familiarEquippedEquipment,
 	familiarWeight,
-	itemAmount,
 	myFamiliar,
 	weightAdjustment,
 } from 'kolmafia'
-import { $item, $slot, MummingTrunk } from 'libram'
+import { $item, $slot, have, MummingTrunk } from 'libram'
 import MainLink from '../Link/MainLink'
 import ChitterIcon from '../Icons/ChitterIcon'
 import FamIcon from '../Icons/FamIcon'
@@ -104,7 +102,7 @@ export default function FamiliarBrick() {
 			name="familiar"
 			header={
 				<Flex>
-					{itemAmount($item`mumming trunk`) > 0 && (
+					{have($item`mumming trunk`) && (
 						<MainLink href="/inv_use.php?whichitem=9592&pwd">
 							<ChitterIcon
 								image="mummericon0.gif"

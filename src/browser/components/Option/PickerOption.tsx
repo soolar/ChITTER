@@ -1,4 +1,3 @@
-import React from 'react'
 import PickerLauncher, { PickerParamsBase } from '../Picker/PickerLauncher'
 import ChitterOption from './ChitterOption'
 import OptionText from './OptionText'

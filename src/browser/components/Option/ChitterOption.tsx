@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Flex, Spacer } from '@chakra-ui/react'
 
 interface ChitterOptionArgs {

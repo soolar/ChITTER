@@ -1,5 +1,4 @@
 import { Skill } from 'kolmafia'
-import React from 'react'
 import Picker from './Picker'
 import SkillOption from '../Option/SkillOption'
 

@@ -6,7 +6,6 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@chakra-ui/react'
-import React from 'react'
 
 export type PickerParamsBase = Record<string, unknown>
 

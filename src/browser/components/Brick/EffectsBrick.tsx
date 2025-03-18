@@ -8,7 +8,6 @@ import {
 	Tooltip,
 	VStack,
 } from '@chakra-ui/react'
-import React from 'react'
 import { cliExecute, Effect, haveEffect } from 'kolmafia'
 import Brick from './Brick'
 import { getActiveEffects } from 'libram'

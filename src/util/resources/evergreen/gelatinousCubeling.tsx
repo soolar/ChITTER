@@ -1,8 +1,7 @@
-import { $familiar, $item, get } from 'libram'
+import { $familiar, $item, get, have } from 'libram'
 import { FamListEntry } from '../famList'
 import { Text, VStack } from '@chakra-ui/react'
 import ProgressBar from '../../../browser/components/ProgressBar'
-import { availableAmount } from 'kolmafia'
 
 const gelatinousCubeling: FamListEntry = [
 	$familiar`Gelatinous Cubeling`.identifierString,
@@ -18,7 +17,7 @@ const gelatinousCubeling: FamListEntry = [
 			{ name: 'Pole', item: $item`eleven-foot pole` },
 			{ name: 'Ring', item: $item`ring of Detect Boring Doors` },
 			{ name: 'Pick', item: $item`Pick-O-Matic lockpicks` },
-		].filter((need) => availableAmount(need.item) < 1)
+		].filter((need) => !have(need.item))
 		if (needs.length > 0) {
 			famInfo.desc.push(
 				<Text>Need {needs.map((need) => need.name).join(', ')}</Text>,

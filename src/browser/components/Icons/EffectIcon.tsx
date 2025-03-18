@@ -1,4 +1,3 @@
-import React from 'react'
 import { Effect } from 'kolmafia'
 import ChitterIcon from './ChitterIcon'
 

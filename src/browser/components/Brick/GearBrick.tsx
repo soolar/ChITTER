@@ -1,11 +1,10 @@
-import React from 'react'
 import Brick from './Brick'
 import { Wrap, WrapItem } from '@chakra-ui/react'
 import PickerLauncher from '../Picker/PickerLauncher'
 import GearPicker from '../Picker/GearPicker'
 import ItemIcon from '../Icons/ItemIcon'
-import { equippedItem, haveSkill } from 'kolmafia'
-import { $skill, $slot, $slots } from 'libram'
+import { equippedItem } from 'kolmafia'
+import { $skill, $slot, $slots, have } from 'libram'
 import ChitterIcon from '../Icons/ChitterIcon'
 
 export default function GearBrick() {
@@ -16,7 +15,7 @@ export default function GearBrick() {
 				{gearSlots.map((slot) => {
 					const equipped = equippedItem(slot)
 					const canEquip =
-						slot !== $slot`shirt` || haveSkill($skill`Torso Awareness`)
+						slot !== $slot`shirt` || have($skill`Torso Awareness`)
 					return (
 						<WrapItem>
 							{canEquip ? (

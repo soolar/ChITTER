@@ -1,5 +1,4 @@
 import { Effect } from 'kolmafia'
-import React from 'react'
 import Picker from './Picker'
 import EffectOption from '../Option/EffectOption'
 

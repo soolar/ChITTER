@@ -1,4 +1,3 @@
-import React from 'react'
 import Brick from './Brick'
 import { Text } from '@chakra-ui/react'
 

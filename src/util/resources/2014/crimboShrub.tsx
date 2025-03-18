@@ -1,6 +1,5 @@
-import { $effect, $familiar, get } from 'libram'
+import { $effect, $familiar, get, have } from 'libram'
 import { FamListEntry } from '../famList'
-import { haveEffect } from 'kolmafia'
 import { Text } from '@chakra-ui/react'
 import MainLink from '../../../browser/components/Link/MainLink'
 
@@ -10,8 +9,8 @@ const crimboShrub: FamListEntry = [
 		const gifts = get('shrubGifts')
 		const readyToFire =
 			gifts === 'yellow'
-				? haveEffect($effect`Everything Looks Yellow`) === 0
-				: gifts === 'meat' && haveEffect($effect`Everything Looks Red`) === 0
+				? have($effect`Everything Looks Yellow`)
+				: gifts === 'meat' && have($effect`Everything Looks Red`)
 		famInfo.extraClass = 'all-drops'
 		if (readyToFire) {
 			famInfo.desc.push(<Text>Ready to fire!</Text>)
