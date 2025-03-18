@@ -11,16 +11,15 @@ import {
 import React from 'react'
 import { cliExecute, Effect, haveEffect } from 'kolmafia'
 import Brick from './Brick'
-import { $effects, $skill, getActiveEffects, have } from 'libram'
+import { getActiveEffects } from 'libram'
 import EffectIcon from '../Icons/EffectIcon'
-import { getEffectInfo } from '../../../util/effectHelpers'
+import { getEffectInfo } from '../../../util/helpers'
 import PickerLauncher from '../Picker/PickerLauncher'
-import ChitterIcon from '../Icons/ChitterIcon'
-import FlavourPicker from '../Picker/FlavourPicker'
 import ActionLink from '../Link/ActionLink'
 import { ArrowUpIcon } from '@chakra-ui/icons'
+import { needableEffects } from '../../../util/resources/effectList'
 
-interface RawDisplayArgs {
+interface RawEffectDisplayArgs {
 	turnsLeft: number | React.ReactNode
 	name: React.ReactNode
 	desc?: string
@@ -29,14 +28,14 @@ interface RawDisplayArgs {
 	launches?: React.ComponentType<Record<string, never>>
 }
 
-function RawDisplay({
+export function RawEffectDisplay({
 	turnsLeft,
 	name,
 	desc,
 	extendCommand,
 	icon,
 	launches,
-}: RawDisplayArgs) {
+}: RawEffectDisplayArgs) {
 	return (
 		<Flex className="chit-effect">
 			<HStack>
@@ -83,7 +82,7 @@ interface EffectDisplayArgs {
 function EffectDisplay({ eff }: EffectDisplayArgs) {
 	const extraInfo = getEffectInfo(eff)
 	return (
-		<RawDisplay
+		<RawEffectDisplay
 			turnsLeft={extraInfo.displayTurns}
 			name={
 				typeof extraInfo.displayName === 'string' ? (
@@ -107,10 +106,6 @@ export default function EffectsBrick() {
 			? eff1.identifierNumber - eff2.identifierNumber
 			: turnsDiff
 	})
-	const spirits = $effects`Spirit of Bacon Grease, Spirit of Peppermint, Spirit of Wormwood, Spirit of Cayenne, Spirit of Garlic`
-	const needSpirit =
-		have($skill`Flavour of Magic`) &&
-		spirits.find((eff) => haveEffect(eff) > 0) === undefined
 	return (
 		<Brick name="effects" header="Effects">
 			<VStack spacing={0}>
@@ -123,23 +118,16 @@ export default function EffectsBrick() {
 						</>
 					)
 				})}
-				{needSpirit && (
-					<>
-						<RawDisplay
-							turnsLeft={0}
-							name={<Text>Choose a Flavour</Text>}
-							icon={
-								<ChitterIcon
-									medium
-									image={'flavorofmagic.gif'}
-									tooltip={<Text>Choose a Flavour</Text>}
-								/>
-							}
-							launches={FlavourPicker}
-						/>
-						<Divider />
-					</>
-				)}
+				{needableEffects.map((needableInfo) => {
+					if (needableInfo.condition()) {
+						return (
+							<>
+								{needableInfo.neededDisplay}
+								<Divider />
+							</>
+						)
+					}
+				})}
 			</VStack>
 		</Brick>
 	)

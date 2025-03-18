@@ -1,9 +1,8 @@
 import { Effect } from 'kolmafia'
-import React from 'react'
 import ChitterOption from './ChitterOption'
 import EffectIcon from '../Icons/EffectIcon'
 import OptionText from './OptionText'
-import { getEffectInfo } from '../../../util/effectHelpers'
+import { getEffectInfo } from '../../../util/helpers'
 
 interface EffectOptionArgs {
 	effect: Effect

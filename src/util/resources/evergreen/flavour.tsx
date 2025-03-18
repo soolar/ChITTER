@@ -1,8 +1,11 @@
-import { Effect, Element, haveEffect, Skill, useSkill } from 'kolmafia'
-import { $effect, $element, $skill } from 'libram'
-import React from 'react'
-import Picker from './Picker'
+import { $effect, $effects, $element, $skill, have } from 'libram'
+import { EffectListEntry, NeedableEffectInfo } from '../effectList'
 import { Container, Image, Text, Tooltip } from '@chakra-ui/react'
+import { EffectInfo } from '../../helpers'
+import { Effect, Element, Skill, useSkill } from 'kolmafia'
+import Picker from '../../../browser/components/Picker/Picker'
+import { RawEffectDisplay } from '../../../browser/components/Brick/EffectsBrick'
+import ChitterIcon from '../../../browser/components/Icons/ChitterIcon'
 
 interface FlavourArea {
 	element: Element
@@ -12,7 +15,7 @@ interface FlavourArea {
 	y: number
 }
 
-export default function FlavourPicker() {
+function FlavourPicker() {
 	const areas: FlavourArea[] = [
 		{
 			element: $element`sleaze`,
@@ -57,7 +60,7 @@ export default function FlavourPicker() {
 			y: 95,
 		},
 	]
-	const activeArea = areas.find((area) => haveEffect(area.effect) > 0)
+	const activeArea = areas.find((area) => have(area.effect))
 	const activeElement = activeArea
 		? activeArea.element.identifierString.toLowerCase()
 		: ''
@@ -95,4 +98,52 @@ export default function FlavourPicker() {
 			</Container>
 		</Picker>
 	)
+}
+function flavourInfoModifier(color: string) {
+	return (effectInfo: EffectInfo) => {
+		effectInfo.displayName = (
+			<Text as="span" color={color}>
+				{effectInfo.eff.name}
+			</Text>
+		)
+		effectInfo.launches = FlavourPicker
+		return { skipCleanse: true }
+	}
+}
+
+const flavour: EffectListEntry[] = [
+	[
+		$effect`Spirit of Bacon Grease`.identifierString,
+		flavourInfoModifier('blueviolet'),
+	],
+	[$effect`Spirit of Peppermint`.identifierString, flavourInfoModifier('blue')],
+	[$effect`Spirit of Wormwood`.identifierString, flavourInfoModifier('grey')],
+	[$effect`Spirit of Cayenne`.identifierString, flavourInfoModifier('red')],
+	[$effect`Spirit of Garlic`.identifierString, flavourInfoModifier('green')],
+]
+
+export default flavour
+
+export const needFlavour: NeedableEffectInfo = {
+	condition: () => {
+		const spirits = $effects`Spirit of Bacon Grease, Spirit of Peppermint, Spirit of Wormwood, Spirit of Cayenne, Spirit of Garlic`
+		return (
+			have($skill`Flavour of Magic`) &&
+			spirits.find((eff) => have(eff)) === undefined
+		)
+	},
+	neededDisplay: (
+		<RawEffectDisplay
+			turnsLeft={0}
+			name={<Text>Choose a Flavour</Text>}
+			icon={
+				<ChitterIcon
+					medium
+					image="flavourofmagic.gif"
+					tooltip={<Text>Choose a Flavour</Text>}
+				/>
+			}
+			launches={FlavourPicker}
+		/>
+	),
 }

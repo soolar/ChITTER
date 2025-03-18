@@ -1,10 +1,15 @@
 import {
 	availableAmount,
+	cliExecute,
 	closetAmount,
 	creatableAmount,
+	Effect,
 	Familiar,
 	getRelated,
+	haveEffect,
 	hpCost,
+	isRemovable,
+	isShruggable,
 	Item,
 	itemAmount,
 	lightningCost,
@@ -26,13 +31,15 @@ import {
 	weaponHands,
 } from 'kolmafia'
 import { BorderType } from '../browser/components/Icons/ChitterIcon'
-import { $item, CrownOfThrones } from 'libram'
+import { $item, clamp, CrownOfThrones, get, have } from 'libram'
 import { evaluatedModifiers, parseMods, pluralize } from '.'
 import itemList from './resources/itemList'
 import { FamiliarVerb } from '../browser/components/Icons/FamIcon'
-import { Text } from '@chakra-ui/react'
+import { Text, Tooltip } from '@chakra-ui/react'
 import famList from './resources/famList'
 import skillList from './resources/skillList'
+import effectList from './resources/effectList'
+import ActionLink from '../browser/components/Link/ActionLink'
 
 // ITEMS
 
@@ -323,6 +330,89 @@ export function getSkillInfo(skill: Skill): SkillInfo {
 
 	if (skillInfoModifierEntry) {
 		skillInfoModifierEntry[1](res)
+	}
+
+	return res
+}
+
+/// EFFECTS
+
+export interface EffectInfo {
+	eff: Effect
+	mods: string
+	launches?: React.ComponentType<Record<string, never>>
+	displayName: string | React.ReactNode
+	displayTurns: number | string | React.ReactNode
+}
+
+interface EffectInfoModifierOptionalReturn {
+	cleanser?: string
+	skipParse?: boolean
+	skipCleanse?: boolean
+}
+
+export type EffectInfoModifier = (
+	effectInfo: EffectInfo,
+) => EffectInfoModifierOptionalReturn | void
+
+export function getEffectInfo(eff: Effect): EffectInfo {
+	const turnsLeft = haveEffect(eff)
+	const res: EffectInfo = {
+		eff,
+		mods: stringModifier(eff, 'Evaluated Modifiers'),
+		displayName: eff.name,
+		displayTurns: turnsLeft === 2147483647 ? <>&infin;</> : turnsLeft,
+	}
+
+	const effectInfoModifierEntry = effectList.find(
+		(value) => value[0] === eff.identifierString,
+	)
+
+	const effModRet = effectInfoModifierEntry
+		? effectInfoModifierEntry[1](res)
+		: undefined
+
+	const doParse = effModRet ? !effModRet.skipParse : true
+	const doCleanse = effModRet ? !effModRet.skipCleanse : true
+	const cleanser = effModRet ? (effModRet.cleanser ?? '') : ''
+
+	if (doParse) {
+		res.mods = parseMods(res.mods)
+	}
+
+	if (doCleanse) {
+		const shruggable = isShruggable(eff)
+		const sgeeas = itemAmount($item`soft green echo eyedrop antidote`)
+		const hotTubs = have($item`Clan VIP Lounge key`)
+			? 5 - clamp(get('_hotTubSoaks'), 0, 5)
+			: 0
+		const removable =
+			isRemovable(eff) && (sgeeas > 0 || (eff.quality === 'bad' && hotTubs > 0))
+		if (shruggable || removable || cleanser !== '') {
+			res.displayTurns = (
+				<ActionLink callback={() => cliExecute(`uneffect ${eff.name}`)} dirty>
+					<Tooltip
+						label={
+							shruggable ? (
+								<Text>Shrug {eff.name}</Text>
+							) : (
+								<Text>
+									Use{' '}
+									{cleanser !== ''
+										? cleanser
+										: eff.quality === 'bad' && hotTubs > 0
+											? `1 of your ${hotTubs} hot tub soaks`
+											: `1 of your ${sgeeas} SGEEAs`}{' '}
+									to remove {eff.name}
+								</Text>
+							)
+						}
+					>
+						<Text>{res.displayTurns}</Text>
+					</Tooltip>
+				</ActionLink>
+			)
+		}
 	}
 
 	return res
