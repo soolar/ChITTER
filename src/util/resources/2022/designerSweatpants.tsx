@@ -18,7 +18,7 @@ export const designerSweatpants: ItemListEntry = [
 		}
 		itemInfo.extraOptions.push(
 			<PickerOption
-				icon={<ItemIcon item={itemInfo.item} />}
+				icon={<ItemIcon item={itemInfo.thing} />}
 				WrappedPicker={SkillPicker}
 				pickerProps={{
 					skills: $skills`Sip Some Sweat, Drench Yourself in Sweat, Sweat Out Some Booze, Make Sweat-Ade, Sweat Flick, Sweat Spray, Sweat Flood, Sweat Sip`,

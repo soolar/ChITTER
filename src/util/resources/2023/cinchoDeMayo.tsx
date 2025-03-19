@@ -26,7 +26,7 @@ function cinchoFunc(itemInfo: ItemInfo) {
 	)
 	itemInfo.extraOptions.push(
 		<PickerOption
-			icon={<ItemIcon item={itemInfo.item} />}
+			icon={<ItemIcon item={itemInfo.thing} />}
 			WrappedPicker={SkillPicker}
 			pickerProps={{
 				skills: $skills`Cincho: Confetti Extravaganza, Cincho: Dispense Salt and Lime, Cincho: Fiesta Exit, Cincho: Party Foul, Cincho: Party Soundtrack, Cincho: Projectile Piñata`,

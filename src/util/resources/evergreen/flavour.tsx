@@ -103,7 +103,7 @@ function flavourInfoModifier(color: string) {
 	return (effectInfo: EffectInfo) => {
 		effectInfo.displayName = (
 			<Text as="span" color={color}>
-				{effectInfo.eff.name}
+				{effectInfo.displayName}
 			</Text>
 		)
 		effectInfo.launches = FlavourPicker

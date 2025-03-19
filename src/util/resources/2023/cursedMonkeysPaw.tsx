@@ -40,7 +40,7 @@ const cursedMonkeysPaw: ItemListEntry = [
 			)
 			itemInfo.extraOptions.push(
 				<MainLinkOption
-					icon={<ItemIcon item={itemInfo.item} />}
+					icon={<ItemIcon item={itemInfo.thing} />}
 					href="/main.php?pwd&action=cmonk"
 					verb="wish"
 					subject="for an item or effect"

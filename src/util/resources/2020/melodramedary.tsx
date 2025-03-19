@@ -21,13 +21,13 @@ const melodramedary: FamListEntry = [
 			)
 		}
 
-		const weight = familiarWeight(famInfo.fam)
+		const weight = familiarWeight(famInfo.thing)
 		famInfo.weirdoDiv = (
 			<HStack
 				className={'chit-icon chit-icon-weird'}
 				spacing="0"
 				onContextMenu={(ev) => {
-					showFam(famInfo.fam.id)
+					showFam(famInfo.thing.id)
 					ev.preventDefault()
 				}}
 			>

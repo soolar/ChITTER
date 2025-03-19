@@ -41,6 +41,49 @@ import skillList from './resources/skillList'
 import effectList from './resources/effectList'
 import ActionLink from '../browser/components/Link/ActionLink'
 
+interface DropInfo {
+	drop: Item | string
+	dropped?: number
+	limit?: number
+}
+
+function dropName(dropInfo: DropInfo) {
+	return typeof dropInfo.drop === 'string' ? dropInfo.drop : dropInfo.drop.name
+}
+
+interface GeneralInfo<T> {
+	thing: T
+	displayName: string | React.ReactNode
+	image: string
+	desc: React.ReactNode[]
+	extraOptions: React.ReactNode[]
+	borderType: BorderType
+	dropsInfo: DropInfo[]
+}
+
+function addDropsToDesc<T>(info: GeneralInfo<T>) {
+	const finiteDropPred = (dropInfo: DropInfo) =>
+		dropInfo.dropped !== undefined && dropInfo.limit !== undefined
+	const finiteDrops = info.dropsInfo.filter(finiteDropPred)
+	const infiniteDrops = info.dropsInfo.filter(
+		(dropInfo) => !finiteDropPred(dropInfo),
+	)
+	const finiteDropsJoined = finiteDrops
+		.map(
+			(dropInfo) =>
+				`${(dropInfo.limit as number) - (dropInfo.dropped as number)} / ${dropInfo.limit} ${dropName(dropInfo)}`,
+		)
+		.join(', ')
+	const infiniteDropsJoined = infiniteDrops.map(dropName).join(', ')
+	const dropsTextToJoin = [
+		...(finiteDropsJoined !== '' ? [`${finiteDropsJoined} left`] : []),
+		...(infiniteDropsJoined !== '' ? [`drops ${infiniteDropsJoined}`] : []),
+	]
+	if (dropsTextToJoin.length > 0) {
+		info.desc.unshift(<Text>{dropsTextToJoin.join(', ')}</Text>)
+	}
+}
+
 // ITEMS
 
 type EquipVerb =
@@ -58,15 +101,9 @@ export function foldableAmount(item: Item) {
 		.reduce((partial, foldable) => partial + availableAmount(foldable), 0)
 }
 
-export interface ItemInfo {
-	item?: Item
-	displayName: string
-	desc: React.ReactNode[]
+export interface ItemInfo extends GeneralInfo<Item> {
 	mods: string
-	extraOptions: React.ReactNode[]
-	image: string
 	extraClass?: string
-	borderType: BorderType
 	equipVerb: EquipVerb
 	currencyLink?: { href: string; desc: string }
 }
@@ -80,14 +117,14 @@ interface GetItemInfoOptionalArgs {
 export type ItemInfoModifier = (itemInfo: ItemInfo) => void
 
 export function getItemInfo(
-	item?: Item,
+	item: Item,
 	optionals: GetItemInfoOptionalArgs = {},
 ): ItemInfo {
 	const isSomething = item && item !== $item.none
 	const name = isSomething ? item.name : 'empty'
 	const mods = isSomething ? evaluatedModifiers(item) : ''
 	const res: ItemInfo = {
-		item,
+		thing: item,
 		displayName: optionals.namePrefix ? `${optionals.namePrefix}${name}` : name,
 		desc: [],
 		mods,
@@ -95,6 +132,7 @@ export function getItemInfo(
 		image: optionals.iconOverride || (isSomething ? item.image : 'blank.gif'),
 		borderType: 'normal',
 		equipVerb: 'equip',
+		dropsInfo: [],
 	}
 
 	if (!isSomething) {
@@ -113,6 +151,8 @@ export function getItemInfo(
 	if (itemInfoModifierEntry) {
 		itemInfoModifierEntry[1](res)
 	}
+
+	addDropsToDesc(res)
 
 	const inv = itemAmount(item)
 	if (inv === 0 && optionals.forEquipping) {
@@ -156,18 +196,8 @@ export function nextLevelInfo(fam: Familiar) {
 	return { progress: 1, goal: 1 }
 }
 
-interface DropInfo {
-	drop: Item | string
-	dropped?: number
-	limit?: number
-}
-
-interface FamInfo {
-	fam: Familiar
-	desc: React.ReactNode[]
+interface FamInfo extends GeneralInfo<Familiar> {
 	extraClass?: string
-	borderType: BorderType
-	dropInfo?: DropInfo
 	weirdoDiv?: React.ReactNode
 }
 
@@ -178,16 +208,14 @@ export function getFamInfo(
 	isTooltip: boolean,
 	type: FamiliarVerb,
 ): FamInfo {
-	const res: FamInfo = { fam, borderType: 'normal', desc: [] }
-
-	if (type === 'familiar') {
-		const famInfoModifierEntry = famList.find(
-			(value) => value[0] === fam.identifierString,
-		)
-
-		if (famInfoModifierEntry) {
-			famInfoModifierEntry[1](res, isTooltip)
-		}
+	const res: FamInfo = {
+		thing: fam,
+		displayName: fam.identifierString,
+		borderType: 'normal',
+		desc: [],
+		extraOptions: [],
+		image: fam.image,
+		dropsInfo: [],
 	}
 
 	const dropsLeft = fam.dropsLimit - fam.dropsToday
@@ -199,15 +227,23 @@ export function getFamInfo(
 
 	if (dropName) {
 		if (hasDrops) {
-			res.dropInfo = { drop, dropped: fam.dropsToday, limit: fam.dropsLimit }
-			res.desc.unshift(
-				<Text>
-					{fam.dropsToday} / {fam.dropsLimit} {dropName}
-				</Text>,
-			)
+			res.dropsInfo.push({
+				drop,
+				dropped: fam.dropsToday,
+				limit: fam.dropsLimit,
+			})
 		} else if (type === 'familiar') {
-			res.dropInfo = { drop }
-			res.desc.unshift(<Text>drops {dropName}</Text>)
+			res.dropsInfo.push({ drop })
+		}
+	}
+
+	if (type === 'familiar') {
+		const famInfoModifierEntry = famList.find(
+			(value) => value[0] === fam.identifierString,
+		)
+
+		if (famInfoModifierEntry) {
+			famInfoModifierEntry[1](res, isTooltip)
 		}
 	}
 
@@ -239,20 +275,16 @@ export function getFamInfo(
 				dropText = dropList.join(', ')
 			}
 			const forNow = riderInfo.dropPredicate ? ' for now' : ''
-			if (forNow !== '') {
-				hasDrops = true
-			}
-			res.desc.push(
-				<Text>
-					drops {dropText}
-					{forNow}
-				</Text>,
-			)
 			if (dropText) {
-				res.dropInfo = { drop: dropText }
+				res.dropsInfo.push({
+					drop: dropText,
+					limit: riderInfo.dropPredicate ? -1 : undefined,
+				})
 			}
 		}
 	}
+
+	addDropsToDesc(res)
 
 	if (allDrops) {
 		res.borderType = 'all-drops'
@@ -265,9 +297,7 @@ export function getFamInfo(
 
 // SKILLS
 
-export interface SkillInfo {
-	skill: Skill
-	desc: React.ReactNode[]
+export interface SkillInfo extends GeneralInfo<Skill> {
 	append?: string
 	usable: boolean
 }
@@ -311,9 +341,14 @@ export function unusableResource(
 
 export function getSkillInfo(skill: Skill): SkillInfo {
 	const res: SkillInfo = {
-		skill,
+		thing: skill,
+		displayName: skill.name,
+		image: skill.image,
+		borderType: 'normal',
 		desc: [],
+		extraOptions: [],
 		usable: true,
+		dropsInfo: [],
 	}
 
 	unusableReason(res, skill.combat, 'Combat only')
@@ -332,16 +367,16 @@ export function getSkillInfo(skill: Skill): SkillInfo {
 		skillInfoModifierEntry[1](res)
 	}
 
+	addDropsToDesc(res)
+
 	return res
 }
 
 /// EFFECTS
 
-export interface EffectInfo {
-	eff: Effect
+export interface EffectInfo extends GeneralInfo<Effect> {
 	mods: string
 	launches?: React.ComponentType<Record<string, never>>
-	displayName: string | React.ReactNode
 	displayTurns: number | string | React.ReactNode
 }
 
@@ -358,10 +393,15 @@ export type EffectInfoModifier = (
 export function getEffectInfo(eff: Effect): EffectInfo {
 	const turnsLeft = haveEffect(eff)
 	const res: EffectInfo = {
-		eff,
+		thing: eff,
+		image: eff.image,
+		desc: [],
+		extraOptions: [],
+		borderType: 'normal',
 		mods: stringModifier(eff, 'Evaluated Modifiers'),
 		displayName: eff.name,
 		displayTurns: turnsLeft === 2147483647 ? <>&infin;</> : turnsLeft,
+		dropsInfo: [],
 	}
 
 	const effectInfoModifierEntry = effectList.find(
@@ -371,6 +411,8 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 	const effModRet = effectInfoModifierEntry
 		? effectInfoModifierEntry[1](res)
 		: undefined
+
+	addDropsToDesc(res)
 
 	const doParse = effModRet ? !effModRet.skipParse : true
 	const doCleanse = effModRet ? !effModRet.skipCleanse : true

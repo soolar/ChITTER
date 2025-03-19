@@ -95,7 +95,7 @@ const gap: ItemListEntry = [
 			itemInfo.borderType = 'has-drops'
 			itemInfo.extraOptions.push(
 				<PickerOption
-					icon={<ItemIcon item={itemInfo.item} />}
+					icon={<ItemIcon item={itemInfo.thing} />}
 					verb="activate"
 					subject="super power"
 					WrappedPicker={GAPPicker}

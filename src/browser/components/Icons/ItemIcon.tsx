@@ -5,7 +5,7 @@ import { showItem } from '../../../util'
 import { getItemInfo } from '../../../util/helpers'
 
 interface ItemIconArgs {
-	item?: Item
+	item: Item
 	small?: boolean
 	tooltipPrefix?: string
 	tooltipDesc?: string

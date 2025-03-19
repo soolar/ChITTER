@@ -48,7 +48,7 @@ export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
 
 		return (
 			<ChitterIcon
-				image={fam.image}
+				image={extraInfo.image}
 				tooltip={tooltip}
 				borderType={extraInfo.borderType}
 				extraClass={extraInfo.extraClass}

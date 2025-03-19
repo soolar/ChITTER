@@ -52,7 +52,7 @@ export default function FamiliarPicker({
 			have(fam) &&
 			isUnrestricted(fam) &&
 			fam !== activeFam &&
-			(!dropsOnly || !!info.dropInfo)
+			(!dropsOnly || info.dropsInfo.length > 0)
 		)
 	})
 

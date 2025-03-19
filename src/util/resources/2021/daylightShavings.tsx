@@ -32,7 +32,7 @@ const daylightShavings: ItemListEntry = [
 		}
 		itemInfo.extraOptions.push(
 			<PickerOption
-				icon={<ItemIcon item={itemInfo.item} />}
+				icon={<ItemIcon item={itemInfo.thing} />}
 				WrappedPicker={EffectListPseudoPicker}
 				pickerProps={{
 					header: 'Beard schedule',
@@ -45,7 +45,7 @@ const daylightShavings: ItemListEntry = [
 		)
 		itemInfo.extraOptions.push(
 			<MainLinkOption
-				icon={<ItemIcon item={itemInfo.item} />}
+				icon={<ItemIcon item={itemInfo.thing} />}
 				verb="adjust"
 				subject="your facial hair"
 				href="/account_facialhair.php"

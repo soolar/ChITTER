@@ -8,7 +8,7 @@ const everythingLooksColorful: EffectListEntry[] = [
 		(effectInfo) => {
 			effectInfo.displayName = (
 				<Text as="span" color="blue">
-					{effectInfo.eff.name}
+					{effectInfo.displayName}
 				</Text>
 			)
 		},
@@ -18,7 +18,7 @@ const everythingLooksColorful: EffectListEntry[] = [
 		(effectInfo) => {
 			effectInfo.displayName = (
 				<Text as="span" color="red">
-					{effectInfo.eff.name}
+					{effectInfo.displayName}
 				</Text>
 			)
 		},
@@ -28,7 +28,7 @@ const everythingLooksColorful: EffectListEntry[] = [
 		(effectInfo) => {
 			effectInfo.displayName = (
 				<Text as="span" color="olive">
-					{effectInfo.eff.name}
+					{effectInfo.displayName}
 				</Text>
 			)
 		},
@@ -38,7 +38,7 @@ const everythingLooksColorful: EffectListEntry[] = [
 		(effectInfo) => {
 			effectInfo.displayName = (
 				<Text as="span" color="green">
-					{effectInfo.eff.name}
+					{effectInfo.displayName}
 				</Text>
 			)
 		},
@@ -48,7 +48,7 @@ const everythingLooksColorful: EffectListEntry[] = [
 		(effectInfo) => {
 			effectInfo.displayName = (
 				<Text as="span" color="purple">
-					{effectInfo.eff.name}
+					{effectInfo.displayName}
 				</Text>
 			)
 		},

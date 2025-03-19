@@ -19,7 +19,7 @@ export function carrierFunc(itemInfo: ItemInfo, verb: CarryVerb) {
 	}
 	itemInfo.extraOptions.push(
 		<PickerOption
-			icon={<ItemIcon item={itemInfo.item} />}
+			icon={<ItemIcon item={itemInfo.thing} />}
 			WrappedPicker={FamiliarPicker}
 			pickerProps={{ type: verb }}
 			verb="pick"
