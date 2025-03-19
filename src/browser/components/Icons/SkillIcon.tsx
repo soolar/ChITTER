@@ -12,7 +12,7 @@ export default function SkillIcon({ skill }: SkillIconArgs) {
 	return (
 		<ChitterIcon
 			image={info.image}
-			tooltip={<Text>{info.displayName}</Text>}
+			tooltip={info.displayName}
 			borderType="normal"
 		/>
 	)

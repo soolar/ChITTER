@@ -20,6 +20,7 @@ import {
 	myRain,
 	mySoulsauce,
 	myThunder,
+	print,
 	pullsRemaining,
 	rainCost,
 	Skill,
@@ -48,7 +49,11 @@ interface DropInfo {
 }
 
 function dropName(dropInfo: DropInfo) {
-	return typeof dropInfo.drop === 'string' ? dropInfo.drop : dropInfo.drop.name
+	if (typeof dropInfo.drop === 'string') {
+		return dropInfo.drop
+	}
+	const info = getItemInfo(dropInfo.drop)
+	return info.displayName
 }
 
 interface GeneralInfo<T> {
@@ -59,25 +64,38 @@ interface GeneralInfo<T> {
 	extraOptions: React.ReactNode[]
 	borderType: BorderType
 	dropsInfo: DropInfo[]
+	invalid?: boolean
 }
 
 function addDropsToDesc<T>(info: GeneralInfo<T>) {
 	const finiteDropPred = (dropInfo: DropInfo) =>
-		dropInfo.dropped !== undefined && dropInfo.limit !== undefined
+		dropInfo.dropped !== undefined &&
+		dropInfo.limit !== undefined &&
+		dropInfo.limit > 0
 	const finiteDrops = info.dropsInfo.filter(finiteDropPred)
 	const infiniteDrops = info.dropsInfo.filter(
-		(dropInfo) => !finiteDropPred(dropInfo),
+		(dropInfo) =>
+			dropInfo.dropped === undefined && dropInfo.limit === undefined,
+	)
+	const mysteriouslyFiniteDrops = info.dropsInfo.filter(
+		(dropInfo) => dropInfo.limit !== undefined && dropInfo.limit < 0,
 	)
 	const finiteDropsJoined = finiteDrops
 		.map(
 			(dropInfo) =>
-				`${(dropInfo.limit as number) - (dropInfo.dropped as number)} / ${dropInfo.limit} ${dropName(dropInfo)}`,
+				`${(dropInfo.limit as number) - (dropInfo.dropped as number)}/${dropInfo.limit} ${dropName(dropInfo)}`,
 		)
 		.join(', ')
 	const infiniteDropsJoined = infiniteDrops.map(dropName).join(', ')
+	const mysteriouslyFiniteDropsJoined = mysteriouslyFiniteDrops
+		.map(dropName)
+		.join(', ')
 	const dropsTextToJoin = [
 		...(finiteDropsJoined !== '' ? [`${finiteDropsJoined} left`] : []),
 		...(infiniteDropsJoined !== '' ? [`drops ${infiniteDropsJoined}`] : []),
+		...(mysteriouslyFiniteDropsJoined !== ''
+			? [`drops ${mysteriouslyFiniteDropsJoined} for now`]
+			: []),
 	]
 	if (dropsTextToJoin.length > 0) {
 		info.desc.unshift(<Text>{dropsTextToJoin.join(', ')}</Text>)
@@ -120,8 +138,9 @@ export function getItemInfo(
 	item: Item,
 	optionals: GetItemInfoOptionalArgs = {},
 ): ItemInfo {
-	const isSomething = item && item !== $item.none
-	const name = isSomething ? item.name : 'empty'
+	const isSomething = item !== $item.none
+	// TODO: Figure out why identifierString is right, but name just gives undefined
+	const name = isSomething ? item.identifierString : 'empty'
 	const mods = isSomething ? evaluatedModifiers(item) : ''
 	const res: ItemInfo = {
 		thing: item,
@@ -218,26 +237,31 @@ export function getFamInfo(
 		dropsInfo: [],
 	}
 
-	const dropsLeft = fam.dropsLimit - fam.dropsToday
-	let hasDrops = type === 'familiar' && dropsLeft > 0
-	const allDrops = hasDrops && fam.dropsToday === 0
-	const drop =
-		fam.dropItem.identifierString !== 'none' ? fam.dropItem : fam.dropName
-	const dropName = pluralize(drop, 1)
-
-	if (dropName) {
-		if (hasDrops) {
-			res.dropsInfo.push({
-				drop,
-				dropped: fam.dropsToday,
-				limit: fam.dropsLimit,
-			})
-		} else if (type === 'familiar') {
-			res.dropsInfo.push({ drop })
-		}
-	}
-
 	if (type === 'familiar') {
+		const dropsLeft = fam.dropsLimit - fam.dropsToday
+		let hasDrops = dropsLeft > 0
+		const allDrops = hasDrops && fam.dropsToday === 0
+		const drop =
+			fam.dropItem.identifierString !== 'none' ? fam.dropItem : fam.dropName
+
+		if (allDrops) {
+			res.borderType = 'all-drops'
+		} else if (hasDrops) {
+			res.borderType = 'has-drops'
+		}
+
+		if (drop !== '' && drop !== $item.none) {
+			if (fam.dropsLimit > 0) {
+				res.dropsInfo.push({
+					drop,
+					dropped: fam.dropsToday,
+					limit: fam.dropsLimit,
+				})
+			} else {
+				res.dropsInfo.push({ drop })
+			}
+		}
+
 		const famInfoModifierEntry = famList.find(
 			(value) => value[0] === fam.identifierString,
 		)
@@ -245,13 +269,19 @@ export function getFamInfo(
 		if (famInfoModifierEntry) {
 			famInfoModifierEntry[1](res, isTooltip)
 		}
-	}
-
-	if (type !== 'familiar') {
+	} else {
+		// carried
 		const modifiers = stringModifier(
 			`Throne:${fam.identifierString}`,
 			'Evaluated Modifiers',
 		)
+
+		// uncarriable
+		if (modifiers === 'none') {
+			res.invalid = true
+			return res
+		}
+
 		const parsedModifiers = parseMods(modifiers)
 		res.desc.push(
 			<Text dangerouslySetInnerHTML={{ __html: parsedModifiers }} />,
@@ -274,7 +304,6 @@ export function getFamInfo(
 				)
 				dropText = dropList.join(', ')
 			}
-			const forNow = riderInfo.dropPredicate ? ' for now' : ''
 			if (dropText) {
 				res.dropsInfo.push({
 					drop: dropText,
@@ -285,12 +314,6 @@ export function getFamInfo(
 	}
 
 	addDropsToDesc(res)
-
-	if (allDrops) {
-		res.borderType = 'all-drops'
-	} else if (hasDrops) {
-		res.borderType = 'has-drops'
-	}
 
 	return res
 }
