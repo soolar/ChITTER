@@ -20,7 +20,6 @@ import {
 	myRain,
 	mySoulsauce,
 	myThunder,
-	print,
 	pullsRemaining,
 	rainCost,
 	Skill,
@@ -33,7 +32,7 @@ import {
 } from 'kolmafia'
 import { BorderType } from '../browser/components/Icons/ChitterIcon'
 import { $item, clamp, CrownOfThrones, get, have } from 'libram'
-import { evaluatedModifiers, parseMods, pluralize } from '.'
+import { evaluatedModifiers, parseMods } from '.'
 import itemList from './resources/itemList'
 import { FamiliarVerb } from '../browser/components/Icons/FamIcon'
 import { Text, Tooltip } from '@chakra-ui/react'
@@ -46,6 +45,7 @@ interface DropInfo {
 	drop: Item | string
 	dropped?: number
 	limit?: number
+	important?: boolean
 }
 
 function dropName(dropInfo: DropInfo) {
@@ -67,7 +67,45 @@ interface GeneralInfo<T> {
 	invalid?: boolean
 }
 
+const borderOrder: BorderType[] = [
+	'danger',
+	'warning',
+	'good',
+	'none',
+	'all-drops',
+	'has-drops',
+	'normal',
+]
+
+function higherPriBorder(lhs: BorderType, rhs: BorderType): BorderType {
+	return (
+		borderOrder.find(
+			(borderType) => lhs === borderType || rhs === borderType,
+		) ?? 'normal'
+	)
+}
+
 function addDropsToDesc<T>(info: GeneralInfo<T>) {
+	const importantDrops = info.dropsInfo.filter(
+		(dropInfo) =>
+			dropInfo.important &&
+			(dropInfo.limit === undefined ||
+				dropInfo.limit < 0 ||
+				(dropInfo.dropped !== undefined && dropInfo.limit > dropInfo.dropped)),
+	)
+	importantDrops
+		.map((dropInfo) => {
+			const res: BorderType =
+				dropInfo.dropped !== undefined && dropInfo.dropped === 0
+					? 'all-drops'
+					: 'has-drops'
+			return res
+		})
+		.forEach(
+			(borderType) =>
+				(info.borderType = higherPriBorder(info.borderType, borderType)),
+		)
+
 	const finiteDropPred = (dropInfo: DropInfo) =>
 		dropInfo.dropped !== undefined &&
 		dropInfo.limit !== undefined &&

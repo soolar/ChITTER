@@ -17,6 +17,7 @@ import { designerSweatpants } from './2022/designerSweatpants'
 import juneCleaver from './2022/juneCleaver'
 import { cinchoDeMayo } from './2023/cinchoDeMayo'
 import cursedMonkeysPaw from './2023/cursedMonkeysPaw'
+import batWings from './2024/batWings'
 import currencies from './currency'
 import boneAbacus from './evergreen/boneAbacus'
 
@@ -68,6 +69,9 @@ const itemList: ItemListEntry[] = [
 	// 2023
 	cursedMonkeysPaw,
 	...cinchoDeMayo,
+
+	// 2024
+	batWings,
 ]
 
 export default itemList
