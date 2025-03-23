@@ -46,6 +46,9 @@ import {
 import Picker from './Picker'
 import {
 	ButtonGroup,
+	Divider,
+	Grid,
+	GridItem,
 	Heading,
 	HStack,
 	Text,
@@ -393,6 +396,10 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 			.filter((value) => value.items.length > 0),
 	)
 
+	const suggestions = categories.filter(
+		(category) => category.items.length > 0 && category.name !== 'favorites',
+	)
+
 	const header =
 		slot === $slot`familiar`
 			? 'Change familiar equipment'
@@ -445,34 +452,50 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 				) : (
 					<Text>You have no valid favorite items for this slot!</Text>
 				)}
-				<Heading>Suggestions</Heading>
-				{categories
-					.filter(
-						(category) =>
-							category.items.length > 0 && category.name !== 'favorites',
-					)
-					.map((category) => (
-						<Wrap spacing={0} key={`${slot.identifierString} ${category.name}`}>
-							<WrapItem>
-								<Heading as="h3">{category.name}</Heading>
-							</WrapItem>
-							<ButtonGroup variant="link">
-								{category.items.map((entry) => (
-									<WrapItem
-										key={`${slot.identifierString} ${category.name} ${entry.item.name}`}
-									>
-										<ActionLink callback={() => equip(entry.item, slot)}>
-											<ItemIcon
-												item={entry.item}
-												weirdFam={isWeirdFam}
-												forEquipping
-											/>
-										</ActionLink>
-									</WrapItem>
-								))}
-							</ButtonGroup>
-						</Wrap>
-					))}
+				{suggestions.length > 0 && (
+					<Grid templateColumns="repeat(2, 1fr)" gap={1}>
+						<GridItem colSpan={2} textAlign="center">
+							<Heading>Suggestions</Heading>
+						</GridItem>
+						{suggestions.map((category, index) => (
+							<>
+								{index !== 0 && (
+									<GridItem colSpan={2}>
+										<Divider
+											key={`${slot.identifierString} ${category.name} divider`}
+										/>
+									</GridItem>
+								)}
+								<GridItem
+									key={`${slot.identifierString} ${category.name} catname`}
+								>
+									<Heading as="h3">{category.name}</Heading>
+								</GridItem>
+								<GridItem
+									key={`${slot.identifierString} ${category.name} catitems`}
+								>
+									<Wrap spacing={0}>
+										<ButtonGroup variant="link">
+											{category.items.map((entry) => (
+												<WrapItem
+													key={`${slot.identifierString} ${category.name} ${entry.item.name}`}
+												>
+													<ActionLink callback={() => equip(entry.item, slot)}>
+														<ItemIcon
+															item={entry.item}
+															weirdFam={isWeirdFam}
+															forEquipping
+														/>
+													</ActionLink>
+												</WrapItem>
+											))}
+										</ButtonGroup>
+									</Wrap>
+								</GridItem>
+							</>
+						))}
+					</Grid>
+				)}
 			</VStack>
 		</Picker>
 	)
