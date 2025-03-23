@@ -452,28 +452,26 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 							category.items.length > 0 && category.name !== 'favorites',
 					)
 					.map((category) => (
-						<HStack key={`${slot.identifierString} ${category.name}`}>
-							<Wrap spacing={0}>
-								<WrapItem>
-									<Heading as="h3">{category.name}</Heading>
-								</WrapItem>
-								<ButtonGroup variant="link">
-									{category.items.map((entry) => (
-										<WrapItem
-											key={`${slot.identifierString} ${category.name} ${entry.item.name}`}
-										>
-											<ActionLink callback={() => equip(entry.item, slot)}>
-												<ItemIcon
-													item={entry.item}
-													weirdFam={isWeirdFam}
-													forEquipping
-												/>
-											</ActionLink>
-										</WrapItem>
-									))}
-								</ButtonGroup>
-							</Wrap>
-						</HStack>
+						<Wrap spacing={0} key={`${slot.identifierString} ${category.name}`}>
+							<WrapItem>
+								<Heading as="h3">{category.name}</Heading>
+							</WrapItem>
+							<ButtonGroup variant="link">
+								{category.items.map((entry) => (
+									<WrapItem
+										key={`${slot.identifierString} ${category.name} ${entry.item.name}`}
+									>
+										<ActionLink callback={() => equip(entry.item, slot)}>
+											<ItemIcon
+												item={entry.item}
+												weirdFam={isWeirdFam}
+												forEquipping
+											/>
+										</ActionLink>
+									</WrapItem>
+								))}
+							</ButtonGroup>
+						</Wrap>
 					))}
 			</VStack>
 		</Picker>
