@@ -345,7 +345,9 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						const modifier = toModifier(modEntry.mod)
 						if (modifier != $modifier.none) {
 							recommendableItems.forEach((recItem) => {
-								const score = numericModifier(recItem, modifier) * mult
+								const score =
+									(numericModifier(recItem, modifier) * mult) /
+									(weaponHands(recItem) > 1 ? 2 : 1)
 								if (score > 0) {
 									addItem(recItem, score)
 								}
