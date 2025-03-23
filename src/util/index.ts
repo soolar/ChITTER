@@ -105,7 +105,7 @@ const modShorthands: ModShorthand[] = [
 	[/PvP Fights/g, 'Fites'],
 	// Combine regen min and max in to a range
 	[
-		/((HP|MP|HP\/MP) Regen )Min: ([+-]?[\d.]+), \1Max: \+?(-?[\d.]+)/g,
+		/((HP|MP|HP\/MP) Regen )Min: \+?(-?[\d.]+), \1Max: \+?(-?[\d.]+)/g,
 		'$1$3-$4',
 	],
 	// simplify regen ranges that are identical
