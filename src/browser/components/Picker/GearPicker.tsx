@@ -383,7 +383,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 					)
 
 				if (res.items.length > 6) {
-					res.items = res.items.slice(0, 5)
+					res.items = res.items.slice(0, 6)
 				}
 
 				return res
