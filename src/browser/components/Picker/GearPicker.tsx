@@ -157,7 +157,7 @@ function evaluateGearConditionList(gcl?: GearConditionList) {
 		} else if (gc.type === 'pvp') {
 			return hippyStoneBroken() === gc.value
 		} else if (gc.type === 'overdrunk') {
-			return myInebriety() >= inebrietyLimit() === gc.value
+			return myInebriety() > inebrietyLimit() === gc.value
 		} else if (gc.type === 'quest') {
 			const actualStep = questStepToNumber(get(gc.pref, 'unstarted'), gc.pref)
 			const compareStep = questStepToNumber(gc.value, 'gc.value')
