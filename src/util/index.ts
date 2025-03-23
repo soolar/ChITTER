@@ -1,5 +1,19 @@
 import { Effect, Item, stringModifier, toEffect } from 'kolmafia'
 
+export function resolveStr(stringOrGetter: string | (() => string)) {
+	return typeof stringOrGetter === 'string' ? stringOrGetter : stringOrGetter()
+}
+
+export function strCompare(lhs: string, rhs: string) {
+	if (lhs < rhs) {
+		return -1
+	} else if (lhs > rhs) {
+		return 1
+	} else {
+		return 0
+	}
+}
+
 export function evaluatedModifiers(modsOf: string | Item | Effect) {
 	// This looks silly but it's necessary for typescript's disambiguation
 	if (modsOf instanceof Item) {

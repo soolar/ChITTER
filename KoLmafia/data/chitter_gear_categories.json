@@ -1,0 +1,636 @@
+[
+	{ "name": "item", "mods": [{ "mod": "Item Drop" }] },
+	{ "name": "meat", "mods": [{ "mod": "Meat Drop" }] },
+	{ "name": "ML", "mods": [{ "mod": "Monster Level" }] },
+	{ "name": "-combat", "mods": [{ "mod": "Combat Rate", "multiplier": -1 }] },
+	{ "name": "+combat", "mods": [{ "mod": "Combat Rate" }] },
+	{
+		"name": "exp",
+		"mods": [
+			{ "mod": "Experience", "multiplier": 0.5 },
+			{
+				"mod": "Muscle Experience",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Muscle Experience Percent",
+				"multiplier": 5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Mysticality Experience",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Mysticality Experience Percent",
+				"multiplier": 5,
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Moxie Experience",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Moxie Experience Percent",
+				"multiplier": 5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{ "name": "prismatic", "mods": [{ "mod": "Prismatic Damage" }] },
+	{
+		"name": "elemental",
+		"mods": [
+			{ "mod": "Hot Damage" },
+			{ "mod": "Cold Damage" },
+			{ "mod": "Sleaze Damage" },
+			{ "mod": "Stench Damage" },
+			{ "mod": "Spooky Damage" }
+		]
+	},
+	{ "name": "fam weight", "mods": [{ "mod": "Familiar Weight" }] },
+	{
+		"name": "mainstat",
+		"mods": [
+			{
+				"mod": "Muscle",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Muscle Percent",
+				"multiplier": 10,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Muscle" }] }
+			},
+			{
+				"mod": "Mysticality",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Mysticality Percent",
+				"multiplier": 10,
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Moxie",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Moxie Percent",
+				"multiplier": 10,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{
+		"name": "damage",
+		"mods": [
+			{
+				"mod": "Weapon Damage",
+				"conditions": {
+					"list": [
+						{ "type": "mainstat", "value": "Mysticality", "inverted": true }
+					]
+				}
+			},
+			{
+				"mod": "Weapon Damage Percent",
+				"multiplier": 0.5,
+				"conditions": {
+					"list": [
+						{ "type": "mainstat", "value": "Mysticality", "inverted": true }
+					]
+				}
+			},
+			{
+				"mod": "Spell Damage",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Spell Damage Percent",
+				"conditions": {
+					"list": [{ "type": "mainstat", "value": "Mysticality" }]
+				}
+			},
+			{
+				"mod": "Ranged Damage",
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			},
+			{
+				"mod": "Ranged Damage Percent",
+				"multiplier": 0.5,
+				"conditions": { "list": [{ "type": "mainstat", "value": "Moxie" }] }
+			}
+		]
+	},
+	{
+		"name": "hp regen",
+		"mods": [{ "mod": "HP Regen Min" }, { "mod": "HP Regen Max" }]
+	},
+	{
+		"name": "mp regen",
+		"mods": [{ "mod": "MP Regen Min" }, { "mod": "MP Regen Max" }]
+	},
+	{ "name": "initiative", "mods": [{ "mod": "Initiative" }] },
+	{ "name": "smithsness", "mods": [{ "mod": "Smithsness" }] },
+	{
+		"name": "today",
+		"mods": [{ "mod": "Lasts Until Tomorrow", "boolean": true }]
+	},
+	{
+		"name": "rollover",
+		"mods": [
+			{ "mod": "Adventures" },
+			{
+				"mod": "PVP Fights",
+				"conditions": { "list": [{ "type": "pvp", "value": true }] }
+			}
+		],
+		"conditions": { "list": [{ "type": "overdrunk", "value": true }] }
+	},
+	{
+		"name": "DRUNK",
+		"manual": [{ "items": ["Drunkula's wineglass"] }],
+		"conditions": { "list": [{ "type": "overdrunk", "value": true }] }
+	},
+	{
+		"name": "Wow",
+		"manual": [{ "items": ["World's Best Adventurer sash"] }]
+	},
+	{
+		"name": "astral",
+		"manual": [
+			{
+				"items": [
+					"astral bludgeon",
+					"astral shield",
+					"astral chapeau",
+					"astral bracer",
+					"astral longbow",
+					"astral shorts",
+					"astral mace",
+					"astral trousers",
+					"astral ring",
+					"astral statuette",
+					"astral pistol",
+					"astral mask",
+					"astral pet sweater",
+					"astra shirt"
+				]
+			}
+		]
+	},
+	{
+		"name": "quest",
+		"mods": [
+			{
+				"mod": "Surgeonosity",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "hiddenHospitalProgress",
+							"value": "step1"
+						}
+					]
+				}
+			},
+			{
+				"mod": "Clowniness",
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step5"
+						}
+					]
+				}
+			}
+		],
+		"manual": [
+			{
+				"items": ["black glass"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questS02Monkees",
+							"value": "finished",
+							"comparison": "!"
+						}
+					]
+				}
+			},
+			{
+				"items": ["Talisman o' Namsilat", "Mega Gem"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Palindome",
+							"value": "finished"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"titanium assault umbrella",
+					"amulet of extreme plot significance"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL10Garbage",
+							"value": "step7"
+						}
+					]
+				}
+			},
+			{
+				"items": ["mohawk wig"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL10Garbage",
+							"value": "step9"
+						}
+					]
+				}
+			},
+			{
+				"items": ["blackberry galoshes"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Black",
+							"value": "unstarted",
+							"comparison": "!"
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Black",
+							"value": "step1",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"antique machete",
+					"muculent machete",
+					"machetito",
+					"papier-m&#226;ch&#233;te"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Worship",
+							"value": "step3",
+							"comparison": ">="
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Worship",
+							"value": "step4",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"survival knife",
+					{ "name": "ornate dowsing rod", "weight": 2 },
+					"UV-resistant compass"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Desert",
+							"value": "started"
+						}
+					]
+				}
+			},
+			{
+				"items": ["Lord Spookyraven's spectacles"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "unstarted",
+							"comparison": "!"
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step1",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": ["unstable fulminate"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step1",
+							"comparison": ">="
+						},
+						{
+							"type": "quest",
+							"pref": "questL11Manor",
+							"value": "step3",
+							"comparison": "<="
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"Hammer of Smiting",
+					"Chelonian Morningstar",
+					"Greek Pasta Spoon of Peril",
+					"17-Alarm Saucepan",
+					"Shagadelic Disco Banjo",
+					"Squeezebox of the Ages"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step8"
+						},
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step27"
+						}
+					],
+					"any": true
+				}
+			},
+			{
+				"items": ["fouet de tortue-dressage", "spaghetti cult robe"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step25"
+						},
+						{
+							"type": "quest",
+							"pref": "questG04Nemesis",
+							"value": "step26"
+						}
+					],
+					"any": true
+				}
+			},
+			{
+				"items": ["spooky glove"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questM03Bugbear",
+							"value": "step2"
+						}
+					]
+				}
+			},
+			{
+				"items": ["E.M.U. Unit"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questF04Elves",
+							"value": "step3"
+						}
+					]
+				}
+			},
+			{
+				"items": ["attorney's badge"],
+				"conditions": {
+					"list": [
+						{
+							"type": "quest",
+							"pref": "questL13Final",
+							"value": "step8"
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		"name": "path",
+		"mods": [
+			{
+				"mod": "Random Monster Modifiers",
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "One Crazy Random Summer"
+						}
+					]
+				}
+			}
+		],
+		"manual": [
+			{
+				"items": [
+					"Yearbook Club Camera",
+					"over-the-shoulder Folder Holder",
+					"twisted-up wet tower"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "KOLHS"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"The Crown of Ed the Undying",
+					"[7961]Staff of Ed",
+					"obsidian nutcracker"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Actually Ed the Undying"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"pool skimmer",
+					"lightning rod",
+					"thunder down underwear",
+					"famous blue raincoat",
+					"thor's pliers"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Heavy Rains"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"Heimz Fortified Kidney Beans",
+					"Tesla's Electroplated Beans",
+					"Mixed Garbanzos and Chickpeas",
+					"Hellfire Spicy Beans",
+					"Frigid Northern Beans",
+					"World's Blackest-Eyed Peas",
+					"Trader Olaf's Exotic Stinkbeans",
+					"Pork 'n' Pork 'n' Pork 'n' Beans",
+					"Shrub's Premium Baked Beans"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Avatar of West of Loathing"
+						}
+					]
+				}
+			},
+			{
+				"items": ["lead umbrella"],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Nuclear Autumn"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"hammer",
+					"heavy hammer",
+					"[10462]fire flower",
+					"bonfire flower",
+					"work boots",
+					"fancy boots",
+					"back shell",
+					"spiky back shell",
+					"bony back shell",
+					"cape",
+					"power pants",
+					"frosty button"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Path of the Plumber"
+						}
+					]
+				}
+			},
+			{
+				"items": [
+					"B. L. A. R. T.",
+					"rusty empty nacho cheese can",
+					"literal bucket hat",
+					"water candle"
+				],
+				"conditions": {
+					"list": [
+						{
+							"type": "path",
+							"value": "Wildfire"
+						}
+					]
+				}
+			}
+		]
+	},
+	{
+		"name": "bounty",
+		"manual": [
+			{
+				"items": ["pirate fledges"],
+				"conditions": {
+					"list": [
+						{
+							"type": "bounty",
+							"value": "warrrrrt"
+						}
+					]
+				},
+				"force": true
+			},
+			{
+				"items": ["Talisman o' Namsilat"],
+				"conditions": {
+					"list": [
+						{
+							"type": "bounty",
+							"value": "bit of wilted lettuce"
+						}
+					]
+				},
+				"force": true
+			}
+		]
+	},
+	{
+		"name": "charter",
+		"manual": [
+			{
+				"items": [
+					"Paradaisical Cheeseburger recipe",
+					"Taco Dan's Taco Stand Cocktail Sauce Bottle",
+					"sprinkle shaker",
+					"Personal Ventilation Unit",
+					"gore bucket",
+					"encrypted micro-cassette recorder",
+					"GPS-tracking wristwatch",
+					"lube-shoes",
+					"Dinsey mascot mask",
+					"trash net"
+				]
+			}
+		]
+	}
+]

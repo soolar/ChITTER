@@ -8,19 +8,41 @@ import {
 	equippedItem,
 	Familiar,
 	familiarEquipment,
+	fileToBuffer,
+	getInventory,
 	getRelated,
+	hippyStoneBroken,
+	inebrietyLimit,
 	isUnrestricted,
 	Item,
 	itemAmount,
+	myInebriety,
+	myPath,
+	myPrimestat,
+	numericModifier,
 	pullsRemaining,
 	Slot,
 	storageAmount,
+	stringModifier,
 	toItem,
+	toModifier,
 	toSlot,
+	toStat,
 	weaponHands,
 	weaponType,
 } from 'kolmafia'
-import { $familiar, $item, $skill, $slot, $stat, get, have, set } from 'libram'
+import {
+	$familiar,
+	$item,
+	$modifier,
+	$skill,
+	$slot,
+	$stat,
+	get,
+	have,
+	set,
+	StringProperty,
+} from 'libram'
 import Picker from './Picker'
 import {
 	ButtonGroup,
@@ -37,15 +59,163 @@ import ActionLink from '../Link/ActionLink'
 import { foldableAmount, getItemInfo } from '../../../util/helpers'
 import OptionText from '../Option/OptionText'
 import ChitterIcon from '../Icons/ChitterIcon'
+import { evaluatedModifiers, strCompare } from '../../../util'
+
+interface GearCategoryEntry {
+	item: Item
+	score: number
+}
 
 interface GearCategory {
 	name: string
-	items: Item[]
+	items: GearCategoryEntry[]
 }
 
 interface GearPickerArgs {
 	slot: Slot
 	fam?: Familiar
+}
+
+interface MainstatCondition {
+	type: 'mainstat'
+	value: 'Muscle' | 'Mysticality' | 'Moxie'
+}
+
+interface PvpCondition {
+	type: 'pvp'
+	value: boolean
+}
+
+interface OverdrunkCondition {
+	type: 'overdrunk'
+	value: boolean
+}
+
+type Comparison = '!' | '<' | '<=' | '>' | '>='
+
+interface QuestCondition {
+	type: 'quest'
+	pref: string
+	value: string
+	comparison?: Comparison
+}
+
+interface PathCondition {
+	type: 'path'
+	value: string
+}
+
+interface BountyCondition {
+	type: 'bounty'
+	value: string
+}
+
+type GearCondition =
+	| MainstatCondition
+	| PvpCondition
+	| OverdrunkCondition
+	| QuestCondition
+	| PathCondition
+	| BountyCondition
+
+interface GearConditionList {
+	list: GearCondition[]
+	any?: boolean
+}
+
+function questStepToNumber(questStep: string | number, name: string) {
+	if (questStep === 'unstarted') {
+		return -1
+	}
+	if (questStep === 'started') {
+		return 0
+	}
+	if (questStep === 'finished') {
+		return 999999
+	}
+	if (typeof questStep === 'string') {
+		if (questStep.startsWith('step')) {
+			return Number(questStep.substring(4))
+		} else {
+			return Number(questStep)
+		}
+	}
+	if (typeof questStep === 'number') {
+		return questStep
+	}
+	throw Error(`Malformed quest step ${questStep} from pref ${name}`)
+}
+
+function evaluateGearConditionList(gcl?: GearConditionList) {
+	if (!gcl) {
+		return true
+	}
+
+	function evaluateGearCondition(gc: GearCondition) {
+		if (gc.type === 'mainstat') {
+			return myPrimestat() === toStat(gc.value)
+		} else if (gc.type === 'pvp') {
+			return hippyStoneBroken() === gc.value
+		} else if (gc.type === 'overdrunk') {
+			return myInebriety() >= inebrietyLimit() === gc.value
+		} else if (gc.type === 'quest') {
+			const actualStep = questStepToNumber(get(gc.pref, 'unstarted'), gc.pref)
+			const compareStep = questStepToNumber(gc.value, 'gc.value')
+			switch (gc.comparison) {
+				case '!':
+					return actualStep !== compareStep
+				case '<':
+					return actualStep < compareStep
+				case '<=':
+					return actualStep <= compareStep
+				case '>':
+					return actualStep > compareStep
+				case '>=':
+					return actualStep >= compareStep
+				default:
+					return actualStep === compareStep
+			}
+		} else if (gc.type === 'path') {
+			return myPath().name === gc.value
+		} else if (gc.type === 'bounty') {
+			const bountyPrefs: StringProperty[] = [
+				'currentEasyBountyItem',
+				'currentHardBountyItem',
+				'currentSpecialBountyItem',
+			]
+			return (
+				bountyPrefs.map(get).find((bounty) => bounty === gc.value) !== undefined
+			)
+		} else {
+			throw Error(
+				`Malformed json in chitter_gear_categories.json: gc.type is ${(gc as GearCondition).type}`,
+			)
+		}
+	}
+
+	return gcl.any
+		? gcl.list.some(evaluateGearCondition)
+		: gcl.list.every(evaluateGearCondition)
+}
+
+interface GearMod {
+	mod: string
+	multiplier?: number
+	conditions?: GearConditionList
+}
+
+type ManualEntry = string | { name: string; weight: number }
+
+interface ConditionalManualList {
+	items: ManualEntry[]
+	conditions?: GearConditionList
+}
+
+interface GearRecommendationCategory {
+	name: string
+	mods?: GearMod[]
+	manual?: ConditionalManualList[]
+	conditions?: GearConditionList
 }
 
 export default function GearPicker({ slot, fam }: GearPickerArgs) {
@@ -102,13 +272,17 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 				categories.push({
 					name: 'uniques',
 					items: Object.keys(foldables)
-						.map((itemName) => toItem(itemName))
-						.filter(baseFilter),
+						.map((itemName) => {
+							return { item: toItem(itemName), score: 1 }
+						})
+						.filter((entry) => baseFilter(entry.item)),
 				})
 			} else {
 				categories.push({
 					name: 'unique',
-					items: [uniqueFamEquip].filter(baseFilter),
+					items: [uniqueFamEquip].filter(baseFilter).map((item) => {
+						return { item, score: 1 }
+					}),
 				})
 			}
 		}
@@ -128,8 +302,94 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 
 	categories.unshift({
 		name: 'favorites',
-		items: filteredFavorites,
+		items: filteredFavorites.map((item) => {
+			return { item, score: 1 }
+		}),
 	})
+
+	const cgc = fileToBuffer('chitter_gear_categories.json')
+	const autoCategories: GearRecommendationCategory[] =
+		cgc !== '' ? JSON.parse(cgc) : []
+
+	const inv = getInventory()
+	const recommendableItems = Object.keys(inv)
+		.map((itemName) => toItem(itemName))
+		.filter(baseFilter)
+
+	categories.push(
+		...autoCategories
+			.map((category) => {
+				const res: GearCategory = { name: category.name, items: [] }
+				function addItem(item: Item, score: number) {
+					const existingItem = res.items.find((entry) => entry.item === item)
+					if (existingItem) {
+						existingItem.score += score
+					} else {
+						res.items.push({ item, score })
+					}
+				}
+				if (!evaluateGearConditionList(category.conditions)) {
+					// failed condition, so just return it empty, it'll get filtered out in the filter call
+					return res
+				}
+
+				if (category.mods) {
+					category.mods.forEach((modEntry) => {
+						if (
+							!evaluateGearConditionList(modEntry.conditions) ||
+							modEntry.mod === ''
+						) {
+							return
+						}
+						const mult = modEntry.multiplier ?? 1
+						const modifier = toModifier(modEntry.mod)
+						if (modifier != $modifier.none) {
+							recommendableItems.forEach((recItem) => {
+								const score = numericModifier(recItem, modifier) * mult
+								if (score > 0) {
+									addItem(recItem, score)
+								}
+							})
+						}
+					})
+				}
+
+				if (category.manual) {
+					category.manual.forEach((manualListItem) => {
+						if (evaluateGearConditionList(manualListItem.conditions)) {
+							manualListItem.items.forEach((manualEntry) => {
+								const itemName =
+									typeof manualEntry === 'string'
+										? manualEntry
+										: manualEntry.name
+								const item = toItem(itemName)
+								if (baseFilter(item)) {
+									addItem(
+										item,
+										typeof manualEntry !== 'string' ? manualEntry.weight : 1,
+									)
+								}
+							})
+						}
+					})
+				}
+
+				res.items = res.items
+					.filter((entry) => entry.item !== $item.none && entry.score > 0)
+					.sort((lhs, rhs) =>
+						lhs.score === rhs.score
+							? strCompare(lhs.item.name, rhs.item.name)
+							: rhs.score - lhs.score,
+					)
+
+				if (res.items.length > 6) {
+					res.items = res.items.slice(0, 5)
+				}
+
+				return res
+			})
+			.filter((value) => value.items.length > 0),
+	)
 
 	const header =
 		slot === $slot`familiar`
@@ -167,10 +427,14 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						<Wrap spacing={0}>
 							{categories[0].items.map((fav) => (
 								<WrapItem
-									key={`${slot.identifierString} favorites ${fav.name}`}
+									key={`${slot.identifierString} favorites ${fav.item.name}`}
 								>
-									<ActionLink callback={() => equip(fav, slot)}>
-										<ItemIcon item={fav} weirdFam={isWeirdFam} forEquipping />
+									<ActionLink callback={() => equip(fav.item, slot)}>
+										<ItemIcon
+											item={fav.item}
+											weirdFam={isWeirdFam}
+											forEquipping
+										/>
 									</ActionLink>
 								</WrapItem>
 							))}
@@ -192,13 +456,13 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 									<Heading as="h3">{category.name}</Heading>
 								</WrapItem>
 								<ButtonGroup variant="link">
-									{category.items.map((item) => (
+									{category.items.map((entry) => (
 										<WrapItem
-											key={`${slot.identifierString} ${category.name} ${item.name}`}
+											key={`${slot.identifierString} ${category.name} ${entry.item.name}`}
 										>
-											<ActionLink callback={() => equip(item, slot)}>
+											<ActionLink callback={() => equip(entry.item, slot)}>
 												<ItemIcon
-													item={item}
+													item={entry.item}
 													weirdFam={isWeirdFam}
 													forEquipping
 												/>
