@@ -345,7 +345,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 						}
 						const mult = modEntry.multiplier ?? 1
 						const modifier = toModifier(modEntry.mod)
-						if (modifier != $modifier.none) {
+						if (modifier !== $modifier.none) {
 							recommendableItems.forEach((recItem) => {
 								const score =
 									(numericModifier(recItem, modifier) * mult) /

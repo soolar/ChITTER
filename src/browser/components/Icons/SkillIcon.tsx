@@ -1,6 +1,5 @@
 import { Skill } from 'kolmafia'
 import ChitterIcon from './ChitterIcon'
-import { Text } from '@chakra-ui/react'
 import { getSkillInfo } from '../../../util/helpers'
 
 interface SkillIconArgs {

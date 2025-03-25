@@ -277,7 +277,7 @@ export function getFamInfo(
 
 	if (type === 'familiar') {
 		const dropsLeft = fam.dropsLimit - fam.dropsToday
-		let hasDrops = dropsLeft > 0
+		const hasDrops = dropsLeft > 0
 		const allDrops = hasDrops && fam.dropsToday === 0
 		const drop =
 			fam.dropItem.identifierString !== 'none' ? fam.dropItem : fam.dropName

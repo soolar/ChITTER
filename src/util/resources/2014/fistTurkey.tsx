@@ -1,6 +1,5 @@
 import { $familiar, get } from 'libram'
 import { FamListEntry } from '../famList'
-import { Text, Tooltip } from '@chakra-ui/react'
 
 const fistTurkey: FamListEntry = [
 	$familiar`Fist Turkey`.identifierString,
