@@ -1,8 +1,15 @@
-import { $effect, $effects, $element, $skill, have } from 'libram'
+import { $effect, $effects, $element, $skill } from 'libram'
 import { EffectListEntry, NeedableEffectInfo } from '../effectList'
 import { Container, Image, Text, Tooltip } from '@chakra-ui/react'
 import { EffectInfo } from '../../helpers'
-import { Effect, Element, Skill, useSkill } from 'kolmafia'
+import {
+	Effect,
+	Element,
+	haveEffect,
+	haveSkill,
+	Skill,
+	useSkill,
+} from 'kolmafia'
 import Picker from '../../../browser/components/Picker/Picker'
 import { RawEffectDisplay } from '../../../browser/components/Brick/EffectsBrick'
 import ChitterIcon from '../../../browser/components/Icons/ChitterIcon'
@@ -60,7 +67,7 @@ function FlavourPicker() {
 			y: 95,
 		},
 	]
-	const activeArea = areas.find((area) => have(area.effect))
+	const activeArea = areas.find((area) => haveEffect(area.effect) > 0)
 	const activeElement = activeArea
 		? activeArea.element.identifierString.toLowerCase()
 		: ''
@@ -128,8 +135,8 @@ export const needFlavour: NeedableEffectInfo = {
 	condition: () => {
 		const spirits = $effects`Spirit of Bacon Grease, Spirit of Peppermint, Spirit of Wormwood, Spirit of Cayenne, Spirit of Garlic`
 		return (
-			have($skill`Flavour of Magic`) &&
-			spirits.find((eff) => have(eff)) === undefined
+			haveSkill($skill`Flavour of Magic`) &&
+			spirits.find((eff) => haveEffect(eff) > 0) === undefined
 		)
 	},
 	neededDisplay: (

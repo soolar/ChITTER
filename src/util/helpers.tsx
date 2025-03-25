@@ -31,7 +31,7 @@ import {
 	weaponHands,
 } from 'kolmafia'
 import { BorderType } from '../browser/components/Icons/ChitterIcon'
-import { $item, clamp, CrownOfThrones, get, have } from 'libram'
+import { $item, clamp, CrownOfThrones, get } from 'libram'
 import { evaluatedModifiers, parseMods } from '.'
 import itemList from './resources/itemList'
 import { FamiliarVerb } from '../browser/components/Icons/FamIcon'
@@ -486,9 +486,10 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 	if (doCleanse) {
 		const shruggable = isShruggable(eff)
 		const sgeeas = itemAmount($item`soft green echo eyedrop antidote`)
-		const hotTubs = have($item`Clan VIP Lounge key`)
-			? 5 - clamp(get('_hotTubSoaks'), 0, 5)
-			: 0
+		const hotTubs =
+			availableAmount($item`Clan VIP Lounge key`) > 0
+				? 5 - clamp(get('_hotTubSoaks'), 0, 5)
+				: 0
 		const removable =
 			isRemovable(eff) && (sgeeas > 0 || (eff.quality === 'bad' && hotTubs > 0))
 		if (shruggable || removable || cleanser !== '') {

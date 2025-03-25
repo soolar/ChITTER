@@ -12,10 +12,11 @@ import {
 import {
 	familiarEquippedEquipment,
 	familiarWeight,
+	itemAmount,
 	myFamiliar,
 	weightAdjustment,
 } from 'kolmafia'
-import { $item, $slot, have, MummingTrunk } from 'libram'
+import { $item, $slot, MummingTrunk } from 'libram'
 import MainLink from '../Link/MainLink'
 import ChitterIcon from '../Icons/ChitterIcon'
 import FamIcon from '../Icons/FamIcon'
@@ -102,7 +103,7 @@ export default function FamiliarBrick() {
 			name="familiar"
 			header={
 				<Flex>
-					{have($item`mumming trunk`) && (
+					{itemAmount($item`mumming trunk`) > 0 && (
 						<MainLink href="/inv_use.php?whichitem=9592&pwd">
 							<ChitterIcon
 								image="mummericon0.gif"

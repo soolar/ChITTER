@@ -3,6 +3,7 @@ import {
 	bjornifyFamiliar,
 	enthroneFamiliar,
 	favoriteFamiliars,
+	haveFamiliar,
 	isUnrestricted,
 	myBjornedFamiliar,
 	myEnthronedFamiliar,
@@ -10,7 +11,7 @@ import {
 	toFamiliar,
 	useFamiliar,
 } from 'kolmafia'
-import { $familiar, $familiars, have } from 'libram'
+import { $familiar, $familiars } from 'libram'
 import Picker from './Picker'
 import { Flex, Spacer, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import MainLink from '../Link/MainLink'
@@ -49,7 +50,7 @@ export default function FamiliarPicker({
 	).filter((fam) => {
 		const info = getFamInfo(fam, true, type)
 		return (
-			have(fam) &&
+			haveFamiliar(fam) &&
 			isUnrestricted(fam) &&
 			fam !== activeFam &&
 			(!dropsOnly || info.dropsInfo.length > 0) &&

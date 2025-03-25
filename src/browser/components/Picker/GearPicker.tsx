@@ -11,6 +11,7 @@ import {
 	fileToBuffer,
 	getInventory,
 	getRelated,
+	haveSkill,
 	hippyStoneBroken,
 	inebrietyLimit,
 	isUnrestricted,
@@ -38,7 +39,6 @@ import {
 	$slot,
 	$stat,
 	get,
-	have,
 	set,
 	StringProperty,
 } from 'libram'
@@ -253,7 +253,7 @@ export default function GearPicker({ slot, fam }: GearPickerArgs) {
 		(toSlot(item) === functionalSlot ||
 			(toSlot(item) === $slot`weapon` &&
 				slot === $slot`off-hand` &&
-				have($skill`Double-Fisted Skull Smashing`) &&
+				haveSkill($skill`Double-Fisted Skull Smashing`) &&
 				weaponHands(item) <= 1 &&
 				(weaponType(item) === $stat`Moxie`) ===
 					(weaponType(equippedItem($slot`weapon`)) === $stat`Moxie`)))

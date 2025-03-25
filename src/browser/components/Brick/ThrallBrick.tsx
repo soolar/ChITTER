@@ -1,6 +1,14 @@
 import { Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/react'
-import { mpCost, myClass, myId, myThrall, Thrall, useSkill } from 'kolmafia'
-import { $class, $skill, $thrall, have } from 'libram'
+import {
+	haveSkill,
+	mpCost,
+	myClass,
+	myId,
+	myThrall,
+	Thrall,
+	useSkill,
+} from 'kolmafia'
+import { $class, $skill, $thrall } from 'libram'
 import Brick from './Brick'
 import ChitterIcon from '../Icons/ChitterIcon'
 import Picker from '../Picker/Picker'
@@ -94,7 +102,6 @@ function ThrallPicker({ active, info }: ThrallPickerArgs) {
 
 export default function ThrallBrick() {
 	if (myClass() !== $class`Pastamancer`) {
-		console.log('no pm')
 		return undefined
 	}
 
@@ -150,7 +157,9 @@ export default function ThrallBrick() {
 		},
 	]
 
-	const relevantThralls = thrallInfo.filter((info) => have(info.thrall.skill))
+	const relevantThralls = thrallInfo.filter((info) =>
+		haveSkill(info.thrall.skill),
+	)
 
 	if (relevantThralls.length === 0) {
 		return undefined
