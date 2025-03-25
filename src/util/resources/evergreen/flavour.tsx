@@ -139,7 +139,7 @@ export const needFlavour: NeedableEffectInfo = {
 			icon={
 				<ChitterIcon
 					medium
-					image="flavourofmagic.gif"
+					image="flavorofmagic.gif"
 					tooltip={<Text>Choose a Flavour</Text>}
 				/>
 			}
