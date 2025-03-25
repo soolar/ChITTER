@@ -23,7 +23,6 @@ import {
 	pullsRemaining,
 	Slot,
 	storageAmount,
-	stringModifier,
 	toItem,
 	toModifier,
 	toSlot,
@@ -62,7 +61,7 @@ import ActionLink from '../Link/ActionLink'
 import { foldableAmount, getItemInfo } from '../../../util/helpers'
 import OptionText from '../Option/OptionText'
 import ChitterIcon from '../Icons/ChitterIcon'
-import { evaluatedModifiers, strCompare } from '../../../util'
+import { strCompare } from '../../../util'
 
 interface GearCategoryEntry {
 	item: Item

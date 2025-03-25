@@ -238,7 +238,8 @@
 						{
 							"type": "quest",
 							"pref": "questL11Palindome",
-							"value": "finished"
+							"value": "finished",
+							"comparison": "!"
 						}
 					]
 				}
