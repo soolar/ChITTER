@@ -7,6 +7,7 @@ export default defineConfig({
 	plugins: [react()],
 	build: {
 		outDir: 'build/relay/chitter',
+		minify: false,
 		rollupOptions: {
 			input: {
 				index: path.resolve(__dirname, './index.html'),
