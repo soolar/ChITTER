@@ -68,7 +68,7 @@ const modShorthands: ModShorthand[] = [
 	// remote info about what they do on pants/shirt fams
 	[/Familiar Effect: "[^"]+"/, ''],
 	// remove softcore only because it's not relevant here
-	[/Softcore Only/, ''],
+	[/Softcore Only(?:: \+?\d+)?/, ''],
 	// remove 0 modifiers (these show up for conditional values when the condition isn't met)
 	[/[^,]+ \+?0(?:,|$)/g, ''],
 	// remove free pull too
