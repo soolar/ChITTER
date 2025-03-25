@@ -1,0 +1,201 @@
+.modCold {
+  color: blue;
+}
+
+.modHot {
+  color: red;
+}
+
+.modSleaze {
+  color: blueviolet;
+}
+
+.modSpooky {
+  color: #999999;
+}
+
+.modStench {
+  color: green;
+}
+
+.chit_chamber {
+  width: 100%;
+}
+
+#chit_home {
+  position: absolute;
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+#chit_roof {
+  flex-shrink: 0;
+}
+
+#chit_walls {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+#chit_floor {
+  flex-shrink: 0;
+}
+
+.chit-brick {
+  border: 1px solid #d0d0d0;
+  empty-cells: show;
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 1px 1px 0px;
+  border-spacing: 0px;
+}
+
+.chit-brick th {
+  overflow-wrap: break-word;
+  background-color: #efefef;
+  padding: 2px;
+}
+
+.chit-icon {
+  border: 1px solid #d0d0d0;
+  margin: 1px;
+  max-width: 32px;
+  max-height: 32px;
+}
+
+.chit-icon.chit-icon-weird {
+  max-width: unset;
+  max-height: unset;
+}
+
+.chit-icon.border-has-drops {
+  border-color: blue;
+}
+
+.chit-icon.border-all-drops {
+  border-color: #b300ff;
+}
+
+.chit-icon.border-good {
+  border-color: green;
+}
+
+.chit-icon.border-warning {
+  border-color: orange;
+}
+
+.chit-icon.border-danger {
+  border-color: red;
+}
+
+.chit-icon.border-none {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.chit-icon.small {
+  max-width: 16px;
+  max-height: 16px;
+}
+
+.chit-icon.medium {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+table.chit-picker {
+  background-color: #f8f8f8;
+  border: 1px solid blue;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px;
+  border-spacing: 0px;
+}
+
+.chit-icon-picker {
+  background-color: white;
+}
+
+.chit-icon-picker img.chit-icon {
+  float: left;
+}
+
+.chit-picker .chit-picker-header th {
+  text-align: center;
+  background-color: blue;
+  color: white;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 4px;
+  background-color: #eeeeee;
+}
+
+.progress-content {
+  height: 4px;
+  background-color: blue;
+}
+
+.desc-line {
+  color: #707070;
+}
+
+.popup-desc-line {
+  color: #aaaaaa;
+}
+
+.option-icon {
+  /* this doesn't seem to work? */
+  vertical-align: middle;
+}
+
+.option-body {
+  text-align: center;
+}
+
+.option-enabled {
+  border-bottom: 1px solid white;
+}
+
+.option-disabled {
+  background-color: #e2e2e2;
+  border-bottom: 1px solid white;
+}
+
+.picker-arrow {
+  background-color: blue;
+}
+
+.picker-header {
+  background-color: blue;
+  color: white;
+}
+
+.picker-body {
+  background-color: #f8f8f8;
+}
+
+.picker-footer {
+  background-color: #f8f8f8;
+}
+
+.chit-effect {
+  width: 100%;
+}
+
+.chit-effect-description {
+  align-items: flex-start !important;
+}
+
+.chit-effect-description .desc-line {
+  font-size: 10px;
+}
+
+.alternating-row:nth-of-type(even) {
+  background-color: #eee;
+}
