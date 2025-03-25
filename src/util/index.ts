@@ -130,7 +130,7 @@ const modShorthands: ModShorthand[] = [
 	[/Turtle Tamer/g, 'TT'],
 	[/Sauceror/g, 'S'],
 	[/Pastamancer/g, 'PM'],
-	[/Discor Bandit/g, 'DB'],
+	[/Disco Bandit/g, 'DB'],
 	[/Accordion Thief/g, 'AT'],
 	// Rearrange class restriction
 	[/Class "([^"]+)"/g, '$1 Only'],
