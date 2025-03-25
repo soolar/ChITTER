@@ -33,7 +33,7 @@ interface ChitterBrickArgs {
 }
 
 function ChitterBrick({ brickName }: ChitterBrickArgs) {
-	const CurrBrick = brickRegistry[brickName].brick
+	const CurrBrick = brickRegistry[brickName]?.brick
 	if (CurrBrick === undefined) {
 		return <ErrorBrick name={brickName.toString()} />
 	}
