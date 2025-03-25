@@ -30,10 +30,6 @@ git checkout soolar/ChITTER release
 
 You can then activate ChITTER from the relay scripts menu in the relay browser.
 
-It's worth noting that if you also use other scripts like Yorick or TourGuide,
-ChITTER's launcher might not play nice if it isn't run first at the moment. I'll
-work on fixing that soon.
-
 ## Project Setup
 
 ```
