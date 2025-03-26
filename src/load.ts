@@ -54,7 +54,6 @@ function load() {
 	chitterFrame.src = '/chitter/index.html'
 
 	rootset.insertBefore(chitterFrame, charPane.frameElement)
-	// TODO: Play nice with Yorick/tourguide when they exist alongside chat
 	const currentCols = rootset.cols.split(',')
 	currentCols.splice(1, 0, '0%')
 	rootset.cols = currentCols.join(',')
