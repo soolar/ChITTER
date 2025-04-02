@@ -153,7 +153,7 @@ export default function ThrallBrick() {
 			thrall: $thrall`Spice Ghost`,
 			base: (lv) => `Item +${10 + lv}%`,
 			level5: () => 'Drops spices up to 10x per day',
-			level10: 'Entangling Noodles lasts +1 turn',
+			level10: '+1 Entangling Noodles turn',
 		},
 	]
 
