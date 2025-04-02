@@ -1,29 +1,22 @@
-import {
-	canadiaAvailable,
-	currentMcd,
-	gnomadsAvailable,
-	inBadMoon,
-	knollAvailable,
-} from 'kolmafia'
+import { cliExecute, currentMcd } from 'kolmafia'
 import Picker from './Picker'
 import { resolveStr } from '../../../util'
-import MainLink from '../Link/MainLink'
 import { Flex, Spacer } from '@chakra-ui/react'
+import ActionLink from '../Link/ActionLink'
+import MainLink from '../Link/MainLink'
 
 type MCDType = 'knoll' | 'gnomad' | 'canadia' | 'heartbreak'
-type MCDOptionalType = MCDType | undefined
+export type MCDOptionalType = MCDType | undefined
 
 interface MCDInfo {
 	name: string
 	label: string
 	title: string | (() => string)
 	page: string
-	changeUrl: string
 	maxOverride?: number
-	noSet?: boolean
 }
 
-const mcds = new Map<MCDType, MCDInfo>([
+export const MCDs = new Map<MCDType, MCDInfo>([
 	[
 		'knoll',
 		{
@@ -31,7 +24,6 @@ const mcds = new Map<MCDType, MCDInfo>([
 			label: 'Radio',
 			title: 'Turn it up or down, man',
 			page: '/inv_use.php?pwd&which=3&whichitem=2682',
-			changeUrl: '/inv_use.php?pwd&which=3&whichitem=2682&tuneradio=',
 		},
 	],
 	[
@@ -41,7 +33,6 @@ const mcds = new Map<MCDType, MCDInfo>([
 			label: 'AOT5K',
 			title: 'Touch that dial!',
 			page: '/gnomes.php?place=machine',
-			changeUrl: '/gnomes.php?action=changedial&whichlevel=',
 		},
 	],
 	[
@@ -51,7 +42,6 @@ const mcds = new Map<MCDType, MCDInfo>([
 			label: 'MCD',
 			title: 'Touch that dial!',
 			page: '/canadia.php?place=machine',
-			changeUrl: '/canadia.php?action=changedial&whichlevel=',
 			maxOverride: 11,
 		},
 	],
@@ -62,8 +52,6 @@ const mcds = new Map<MCDType, MCDInfo>([
 			label: 'Hotel',
 			title: () => `Hotel Floor #${currentMcd()}`,
 			page: '/heydeze.php',
-			changeUrl: '',
-			noSet: true,
 		},
 	],
 ])
@@ -83,17 +71,12 @@ const mcdStrs = [
 	'It goes to 11?',
 ]
 
-export default function MCDPicker() {
-	const type: MCDOptionalType = knollAvailable()
-		? 'knoll'
-		: gnomadsAvailable()
-			? 'gnomad'
-			: canadiaAvailable()
-				? 'canadia'
-				: inBadMoon()
-					? 'heartbreak'
-					: undefined
-	const info = type ? mcds.get(type) : undefined
+interface MCDPickerArgs {
+	type: MCDOptionalType
+}
+
+export default function MCDPicker({ type }: MCDPickerArgs) {
+	const info = type ? MCDs.get(type) : undefined
 
 	if (!info) {
 		return ''
@@ -105,15 +88,17 @@ export default function MCDPicker() {
 		levels.push(i)
 	}
 	return (
-		<Picker header={resolveStr(info.title)}>
+		<Picker
+			header={<MainLink href={info.page}>{resolveStr(info.title)}</MainLink>}
+		>
 			{levels.map((level) => (
-				<MainLink href={`${info.changeUrl}${level}`}>
+				<ActionLink callback={() => cliExecute(`mcd ${level}`)}>
 					<Flex>
 						{mcdStrs[level]}
 						<Spacer />
 						{level}
 					</Flex>
-				</MainLink>
+				</ActionLink>
 			))}
 		</Picker>
 	)

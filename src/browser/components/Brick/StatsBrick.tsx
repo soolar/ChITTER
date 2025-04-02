@@ -5,7 +5,10 @@ import {
 	canadiaAvailable,
 	currentMcd,
 	fullnessLimit,
+	gnomadsAvailable,
+	inBadMoon,
 	inebrietyLimit,
+	knollAvailable,
 	monsterLevelAdjustment,
 	myBasestat,
 	myBuffedstat,
@@ -20,25 +23,37 @@ import {
 	Stat,
 } from 'kolmafia'
 import { $stat } from 'libram'
-import PickerLauncher from '../Picker/PickerLauncher'
-import MCDPicker from '../Picker/MCDPicker'
+import PickerLauncher, { PickerParamsBase } from '../Picker/PickerLauncher'
+import MCDPicker, { MCDOptionalType, MCDs } from '../Picker/MCDPicker'
 
 interface CurrMax {
 	curr: number
 	max: number
 }
 
-interface ResourceRowArgs {
+interface ResourceRowArgs<PickerParams extends PickerParamsBase> {
 	name: string
 	valueStr: string
 	value: CurrMax
-	launches?: React.ComponentType<Record<string, never>>
+	launches?: React.ComponentType<PickerParams>
+	launchesArgs?: PickerParams
 }
 
-function ResourceRow({ name, valueStr, value, launches }: ResourceRowArgs) {
+function ResourceRow<PickerParams extends PickerParamsBase>({
+	name,
+	valueStr,
+	value,
+	launches,
+	launchesArgs,
+}: ResourceRowArgs<PickerParams>) {
 	const progBar = <ProgressBar value={value.curr} max={value.max} desc={name} />
+	// TODO: Find a way to avoid using as here
 	const finalProgBar = launches ? (
-		<PickerLauncher WrappedPicker={launches} pickerProps={{}}>
+		<PickerLauncher
+			WrappedPicker={launches}
+			pickerProps={launchesArgs as PickerParams}
+			fullButton
+		>
 			{progBar}
 		</PickerLauncher>
 	) : (
@@ -123,12 +138,26 @@ function MCDRow() {
 		monsterLevelAdjustment() === currentMcd()
 			? `${currentMcd()}`
 			: `${monsterLevelAdjustment()} (${currentMcd()})`
+	const type: MCDOptionalType = knollAvailable()
+		? 'knoll'
+		: gnomadsAvailable()
+			? 'gnomad'
+			: canadiaAvailable()
+				? 'canadia'
+				: inBadMoon()
+					? 'heartbreak'
+					: undefined
+	const info = type ? MCDs.get(type) : undefined
+	if (!info) {
+		return undefined
+	}
 	return (
 		<ResourceRow
-			name="MCD"
+			name={info.label}
 			valueStr={valueStr}
-			value={{ curr: currentMcd(), max: canadiaAvailable() ? 11 : 10 }}
+			value={{ curr: currentMcd(), max: info.maxOverride ?? 10 }}
 			launches={MCDPicker}
+			launchesArgs={{ type }}
 		/>
 	)
 }
