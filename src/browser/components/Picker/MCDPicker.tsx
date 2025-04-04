@@ -92,7 +92,7 @@ export default function MCDPicker({ type }: MCDPickerArgs) {
 			header={<MainLink href={info.page}>{resolveStr(info.title)}</MainLink>}
 		>
 			{levels.map((level) => (
-				<ActionLink callback={() => cliExecute(`mcd ${level}`)}>
+				<ActionLink callback={() => cliExecute(`mcd ${level}`)} dirty>
 					<Flex>
 						{mcdStrs[level]}
 						<Spacer />
