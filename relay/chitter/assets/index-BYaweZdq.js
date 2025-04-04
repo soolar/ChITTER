@@ -35883,7 +35883,7 @@ function MCDPicker({ type }) {
     Picker,
     {
       header: /* @__PURE__ */ jsxRuntimeExports.jsx(MainLink, { href: info.page, children: resolveStr(info.title) }),
-      children: levels.map((level) => /* @__PURE__ */ jsxRuntimeExports.jsx(ActionLink, { callback: () => cliExecute(`mcd ${level}`), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
+      children: levels.map((level) => /* @__PURE__ */ jsxRuntimeExports.jsx(ActionLink, { callback: () => cliExecute(`mcd ${level}`), dirty: true, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
         mcdStrs[level],
         /* @__PURE__ */ jsxRuntimeExports.jsx(Spacer, {}),
         level
