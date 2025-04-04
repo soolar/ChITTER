@@ -54,7 +54,7 @@ jobs:
           result-encoding: string
           script: |
             const commits = JSON.parse(process.env.COMMITS);
-            var lines = "## What’s Changed\n\n";
+            var lines = "Automatically Generated Release\n\n";
             for (const commit of commits) {
               lines += "- " + commit.message + " (" + commit.id + ") @" + commit.author.username + "\n"
             }
