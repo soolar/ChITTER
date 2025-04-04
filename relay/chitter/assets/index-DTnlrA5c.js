@@ -33192,10 +33192,11 @@ const scratchNSniff = [
 function PickerLauncher({
   children,
   WrappedPicker,
-  pickerProps
+  pickerProps,
+  fullButton
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Popover, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "link", children }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverTrigger, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "link", width: fullButton ? "100%" : void 0, children }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(PopoverContent, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverArrow, { bg: "blue" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(PopoverCloseButton, { className: "picker-close" }),
@@ -35572,6 +35573,148 @@ function GearPicker({ slot, fam }) {
     ] })
   ] });
 }
+const costumes = [
+  {
+    name: "The Captain",
+    imagenum: 1,
+    desc: (attributes) => [
+      `+${attributes["hashands"] ? 30 : 15}% Meat`,
+      ...attributes["undead"] ? ["25% Delevel"] : []
+    ],
+    mainModifier: "Meat Drop",
+    cmd: "meat"
+  },
+  {
+    name: "Beelzebub",
+    imagenum: 2,
+    desc: (attributes) => [
+      `${attributes["haswings"] ? "6-10" : "4-5"} MP/combat`,
+      ...attributes["hot"] ? ["Hot damage"] : []
+    ],
+    mainModifier: "MP Regen Min",
+    cmd: "mp"
+  },
+  {
+    name: "Saint Patrick",
+    imagenum: 3,
+    desc: (attributes) => [
+      `+${attributes["animal"] ? 4 : 3} Mus exp`,
+      ...attributes["bite"] ? ["Stagger enemy once/combat"] : []
+    ],
+    mainModifier: "Muscle Experience",
+    cmd: "muscle"
+  },
+  {
+    name: "Prince George",
+    imagenum: 4,
+    desc: (attributes) => [
+      `+${attributes["wearsclothes"] ? 25 : 15}% Items`,
+      ...attributes["fast"] ? ["Bleed enemies"] : []
+    ],
+    mainModifier: "Item Drop",
+    cmd: "item"
+  },
+  {
+    name: "Oliver Cromwell",
+    imagenum: 5,
+    desc: (attributes) => [
+      `+${attributes["haseyes"] ? 4 : 3} Mys exp`,
+      ...attributes["flies"] ? ["Helps you get the jump"] : []
+    ],
+    mainModifier: "Mysticality Experience",
+    cmd: "myst"
+  },
+  {
+    name: "The Doctor",
+    imagenum: 6,
+    desc: (attributes) => [
+      `${attributes["technological"] ? "18-20" : "8-10"} HP/combat`,
+      ...attributes["evil"] ? ["Phys damage and delevel"] : []
+    ],
+    mainModifier: "HP Regen Min",
+    cmd: "hp"
+  },
+  {
+    name: "Miss Funny",
+    imagenum: 7,
+    desc: (attributes) => [
+      `+${attributes["sleaze"] ? 4 : 2} Mox exp`,
+      ...attributes["insect"] ? ["Sleaze damage"] : []
+    ],
+    mainModifier: "Moxie Experience",
+    cmd: "moxie"
+  }
+];
+function availableCostumes() {
+  const currentCostumes$1 = currentCostumes();
+  return costumes.filter(
+    (costume) => currentCostumes$1.values().find(
+      (costumeModScore) => costumeModScore[0] === costume.mainModifier
+    ) === void 0
+  );
+}
+function activeMumming() {
+  const fam = myFamiliar();
+  const currCostume = currentCostumes().get(fam);
+  return currCostume ? costumes.find((costume) => costume.mainModifier === currCostume[0]) : void 0;
+}
+function MummingPicker() {
+  const myFam = myFamiliar();
+  const attributes = {};
+  myFam.attributes.split("; ").forEach((attribute) => {
+    attributes[attribute] = true;
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Picker, { header: "Pick a Costume", children: /* @__PURE__ */ jsxRuntimeExports.jsx(VStack, { children: availableCostumes().map((costume) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ActionLink,
+    {
+      callback: () => cliExecute(`mummery ${costume.cmd}`),
+      dirty: true,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: 0, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ChitterIcon,
+            {
+              image: `mummericon${costume.imagenum}.gif`,
+              small: true,
+              tooltip: costume.name
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: costume.name })
+        ] }),
+        costume.desc(attributes).map((line2) => /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { className: "descline", children: line2 }))
+      ] })
+    }
+  )) }) });
+}
+function MummingIcon() {
+  const currentCostume = activeMumming();
+  const attributes = {};
+  myFamiliar().attributes.split("; ").forEach((attribute) => {
+    attributes[attribute] = true;
+  });
+  const costumesLeft = availableCostumes();
+  const mummeryTooltip = /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
+    costumesLeft.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Pick a Mummer's Costume" }),
+    currentCostume && /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
+      "Currently ",
+      currentCostume.name,
+      " (",
+      currentCostume.desc(attributes).join(", "),
+      ")"
+    ] }),
+    costumesLeft.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Out of costumes for the day" })
+  ] });
+  const mummeryIcon = /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ChitterIcon,
+    {
+      image: `mummericon${(currentCostume == null ? void 0 : currentCostume.imagenum) ?? 0}.gif`,
+      tooltip: mummeryTooltip,
+      borderType: "none",
+      small: true
+    }
+  );
+  return itemAmount($item`mumming trunk`) > 0 && (costumesLeft.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(PickerLauncher, { WrappedPicker: MummingPicker, pickerProps: {}, children: mummeryIcon }) : currentCostume && mummeryIcon);
+}
 function FamiliarBrick() {
   const currFam = myFamiliar();
   const baseWeight = familiarWeight(currFam);
@@ -35618,30 +35761,12 @@ function FamiliarBrick() {
       famEquip
     ] })
   });
-  const costumes = currentCostumes();
-  const currCostume = costumes.get(currFam);
-  const costumeModifier = currCostume && currCostume[0];
-  const mummeryTooltip = /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Pick a Mummer's Costume" }),
-    currCostume && /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-      "Currently ",
-      costumeModifier
-    ] })
-  ] });
   return currFam ? /* @__PURE__ */ jsxRuntimeExports.jsx(
     Brick,
     {
       name: "familiar",
       header: /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
-        itemAmount($item`mumming trunk`) > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(MainLink, { href: "/inv_use.php?whichitem=9592&pwd", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          ChitterIcon,
-          {
-            image: "mummericon0.gif",
-            tooltip: mummeryTooltip,
-            borderType: "none",
-            small: true
-          }
-        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(MummingIcon, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Spacer, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Heading, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { label: `Buffed Weight (Base Weight: ${baseWeight}lb)`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { as: "span", color: "blue", children: [
@@ -35691,15 +35816,14 @@ function GearBrick() {
     ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ChitterIcon, { image: "antianti.gif", tooltip: "Torso Unawareness" }) });
   }) }) });
 }
-const mcds = /* @__PURE__ */ new Map([
+const MCDs = /* @__PURE__ */ new Map([
   [
     "knoll",
     {
       name: "Detuned Radio",
       label: "Radio",
       title: "Turn it up or down, man",
-      page: "/inv_use.php?pwd&which=3&whichitem=2682",
-      changeUrl: "/inv_use.php?pwd&which=3&whichitem=2682&tuneradio="
+      page: "/inv_use.php?pwd&which=3&whichitem=2682"
     }
   ],
   [
@@ -35708,8 +35832,7 @@ const mcds = /* @__PURE__ */ new Map([
       name: "Annoy-o-Tron 5000",
       label: "AOT5K",
       title: "Touch that dial!",
-      page: "/gnomes.php?place=machine",
-      changeUrl: "/gnomes.php?action=changedial&whichlevel="
+      page: "/gnomes.php?place=machine"
     }
   ],
   [
@@ -35719,7 +35842,6 @@ const mcds = /* @__PURE__ */ new Map([
       label: "MCD",
       title: "Touch that dial!",
       page: "/canadia.php?place=machine",
-      changeUrl: "/canadia.php?action=changedial&whichlevel=",
       maxOverride: 11
     }
   ],
@@ -35729,9 +35851,7 @@ const mcds = /* @__PURE__ */ new Map([
       name: "Heartbreaker's Hotel",
       label: "Hotel",
       title: () => `Hotel Floor #${currentMcd()}`,
-      page: "/heydeze.php",
-      changeUrl: "",
-      noSet: true
+      page: "/heydeze.php"
     }
   ]
 ]);
@@ -35749,9 +35869,8 @@ const mcdStrs = [
   "Vertebra of the Bonerdagon",
   "It goes to 11?"
 ];
-function MCDPicker() {
-  const type = knollAvailable() ? "knoll" : gnomadsAvailable() ? "gnomad" : canadiaAvailable() ? "canadia" : inBadMoon() ? "heartbreak" : void 0;
-  const info = type ? mcds.get(type) : void 0;
+function MCDPicker({ type }) {
+  const info = type ? MCDs.get(type) : void 0;
   if (!info) {
     return "";
   }
@@ -35760,15 +35879,35 @@ function MCDPicker() {
   for (let i = 0; i <= max2; ++i) {
     levels.push(i);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Picker, { header: resolveStr(info.title), children: levels.map((level) => /* @__PURE__ */ jsxRuntimeExports.jsx(MainLink, { href: `${info.changeUrl}${level}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
-    mcdStrs[level],
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Spacer, {}),
-    level
-  ] }) })) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Picker,
+    {
+      header: /* @__PURE__ */ jsxRuntimeExports.jsx(MainLink, { href: info.page, children: resolveStr(info.title) }),
+      children: levels.map((level) => /* @__PURE__ */ jsxRuntimeExports.jsx(ActionLink, { callback: () => cliExecute(`mcd ${level}`), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { children: [
+        mcdStrs[level],
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Spacer, {}),
+        level
+      ] }) }))
+    }
+  );
 }
-function ResourceRow({ name, valueStr, value, launches }) {
+function ResourceRow({
+  name,
+  valueStr,
+  value,
+  launches,
+  launchesArgs
+}) {
   const progBar = /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: value.curr, max: value.max, desc: name });
-  const finalProgBar = launches ? /* @__PURE__ */ jsxRuntimeExports.jsx(PickerLauncher, { WrappedPicker: launches, pickerProps: {}, children: progBar }) : progBar;
+  const finalProgBar = launches ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+    PickerLauncher,
+    {
+      WrappedPicker: launches,
+      pickerProps: launchesArgs,
+      fullButton: true,
+      children: progBar
+    }
+  ) : progBar;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(GridItem, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heading, { children: name }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(GridItem, { textAlign: "right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: valueStr }) }),
@@ -35816,13 +35955,19 @@ function StatRow({ name, stat }) {
 }
 function MCDRow() {
   const valueStr = monsterLevelAdjustment() === currentMcd() ? `${currentMcd()}` : `${monsterLevelAdjustment()} (${currentMcd()})`;
+  const type = knollAvailable() ? "knoll" : gnomadsAvailable() ? "gnomad" : canadiaAvailable() ? "canadia" : inBadMoon() ? "heartbreak" : void 0;
+  const info = type ? MCDs.get(type) : void 0;
+  if (!info) {
+    return void 0;
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     ResourceRow,
     {
-      name: "MCD",
+      name: info.label,
       valueStr,
-      value: { curr: currentMcd(), max: canadiaAvailable() ? 11 : 10 },
-      launches: MCDPicker
+      value: { curr: currentMcd(), max: info.maxOverride ?? 10 },
+      launches: MCDPicker,
+      launchesArgs: { type }
     }
   );
 }
@@ -36201,7 +36346,7 @@ function ThrallBrick() {
       thrall: $thrall`Spice Ghost`,
       base: (lv) => `Item +${10 + lv}%`,
       level5: () => "Drops spices up to 10x per day",
-      level10: "Entangling Noodles lasts +1 turn"
+      level10: "+1 Entangling Noodles turn"
     }
   ];
   const relevantThralls = thrallInfo.filter(
