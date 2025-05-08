@@ -25,6 +25,7 @@ export default function TypedChitterIcon<T>({
 			onContextMenu={contextMenuCallback}
 			tooltip={children}
 			weirdoDiv={info.weirdoDiv}
+			progress={info.progress}
 		/>
 	)
 }

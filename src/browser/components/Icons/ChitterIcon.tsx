@@ -1,4 +1,5 @@
-import { Box, Image, Tooltip } from '@chakra-ui/react'
+import { Box, HStack, Image, Text, Tooltip } from '@chakra-ui/react'
+import ProgressBar from '../ProgressBar'
 
 export type BorderType =
 	| 'normal'
@@ -20,6 +21,7 @@ interface ChitterIconArgs {
 	onContextMenu?: React.MouseEventHandler<HTMLImageElement>
 	chitImage?: boolean
 	weirdoDiv?: React.ReactNode
+	progress?: { value: number; max: number }
 }
 
 export default function ChitterIcon({
@@ -33,6 +35,7 @@ export default function ChitterIcon({
 	onContextMenu,
 	chitImage,
 	weirdoDiv,
+	progress,
 }: ChitterIconArgs) {
 	const classes = ['chit-icon']
 	if (borderType !== 'normal') {
@@ -50,25 +53,33 @@ export default function ChitterIcon({
 		classes.push('chit-icon-weird')
 	}
 
+	const progressIndicatorHeight =
+		progress && (100 * Math.min(progress.value, progress.max)) / progress.max
+
 	return (
 		<Tooltip label={tooltip} onContextMenu={onContextMenu}>
-			{weirdoDiv ? (
-				<Box as="span" className={classes.join(' ')}>
-					{weirdoDiv}
-				</Box>
-			) : (
-				<Image
-					src={
-						specialPath
-							? image
-							: chitImage
-								? `/images/relayimages/chit/${image}`
-								: `/images/itemimages/${image}`
-					}
-					className={classes.join(' ')}
-					alt={image}
-				/>
-			)}
+			<HStack spacing="0">
+				{weirdoDiv ? (
+					<Box as="span" className={classes.join(' ')}>
+						{weirdoDiv}
+					</Box>
+				) : (
+					<Image
+						src={
+							specialPath
+								? image
+								: chitImage
+									? `/images/relayimages/chit/${image}`
+									: `/images/itemimages/${image}`
+						}
+						className={classes.join(' ')}
+						alt={image}
+					/>
+				)}
+				{progress && (
+					<ProgressBar value={progress.value} max={progress.max} vertical />
+				)}
+			</HStack>
 		</Tooltip>
 	)
 }
