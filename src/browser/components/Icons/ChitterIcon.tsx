@@ -1,4 +1,4 @@
-import { Image, Tooltip } from '@chakra-ui/react'
+import { Box, Image, Tooltip } from '@chakra-ui/react'
 
 export type BorderType =
 	| 'normal'
@@ -19,6 +19,7 @@ interface ChitterIconArgs {
 	medium?: boolean
 	onContextMenu?: React.MouseEventHandler<HTMLImageElement>
 	chitImage?: boolean
+	weirdoDiv?: React.ReactNode
 }
 
 export default function ChitterIcon({
@@ -31,6 +32,7 @@ export default function ChitterIcon({
 	medium,
 	onContextMenu,
 	chitImage,
+	weirdoDiv,
 }: ChitterIconArgs) {
 	const classes = ['chit-icon']
 	if (borderType !== 'normal') {
@@ -44,21 +46,29 @@ export default function ChitterIcon({
 	if (extraClass) {
 		classes.push(extraClass)
 	}
+	if (weirdoDiv) {
+		classes.push('chit-icon-weird')
+	}
 
 	return (
-		<Tooltip label={tooltip}>
-			<Image
-				src={
-					specialPath
-						? image
-						: chitImage
-							? `/images/relayimages/chit/${image}`
-							: `/images/itemimages/${image}`
-				}
-				className={classes.join(' ')}
-				alt={image}
-				onContextMenu={onContextMenu}
-			/>
+		<Tooltip label={tooltip} onContextMenu={onContextMenu}>
+			{weirdoDiv ? (
+				<Box as="span" className={classes.join(' ')}>
+					{weirdoDiv}
+				</Box>
+			) : (
+				<Image
+					src={
+						specialPath
+							? image
+							: chitImage
+								? `/images/relayimages/chit/${image}`
+								: `/images/itemimages/${image}`
+					}
+					className={classes.join(' ')}
+					alt={image}
+				/>
+			)}
 		</Tooltip>
 	)
 }

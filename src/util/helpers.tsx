@@ -56,7 +56,7 @@ function dropName(dropInfo: DropInfo) {
 	return info.displayName
 }
 
-interface GeneralInfo<T> {
+export interface GeneralInfo<T> {
 	thing: T
 	displayName: string | React.ReactNode
 	image: string
@@ -65,6 +65,8 @@ interface GeneralInfo<T> {
 	borderType: BorderType
 	dropsInfo: DropInfo[]
 	invalid?: boolean
+	progress?: { value: number; max: number; desc: string }
+	weirdoDiv?: React.ReactNode
 }
 
 const borderOrder: BorderType[] = [
@@ -255,7 +257,6 @@ export function nextLevelInfo(fam: Familiar) {
 
 interface FamInfo extends GeneralInfo<Familiar> {
 	extraClass?: string
-	weirdoDiv?: React.ReactNode
 }
 
 export type FamInfoModifier = (famInfo: FamInfo, isTooltip: boolean) => void

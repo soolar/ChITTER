@@ -23,14 +23,7 @@ const melodramedary: FamListEntry = [
 
 		const weight = familiarWeight(famInfo.thing)
 		famInfo.weirdoDiv = (
-			<HStack
-				className={'chit-icon chit-icon-weird'}
-				spacing="0"
-				onContextMenu={(ev) => {
-					showFam(famInfo.thing.id)
-					ev.preventDefault()
-				}}
-			>
+			<HStack spacing="0">
 				<Image src="/images/otherimages/camelfam_left.gif" border={0} />
 				{Array(Math.floor(weight / 5)).fill(
 					<Image src="/images/otherimages/camelfam_middle.gif" border={0} />,

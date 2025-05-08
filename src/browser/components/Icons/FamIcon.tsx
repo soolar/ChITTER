@@ -1,10 +1,11 @@
 import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'
-import { Text, Tooltip, VStack } from '@chakra-ui/react'
+import { Text, VStack } from '@chakra-ui/react'
 import { $familiar } from 'libram'
 import { getFamInfo } from '../../../util/helpers'
 import { showFam } from '../../../util'
 import { CarryVerb } from '../../../util/resources/2010/crownOfThrones'
+import TypedChitterIcon from './TypedChitterIcon'
 
 export type FamiliarVerb = 'familiar' | CarryVerb
 
@@ -32,31 +33,25 @@ export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
 		const weight = familiarWeight(fam)
 		const type = fam.identifierString
 		const extraInfo = getFamInfo(fam, true, style)
-		const tooltip = tooltipOverride || (
-			<VStack spacing="none">
-				<Text>{fam.name}</Text>
-				<Text>
-					the {weight}lb {type}
-				</Text>
-				{extraInfo.desc}
-			</VStack>
-		)
-
-		if (extraInfo.weirdoDiv) {
-			return <Tooltip label={tooltip}>{extraInfo.weirdoDiv}</Tooltip>
-		}
 
 		return (
-			<ChitterIcon
-				image={extraInfo.image}
-				tooltip={tooltip}
-				borderType={extraInfo.borderType}
-				extraClass={extraInfo.extraClass}
-				onContextMenu={(ev) => {
+			<TypedChitterIcon
+				info={extraInfo}
+				contextMenuCallback={(ev) => {
 					showFam(fam.id)
 					ev.preventDefault()
 				}}
-			/>
+			>
+				{tooltipOverride || (
+					<VStack spacing="none">
+						<Text>{fam.name}</Text>
+						<Text>
+							the {weight}lb {type}
+						</Text>
+						{extraInfo.desc}
+					</VStack>
+				)}
+			</TypedChitterIcon>
 		)
 	} else {
 		return <ChitterIcon image="antianti.gif" tooltip={getSadMessage(style)} />

@@ -1,6 +1,6 @@
 import { Effect } from 'kolmafia'
-import ChitterIcon from './ChitterIcon'
 import { getEffectInfo } from '../../../util/helpers'
+import TypedChitterIcon from './TypedChitterIcon'
 
 interface EffectIconArgs {
 	effect: Effect
@@ -10,13 +10,10 @@ interface EffectIconArgs {
 
 export default function EffectIcon({ effect, small, medium }: EffectIconArgs) {
 	const info = getEffectInfo(effect)
+	// TODO: Better tooltip
 	return (
-		<ChitterIcon
-			image={info.image}
-			tooltip={info.displayName}
-			borderType="normal"
-			small={small}
-			medium={medium}
-		/>
+		<TypedChitterIcon info={info} small={small} medium={medium}>
+			{info.displayName}
+		</TypedChitterIcon>
 	)
 }

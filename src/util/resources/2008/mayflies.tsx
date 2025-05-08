@@ -1,6 +1,5 @@
 import { $item, clamp, get } from 'libram'
 import { ItemListEntry } from '../itemList'
-import { Text } from '@chakra-ui/react'
 
 const mayflies: ItemListEntry = [
 	$item`mayfly bait necklace`.identifierString,
@@ -9,7 +8,11 @@ const mayflies: ItemListEntry = [
 		if (fliesSummoned < 30) {
 			itemInfo.borderType = 'has-drops'
 		}
-		itemInfo.desc.push(<Text>{fliesSummoned} / 30 swarms summoned</Text>)
+		itemInfo.progress = {
+			value: fliesSummoned,
+			max: 30,
+			desc: 'swarms summoned',
+		}
 	},
 ]
 

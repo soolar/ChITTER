@@ -6,7 +6,7 @@ import { ItemListEntry } from '../itemList'
 function stinkyCheeseGeneral(itemInfo: ItemInfo) {
 	const stinkiness = get('_stinkyCheeseCount')
 	if (stinkiness < 100) {
-		itemInfo.desc.push(<Text>{stinkiness} / 100 stinkiness</Text>)
+		itemInfo.progress = { value: stinkiness, max: 100, desc: 'stinkiness' }
 		itemInfo.borderType = 'has-drops'
 	} else {
 		itemInfo.desc.push(<Text>All stunk up</Text>)

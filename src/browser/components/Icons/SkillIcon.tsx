@@ -1,6 +1,7 @@
 import { Skill } from 'kolmafia'
 import ChitterIcon from './ChitterIcon'
 import { getSkillInfo } from '../../../util/helpers'
+import TypedChitterIcon from './TypedChitterIcon'
 
 interface SkillIconArgs {
 	skill: Skill
@@ -8,11 +9,6 @@ interface SkillIconArgs {
 
 export default function SkillIcon({ skill }: SkillIconArgs) {
 	const info = getSkillInfo(skill)
-	return (
-		<ChitterIcon
-			image={info.image}
-			tooltip={info.displayName}
-			borderType="normal"
-		/>
-	)
+	// TODO: Better tooltip, add contextMenuCallback
+	return <TypedChitterIcon info={info}>{info.displayName}</TypedChitterIcon>
 }
