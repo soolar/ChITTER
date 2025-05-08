@@ -45,16 +45,20 @@ jobs:
           mkdir -p dist
           cp -R KoLmafia/* dist/
           cp -R build/* dist/
+      - name: Get date time
+        id: datetime
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
       - name: Create Changelog
         id: changelog
         uses: actions/github-script@v6.3.1
         env:
           COMMITS: ${{ toJSON(github.event.commits) }}
+          DATETIME: ${{ steps.datetime.outputs.result }}
         with:
           result-encoding: string
           script: |
             const commits = JSON.parse(process.env.COMMITS);
-            var lines = "Automatically Generated Release\n\n";
+            var lines = "Automatically Generated Release (" + process.env.DATETIME + ")\n\n";
             for (const commit of commits) {
               lines += "- " + commit.message + " (" + commit.id + ") @" + commit.author.username + "\n"
             }
