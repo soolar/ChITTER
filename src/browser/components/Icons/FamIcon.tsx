@@ -42,7 +42,7 @@ export default function FamIcon({ fam, style }: FamIconArgs) {
 				}}
 				tooltipStart={
 					<Text>
-						<Text>{fam.name}</Text> the {weight}lb {type}
+						{fam.name} the {weight}lb {type}
 					</Text>
 				}
 			/>
