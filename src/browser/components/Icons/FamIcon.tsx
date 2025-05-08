@@ -25,10 +25,9 @@ function getSadMessage(style: FamiliarVerb) {
 interface FamIconArgs {
 	fam?: Familiar
 	style: FamiliarVerb
-	tooltipOverride?: React.ReactNode
 }
 
-export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
+export default function FamIcon({ fam, style }: FamIconArgs) {
 	if (fam && fam !== $familiar`none`) {
 		const weight = familiarWeight(fam)
 		const type = fam.identifierString

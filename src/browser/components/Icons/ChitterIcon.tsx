@@ -1,4 +1,4 @@
-import { Box, HStack, Image, Text, Tooltip } from '@chakra-ui/react'
+import { Box, HStack, Image, Tooltip } from '@chakra-ui/react'
 import ProgressBar from '../ProgressBar'
 
 export type BorderType =
