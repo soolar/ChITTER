@@ -12,8 +12,11 @@ export default function EffectIcon({ effect, small, medium }: EffectIconArgs) {
 	const info = getEffectInfo(effect)
 	// TODO: Better tooltip
 	return (
-		<TypedChitterIcon info={info} small={small} medium={medium}>
-			{info.displayName}
-		</TypedChitterIcon>
+		<TypedChitterIcon
+			info={info}
+			small={small}
+			medium={medium}
+			tooltipStart={info.displayName}
+		/>
 	)
 }

@@ -53,9 +53,6 @@ export default function ChitterIcon({
 		classes.push('chit-icon-weird')
 	}
 
-	const progressIndicatorHeight =
-		progress && (100 * Math.min(progress.value, progress.max)) / progress.max
-
 	return (
 		<Tooltip label={tooltip} onContextMenu={onContextMenu}>
 			<HStack spacing="0">

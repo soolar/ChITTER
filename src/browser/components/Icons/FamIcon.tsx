@@ -1,6 +1,6 @@
 import ChitterIcon from './ChitterIcon'
 import { Familiar, familiarWeight } from 'kolmafia'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { $familiar } from 'libram'
 import { getFamInfo } from '../../../util/helpers'
 import { showFam } from '../../../util'
@@ -41,17 +41,12 @@ export default function FamIcon({ fam, style, tooltipOverride }: FamIconArgs) {
 					showFam(fam.id)
 					ev.preventDefault()
 				}}
-			>
-				{tooltipOverride || (
-					<VStack spacing="none">
-						<Text>{fam.name}</Text>
-						<Text>
-							the {weight}lb {type}
-						</Text>
-						{extraInfo.desc}
-					</VStack>
-				)}
-			</TypedChitterIcon>
+				tooltipStart={
+					<Text>
+						<Text>{fam.name}</Text> the {weight}lb {type}
+					</Text>
+				}
+			/>
 		)
 	} else {
 		return <ChitterIcon image="antianti.gif" tooltip={getSadMessage(style)} />

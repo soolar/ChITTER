@@ -1,24 +1,17 @@
-import { $familiar, get } from 'libram'
+import { $familiar, clamp, get } from 'libram'
 import { FamListEntry } from '../famList'
-import { HStack, Image, Text, VStack } from '@chakra-ui/react'
-import ProgressBar from '../../../browser/components/ProgressBar'
+import { HStack, Image, Text } from '@chakra-ui/react'
 import { familiarWeight } from 'kolmafia'
-import { showFam } from '../..'
 
 const melodramedary: FamListEntry = [
 	$familiar`Melodramedary`.identifierString,
 	(famInfo) => {
-		const spit = get('camelSpit')
+		const spit = clamp(get('camelSpit'), 0, 100)
 		if (spit >= 100) {
 			famInfo.desc.push(<Text>Ready to spit!</Text>)
 			famInfo.extraClass = 'has-drops'
 		} else {
-			famInfo.desc.push(
-				<VStack spacing="none">
-					<Text>{spit}% charged</Text>
-					<ProgressBar value={spit} max={100} desc="camel spit" />
-				</VStack>,
-			)
+			famInfo.progress = { value: spit, max: 100, desc: 'camel spit' }
 		}
 
 		const weight = familiarWeight(famInfo.thing)

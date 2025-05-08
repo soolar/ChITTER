@@ -1,8 +1,7 @@
 import { Item, stringModifier } from 'kolmafia'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { showItem } from '../../../util'
 import { getItemInfo } from '../../../util/helpers'
-import ProgressBar from '../ProgressBar'
 import TypedChitterIcon from './TypedChitterIcon'
 
 interface ItemIconArgs {
@@ -52,8 +51,7 @@ export default function ItemIcon({
 					ev.preventDefault()
 				})
 			}
-		>
-			<VStack spacing="none">
+			tooltipStart={
 				<Text
 					dangerouslySetInnerHTML={{
 						__html: `${forEquipping ? `${extraInfo.equipVerb} ` : ''}${
@@ -61,33 +59,18 @@ export default function ItemIcon({
 						}${tooltipDesc ? ` (${tooltipDesc})` : ''}`,
 					}}
 				/>
-				{!weirdFam &&
-					extraInfo.desc.map((node) => (
-						<span className="popup-desc-line">{node}</span>
-					))}
-				{extraInfo.progress && (
-					<VStack spacing="none">
-						<Text className="popup-desc-line">
-							{extraInfo.progress.value} / {extraInfo.progress.max}{' '}
-							{extraInfo.progress.desc}
-						</Text>
-						<ProgressBar
-							value={extraInfo.progress.value}
-							max={extraInfo.progress.max}
-							desc={extraInfo.progress.desc}
-						/>
-					</VStack>
-				)}
-				{item &&
-					(weirdFam ? (
-						weirdFamText
-					) : (
-						<Text
-							className="popup-desc-line"
-							dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
-						/>
-					))}
-			</VStack>
-		</TypedChitterIcon>
+			}
+			tooltipEnd={
+				item &&
+				(weirdFam ? (
+					weirdFamText
+				) : (
+					<Text
+						className="popup-desc-line"
+						dangerouslySetInnerHTML={{ __html: extraInfo.mods }}
+					/>
+				))
+			}
+		/>
 	)
 }
