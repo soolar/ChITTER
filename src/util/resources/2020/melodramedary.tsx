@@ -11,7 +11,7 @@ const melodramedary: FamListEntry = [
 			famInfo.desc.push(<Text>Ready to spit!</Text>)
 			famInfo.extraClass = 'has-drops'
 		} else {
-			famInfo.progress = { value: spit, max: 100, desc: 'camel spit' }
+			famInfo.progress.push({ value: spit, max: 100, desc: 'camel spit' })
 		}
 
 		const weight = familiarWeight(famInfo.thing)

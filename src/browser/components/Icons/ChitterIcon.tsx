@@ -21,7 +21,7 @@ interface ChitterIconArgs {
 	onContextMenu?: React.MouseEventHandler<HTMLImageElement>
 	chitImage?: boolean
 	weirdoDiv?: React.ReactNode
-	progress?: { value: number; max: number }
+	progress?: { value: number; max: number }[]
 }
 
 export default function ChitterIcon({
@@ -73,9 +73,10 @@ export default function ChitterIcon({
 						alt={image}
 					/>
 				)}
-				{progress && (
-					<ProgressBar value={progress.value} max={progress.max} vertical />
-				)}
+				{progress &&
+					progress.map((prog) => (
+						<ProgressBar value={prog.value} max={prog.max} vertical />
+					))}
 			</HStack>
 		</Tooltip>
 	)

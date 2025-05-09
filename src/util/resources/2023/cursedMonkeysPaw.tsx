@@ -20,7 +20,11 @@ const cursedMonkeysPaw: ItemListEntry = [
 			'Physical damage',
 		]
 		const wishesUsed = clamp(get('_monkeyPawWishesUsed'), 0, 5)
-		itemInfo.progress = { value: wishesUsed, max: 5, desc: 'wishes used' }
+		itemInfo.progress.push({
+			value: 5 - wishesUsed,
+			max: 5,
+			desc: 'wishes left',
+		})
 		if (wishesUsed < 5) {
 			itemInfo.borderType = 'has-drops'
 		}

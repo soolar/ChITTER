@@ -1,19 +1,17 @@
-import { $familiar, $item, get } from 'libram'
+import { $familiar, $item, clamp, get } from 'libram'
 import { FamListEntry } from '../famList'
-import { Text, VStack } from '@chakra-ui/react'
-import ProgressBar from '../../../browser/components/ProgressBar'
+import { Text } from '@chakra-ui/react'
 import { availableAmount } from 'kolmafia'
 
 const gelatinousCubeling: FamListEntry = [
 	$familiar`Gelatinous Cubeling`.identifierString,
 	(famInfo) => {
-		const progress = get('cubelingProgress')
-		famInfo.desc.push(
-			<VStack spacing="none">
-				<Text>{progress}/12 to drop</Text>
-				<ProgressBar value={progress} max={12} desc="progress" />
-			</VStack>,
-		)
+		const progress = clamp(get('cubelingProgress'), 0, 12)
+		famInfo.progress.push({
+			value: progress,
+			max: 12,
+			desc: 'to drop',
+		})
 		const needs = [
 			{ name: 'Pole', item: $item`eleven-foot pole` },
 			{ name: 'Ring', item: $item`ring of Detect Boring Doors` },

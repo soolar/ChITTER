@@ -8,11 +8,11 @@ const mayflies: ItemListEntry = [
 		if (fliesSummoned < 30) {
 			itemInfo.borderType = 'has-drops'
 		}
-		itemInfo.progress = {
-			value: fliesSummoned,
+		itemInfo.progress.push({
+			value: 30 - fliesSummoned,
 			max: 30,
-			desc: 'swarms summoned',
-		}
+			desc: 'swarms left',
+		})
 	},
 ]
 

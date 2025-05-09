@@ -12,11 +12,11 @@ const pantsgiving: ItemListEntry = [
 			turnsNeeded *= 10
 		}
 		if (turnsUsed < turnsNeeded) {
-			itemInfo.progress = {
+			itemInfo.progress.push({
 				value: turnsUsed,
 				max: turnsNeeded,
 				desc: 'to next fullness',
-			}
+			})
 		} else {
 			itemInfo.desc.push(<Text>Fullness ready!</Text>)
 			itemInfo.borderType = 'good'

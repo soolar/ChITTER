@@ -65,7 +65,7 @@ export interface GeneralInfo<T> {
 	borderType: BorderType
 	dropsInfo: DropInfo[]
 	invalid?: boolean
-	progress?: { value: number; max: number; desc: string }
+	progress: { value: number; max: number; desc: string }[]
 	weirdoDiv?: React.ReactNode
 }
 
@@ -120,18 +120,18 @@ function addDropsToDesc<T>(info: GeneralInfo<T>) {
 	const mysteriouslyFiniteDrops = info.dropsInfo.filter(
 		(dropInfo) => dropInfo.limit !== undefined && dropInfo.limit < 0,
 	)
-	const finiteDropsJoined = finiteDrops
-		.map(
-			(dropInfo) =>
-				`${(dropInfo.limit as number) - (dropInfo.dropped as number)}/${dropInfo.limit} ${dropName(dropInfo)}`,
-		)
-		.join(', ')
+	info.progress.push(
+		...finiteDrops.map((dropInfo) => ({
+			value: (dropInfo.limit as number) - (dropInfo.dropped as number),
+			max: dropInfo.limit as number,
+			desc: `${dropName(dropInfo)} left`,
+		})),
+	)
 	const infiniteDropsJoined = infiniteDrops.map(dropName).join(', ')
 	const mysteriouslyFiniteDropsJoined = mysteriouslyFiniteDrops
 		.map(dropName)
 		.join(', ')
 	const dropsTextToJoin = [
-		...(finiteDropsJoined !== '' ? [`${finiteDropsJoined} left`] : []),
 		...(infiniteDropsJoined !== '' ? [`drops ${infiniteDropsJoined}`] : []),
 		...(mysteriouslyFiniteDropsJoined !== ''
 			? [`drops ${mysteriouslyFiniteDropsJoined} for now`]
@@ -192,6 +192,7 @@ export function getItemInfo(
 		borderType: 'normal',
 		equipVerb: 'equip',
 		dropsInfo: [],
+		progress: [],
 	}
 
 	if (!isSomething) {
@@ -274,6 +275,7 @@ export function getFamInfo(
 		extraOptions: [],
 		image: fam.image,
 		dropsInfo: [],
+		progress: [],
 	}
 
 	if (type === 'familiar') {
@@ -411,6 +413,7 @@ export function getSkillInfo(skill: Skill): SkillInfo {
 		extraOptions: [],
 		usable: true,
 		dropsInfo: [],
+		progress: [],
 	}
 
 	unusableReason(res, skill.combat, 'Combat only')
@@ -464,6 +467,7 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 		displayName: eff.name,
 		displayTurns: turnsLeft === 2147483647 ? <>&infin;</> : turnsLeft,
 		dropsInfo: [],
+		progress: [],
 	}
 
 	const effectInfoModifierEntry = effectList.find(

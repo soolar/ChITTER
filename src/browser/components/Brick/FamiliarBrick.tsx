@@ -40,6 +40,19 @@ export default function FamiliarBrick() {
 				<Heading onClick={() => showFam(currFam.id)}>{currFam.name}</Heading>
 			</Tooltip>
 			{extraInfo.desc}
+			{extraInfo.progress.map((prog) => (
+				<VStack spacing="none">
+					<Text>
+						{prog.value} / {prog.max} {prog.desc}
+					</Text>
+					<ProgressBar
+						value={prog.value}
+						max={prog.max}
+						desc={prog.desc}
+						thin
+					/>
+				</VStack>
+			))}
 		</VStack>
 	)
 

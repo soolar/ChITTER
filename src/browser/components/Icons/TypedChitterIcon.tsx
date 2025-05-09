@@ -30,18 +30,14 @@ export default function TypedChitterIcon<T>({
 			tooltip={
 				<VStack spacing="none">
 					{tooltipStart}
-					{info.progress && (
+					{info.progress.map((prog) => (
 						<VStack spacing="none">
 							<Text className="popup-desc-line">
-								{info.progress.value} / {info.progress.max} {info.progress.desc}
+								{prog.value} / {prog.max} {prog.desc}
 							</Text>
-							<ProgressBar
-								value={info.progress.value}
-								max={info.progress.max}
-								desc={info.progress.desc}
-							/>
+							<ProgressBar value={prog.value} max={prog.max} desc={prog.desc} />
 						</VStack>
-					)}
+					))}
 					{info.desc.map((node) => (
 						<span className="popup-desc-line">{node}</span>
 					))}
