@@ -32770,6 +32770,40 @@ function currentCostumes() {
     ];
   }).filter(notNull));
 }
+function ProgressBar({
+  value,
+  max: max2,
+  desc,
+  vertical,
+  thin
+}) {
+  const percent2 = value === max2 ? 100 : 100 * clamp(value, 0, max2) / max2;
+  const percentVertical = 100 - percent2;
+  const percentText = `${vertical ? percentVertical : percent2}%`;
+  const bar = /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Box,
+    {
+      bgColor: vertical ? "blue" : "#eeeeee",
+      w: vertical ? "1px" : "full",
+      h: vertical ? "32px" : thin ? "2px" : "4px",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Box,
+        {
+          bgColor: vertical ? "#eeeeee" : "blue",
+          w: vertical ? "full" : percentText,
+          h: vertical ? percentText : "full"
+        }
+      )
+    }
+  );
+  return vertical ? bar : /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Tooltip,
+    {
+      label: `${value.toLocaleString()} / ${max2.toLocaleString()}${desc !== "" ? ` ${desc}` : ""}`,
+      children: bar
+    }
+  );
+}
 function ChitterIcon({
   image,
   tooltip,
@@ -32779,7 +32813,9 @@ function ChitterIcon({
   small,
   medium,
   onContextMenu,
-  chitImage
+  chitImage,
+  weirdoDiv,
+  progress: progress2
 }) {
   const classes = ["chit-icon"];
   if (borderType !== "normal") {
@@ -32793,15 +32829,20 @@ function ChitterIcon({
   if (extraClass) {
     classes.push(extraClass);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { label: tooltip, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Image$1,
-    {
-      src: specialPath ? image : chitImage ? `/images/relayimages/chit/${image}` : `/images/itemimages/${image}`,
-      className: classes.join(" "),
-      alt: image,
-      onContextMenu
-    }
-  ) });
+  if (weirdoDiv) {
+    classes.push("chit-icon-weird");
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { label: tooltip, onContextMenu, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(HStack, { spacing: "0", children: [
+    weirdoDiv ? /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { as: "span", className: classes.join(" "), children: weirdoDiv }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Image$1,
+      {
+        src: specialPath ? image : chitImage ? `/images/relayimages/chit/${image}` : `/images/itemimages/${image}`,
+        className: classes.join(" "),
+        alt: image
+      }
+    ),
+    progress2 && progress2.map((prog) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: prog.value, max: prog.max, vertical: true }))
+  ] }) });
 }
 function resolveStr(stringOrGetter) {
   return typeof stringOrGetter === "string" ? stringOrGetter : stringOrGetter();
@@ -33140,10 +33181,11 @@ const mayflies = [
     if (fliesSummoned < 30) {
       itemInfo.borderType = "has-drops";
     }
-    itemInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-      fliesSummoned,
-      " / 30 swarms summoned"
-    ] }));
+    itemInfo.progress.push({
+      value: 30 - fliesSummoned,
+      max: 30,
+      desc: "swarms left"
+    });
   }
 ];
 function sniffFunc(itemInfo) {
@@ -33249,6 +33291,42 @@ function PickerOption({
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(ChitterOption, { icon, children: /* @__PURE__ */ jsxRuntimeExports.jsx(PickerLauncher, { WrappedPicker, pickerProps, children: /* @__PURE__ */ jsxRuntimeExports.jsx(OptionText, { verb, subject }) }) });
 }
+function TypedChitterIcon({
+  info,
+  tooltipStart,
+  tooltipEnd,
+  small,
+  medium,
+  contextMenuCallback
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    ChitterIcon,
+    {
+      image: info.image,
+      borderType: info.borderType,
+      small,
+      medium,
+      onContextMenu: contextMenuCallback,
+      tooltip: /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
+        tooltipStart,
+        info.progress.map((prog) => /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { className: "popup-desc-line", children: [
+            prog.value,
+            " / ",
+            prog.max,
+            " ",
+            prog.desc
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: prog.value, max: prog.max, desc: prog.desc })
+        ] })),
+        info.desc.map((node2) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "popup-desc-line", children: node2 })),
+        tooltipEnd
+      ] }),
+      weirdoDiv: info.weirdoDiv,
+      progress: info.progress
+    }
+  );
+}
 function getSadMessage(style) {
   switch (style) {
     case "familiar":
@@ -33261,35 +33339,26 @@ function getSadMessage(style) {
       return "Something has gone wrong";
   }
 }
-function FamIcon({ fam, style, tooltipOverride }) {
+function FamIcon({ fam, style }) {
   if (fam && fam !== $familiar`none`) {
     const weight = familiarWeight(fam);
     const type = fam.identifierString;
     const extraInfo = getFamInfo(fam, true, style);
-    const tooltip = tooltipOverride || /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: fam.name }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-        "the ",
-        weight,
-        "lb ",
-        type
-      ] }),
-      extraInfo.desc
-    ] });
-    if (extraInfo.weirdoDiv) {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { label: tooltip, children: extraInfo.weirdoDiv });
-    }
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      ChitterIcon,
+      TypedChitterIcon,
       {
-        image: extraInfo.image,
-        tooltip,
-        borderType: extraInfo.borderType,
-        extraClass: extraInfo.extraClass,
-        onContextMenu: (ev) => {
+        info: extraInfo,
+        contextMenuCallback: (ev) => {
           showFam(fam.id);
           ev.preventDefault();
-        }
+        },
+        tooltipStart: /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
+          fam.name,
+          " the ",
+          weight,
+          "lb ",
+          type
+        ] })
       }
     );
   } else {
@@ -33508,10 +33577,7 @@ const gapEffects = [
 function stinkyCheeseGeneral(itemInfo) {
   const stinkiness = get("_stinkyCheeseCount");
   if (stinkiness < 100) {
-    itemInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-      stinkiness,
-      " / 100 stinkiness"
-    ] }));
+    itemInfo.progress.push({ value: stinkiness, max: 100, desc: "stinkiness" });
     itemInfo.borderType = "has-drops";
   } else {
     itemInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "All stunk up" }));
@@ -33554,14 +33620,11 @@ const pantsgiving = [
       turnsNeeded *= 10;
     }
     if (turnsUsed < turnsNeeded) {
-      itemInfo.desc.push(
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-          turnsUsed,
-          " / ",
-          turnsNeeded,
-          " towards next fullness"
-        ] })
-      );
+      itemInfo.progress.push({
+        value: turnsUsed,
+        max: turnsNeeded,
+        desc: "to next fullness"
+      });
     } else {
       itemInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Fullness ready!" }));
       itemInfo.borderType = "good";
@@ -33605,13 +33668,12 @@ const ltt = [
 function EffectIcon({ effect: effect2, small, medium }) {
   const info = getEffectInfo(effect2);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    ChitterIcon,
+    TypedChitterIcon,
     {
-      image: info.image,
-      tooltip: info.displayName,
-      borderType: "normal",
+      info,
       small,
-      medium
+      medium,
+      tooltipStart: info.displayName
     }
   );
 }
@@ -33714,14 +33776,7 @@ const daylightShavings = [
 ];
 function SkillIcon({ skill }) {
   const info = getSkillInfo(skill);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    ChitterIcon,
-    {
-      image: info.image,
-      tooltip: info.displayName,
-      borderType: "normal"
-    }
-  );
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(TypedChitterIcon, { info, tooltipStart: info.displayName });
 }
 function SkillOption({ skill }) {
   const info = getSkillInfo(skill);
@@ -33983,10 +34038,11 @@ const cursedMonkeysPaw = [
       "Physical damage"
     ];
     const wishesUsed = clamp(get("_monkeyPawWishesUsed"), 0, 5);
-    itemInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-      wishesUsed,
-      " / 5 wishes used"
-    ] }));
+    itemInfo.progress.push({
+      value: 5 - wishesUsed,
+      max: 5,
+      desc: "wishes left"
+    });
     if (wishesUsed < 5) {
       itemInfo.borderType = "has-drops";
     }
@@ -34286,16 +34342,6 @@ const reagnimatedGnome = [
     ] }));
   }
 ];
-function ProgressBar({ value, max: max2, desc }) {
-  const width = 100 * Math.min(value, max2) / max2;
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Tooltip,
-    {
-      label: `${value.toLocaleString()} / ${max2.toLocaleString()}${desc !== "" ? ` ${desc}` : ""}`,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { bgColor: "#eeeeee", w: "full", h: "4px", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Box, { w: `${width}%`, bgColor: "blue", h: "full" }) })
-    }
-  );
-}
 const steamPoweredCheerleader = [
   $familiar`Steam-Powered Cheerleader`.identifierString,
   (famInfo) => {
@@ -34336,65 +34382,60 @@ const crimboShrub = [
 const fistTurkey = [
   $familiar`Fist Turkey`.identifierString,
   (famInfo) => {
-    famInfo.dropsInfo.push(
-      { drop: "mus", dropped: get("_turkeyMuscle"), limit: 5 },
-      { drop: "mys", dropped: get("_turkeyMyst"), limit: 5 },
-      { drop: "mox", dropped: get("_turkeyMoxie"), limit: 5 }
+    famInfo.desc.push(
+      /* @__PURE__ */ jsxRuntimeExports.jsx(HStack, { children: [
+        { drop: "mus", dropped: get("_turkeyMuscle") },
+        { drop: "mys", dropped: get("_turkeyMyst") },
+        { drop: "mox", dropped: get("_turkeyMoxie") }
+      ].map((turkeyInfo) => /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
+          5 - clamp(turkeyInfo.dropped, 0, 5),
+          " / 5 ",
+          turkeyInfo.drop
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          ProgressBar,
+          {
+            value: clamp(5 - turkeyInfo.dropped, 0, 5),
+            max: 5,
+            desc: `${turkeyInfo.drop} left`,
+            thin: true
+          }
+        )
+      ] })) })
     );
+    famInfo.dropsInfo.push();
   }
 ];
 const melodramedary = [
   $familiar`Melodramedary`.identifierString,
   (famInfo) => {
-    const spit = get("camelSpit");
+    const spit = clamp(get("camelSpit"), 0, 100);
     if (spit >= 100) {
       famInfo.desc.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: "Ready to spit!" }));
       famInfo.extraClass = "has-drops";
     } else {
-      famInfo.desc.push(
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-            spit,
-            "% charged"
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: spit, max: 100, desc: "camel spit" })
-        ] })
-      );
+      famInfo.progress.push({ value: spit, max: 100, desc: "camel spit" });
     }
     const weight = familiarWeight(famInfo.thing);
-    famInfo.weirdoDiv = /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      HStack,
-      {
-        className: "chit-icon chit-icon-weird",
-        spacing: "0",
-        onContextMenu: (ev) => {
-          showFam(famInfo.thing.id);
-          ev.preventDefault();
-        },
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_left.gif", border: 0 }),
-          Array(Math.floor(weight / 5)).fill(
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_middle.gif", border: 0 })
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_right.gif", border: 0 })
-        ]
-      }
-    );
+    famInfo.weirdoDiv = /* @__PURE__ */ jsxRuntimeExports.jsxs(HStack, { spacing: "0", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_left.gif", border: 0 }),
+      Array(Math.floor(weight / 5)).fill(
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_middle.gif", border: 0 })
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Image$1, { src: "/images/otherimages/camelfam_right.gif", border: 0 })
+    ] });
   }
 ];
 const gelatinousCubeling = [
   $familiar`Gelatinous Cubeling`.identifierString,
   (famInfo) => {
-    const progress2 = get("cubelingProgress");
-    famInfo.desc.push(
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
-          progress2,
-          "/12 to drop"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { value: progress2, max: 12, desc: "progress" })
-      ] })
-    );
+    const progress2 = clamp(get("cubelingProgress"), 0, 12);
+    famInfo.progress.push({
+      value: progress2,
+      max: 12,
+      desc: "to drop"
+    });
     const needs = [
       { name: "Pole", item: $item`eleven-foot pole` },
       { name: "Ring", item: $item`ring of Detect Boring Doors` },
@@ -34542,6 +34583,12 @@ const everythingLooksColorful = [
     $effect`Everything Looks Purple`.identifierString,
     (effectInfo) => {
       effectInfo.displayName = /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { as: "span", color: "purple", children: effectInfo.displayName });
+    }
+  ],
+  [
+    $effect`Everything looks Beige`.identifierString,
+    (effectInfo) => {
+      effectInfo.displayName = /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { as: "span", color: "burlywood", children: effectInfo.displayName });
     }
   ]
 ];
@@ -34829,13 +34876,16 @@ function addDropsToDesc(info) {
   const mysteriouslyFiniteDrops = info.dropsInfo.filter(
     (dropInfo) => dropInfo.limit !== void 0 && dropInfo.limit < 0
   );
-  const finiteDropsJoined = finiteDrops.map(
-    (dropInfo) => `${dropInfo.limit - dropInfo.dropped}/${dropInfo.limit} ${dropName(dropInfo)}`
-  ).join(", ");
+  info.progress.push(
+    ...finiteDrops.map((dropInfo) => ({
+      value: dropInfo.limit - dropInfo.dropped,
+      max: dropInfo.limit,
+      desc: `${dropName(dropInfo)} left`
+    }))
+  );
   const infiniteDropsJoined = infiniteDrops.map(dropName).join(", ");
   const mysteriouslyFiniteDropsJoined = mysteriouslyFiniteDrops.map(dropName).join(", ");
   const dropsTextToJoin = [
-    ...finiteDropsJoined !== "" ? [`${finiteDropsJoined} left`] : [],
     ...infiniteDropsJoined !== "" ? [`drops ${infiniteDropsJoined}`] : [],
     ...mysteriouslyFiniteDropsJoined !== "" ? [`drops ${mysteriouslyFiniteDropsJoined} for now`] : []
   ];
@@ -34859,7 +34909,8 @@ function getItemInfo(item, optionals = {}) {
     image: optionals.iconOverride || (isSomething ? item.image : "blank.gif"),
     borderType: "normal",
     equipVerb: "equip",
-    dropsInfo: []
+    dropsInfo: [],
+    progress: []
   };
   if (!isSomething) {
     return res;
@@ -34919,7 +34970,8 @@ function getFamInfo(fam, isTooltip, type) {
     desc: [],
     extraOptions: [],
     image: fam.image,
-    dropsInfo: []
+    dropsInfo: [],
+    progress: []
   };
   if (type === "familiar") {
     const dropsLeft = fam.dropsLimit - fam.dropsToday;
@@ -35025,7 +35077,8 @@ function getSkillInfo(skill) {
     desc: [],
     extraOptions: [],
     usable: true,
-    dropsInfo: []
+    dropsInfo: [],
+    progress: []
   };
   unusableReason(res, skill.combat, "Combat only");
   unusableResource(res, myMp(), mpCost(skill), "MP");
@@ -35054,7 +35107,8 @@ function getEffectInfo(eff) {
     mods: stringModifier(eff, "Evaluated Modifiers"),
     displayName: eff.name,
     displayTurns: turnsLeft === 2147483647 ? /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: "∞" }) : turnsLeft,
-    dropsInfo: []
+    dropsInfo: [],
+    progress: []
   };
   const effectInfoModifierEntry = effectList.find(
     (value) => value[0] === eff.identifierString
@@ -35120,33 +35174,29 @@ function ItemIcon({
     }
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    ChitterIcon,
+    TypedChitterIcon,
     {
-      image: extraInfo.image,
-      tooltip: /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Text,
-          {
-            dangerouslySetInnerHTML: {
-              __html: `${forEquipping ? `${extraInfo.equipVerb} ` : ""}${extraInfo.displayName}${tooltipDesc ? ` (${tooltipDesc})` : ""}`
-            }
-          }
-        ),
-        !weirdFam && extraInfo.desc.map((node2) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "popup-desc-line", children: node2 })),
-        item && (weirdFam ? weirdFamText : /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Text,
-          {
-            className: "popup-desc-line",
-            dangerouslySetInnerHTML: { __html: extraInfo.mods }
-          }
-        ))
-      ] }),
-      borderType: extraInfo.borderType,
+      info: extraInfo,
       small,
-      onContextMenu: item && ((ev) => {
+      contextMenuCallback: item && ((ev) => {
         showItem(Number(item.descid));
         ev.preventDefault();
-      })
+      }),
+      tooltipStart: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Text,
+        {
+          dangerouslySetInnerHTML: {
+            __html: `${forEquipping ? `${extraInfo.equipVerb} ` : ""}${extraInfo.displayName}${tooltipDesc ? ` (${tooltipDesc})` : ""}`
+          }
+        }
+      ),
+      tooltipEnd: item && (weirdFam ? weirdFamText : /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Text,
+        {
+          className: "popup-desc-line",
+          dangerouslySetInnerHTML: { __html: extraInfo.mods }
+        }
+      ))
     }
   );
 }
@@ -35724,7 +35774,25 @@ function FamiliarBrick() {
   const nextInfo = nextLevelInfo(currFam);
   const famInfo = /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { label: "Click for Familiar Haiku", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heading, { onClick: () => showFam(currFam.id), children: currFam.name }) }),
-    extraInfo.desc
+    extraInfo.desc,
+    extraInfo.progress.map((prog) => /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: "none", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Text, { children: [
+        prog.value,
+        " / ",
+        prog.max,
+        " ",
+        prog.desc
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        ProgressBar,
+        {
+          value: prog.value,
+          max: prog.max,
+          desc: prog.desc,
+          thin: true
+        }
+      )
+    ] }))
   ] });
   const famIcon = /* @__PURE__ */ jsxRuntimeExports.jsx(
     PickerLauncher,
