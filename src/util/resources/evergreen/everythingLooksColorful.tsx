@@ -53,6 +53,16 @@ const everythingLooksColorful: EffectListEntry[] = [
 			)
 		},
 	],
+	[
+		$effect`Everything looks Beige`.identifierString,
+		(effectInfo) => {
+			effectInfo.displayName = (
+				<Text as="span" color="burlywood">
+					{effectInfo.displayName}
+				</Text>
+			)
+		},
+	],
 ]
 
 export default everythingLooksColorful
