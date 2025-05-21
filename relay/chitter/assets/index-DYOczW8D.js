@@ -31488,6 +31488,9 @@ function myThrall(...args2) {
 function myThunder(...args2) {
   return remoteCallFunction("myThunder", args2, 0);
 }
+function myTurncount(...args2) {
+  return remoteCallFunction("myTurncount", args2, 0);
+}
 function numericModifier(...args2) {
   return remoteCallFunction("numericModifier", args2, 0);
 }
@@ -34620,19 +34623,36 @@ const WarningIcon = createIcon({
   d: "M11.983,0a12.206,12.206,0,0,0-8.51,3.653A11.8,11.8,0,0,0,0,12.207,11.779,11.779,0,0,0,11.8,24h.214A12.111,12.111,0,0,0,24,11.791h0A11.766,11.766,0,0,0,11.983,0ZM10.5,16.542a1.476,1.476,0,0,1,1.449-1.53h.027a1.527,1.527,0,0,1,1.523,1.47,1.475,1.475,0,0,1-1.449,1.53h-.027A1.529,1.529,0,0,1,10.5,16.542ZM11,12.5v-6a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Z",
   displayName: "WarningIcon"
 });
+function CounterIcon({
+  counter: counter2,
+  small,
+  medium
+}) {
+  const info = getCounterInfo(counter2);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    TypedChitterIcon,
+    {
+      info,
+      small,
+      medium,
+      tooltipStart: info.displayName
+    }
+  );
+}
 function RawEffectDisplay({
   turnsLeft,
   name,
   desc,
   extendCommand,
   icon,
-  launches
+  launches,
+  link
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "chit-effect", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(HStack, { children: [
       icon,
       /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: 0, className: "chit-effect-description", children: [
-        launches ? /* @__PURE__ */ jsxRuntimeExports.jsx(PickerLauncher, { WrappedPicker: launches, pickerProps: {}, children: name }) : name,
+        launches ? /* @__PURE__ */ jsxRuntimeExports.jsx(PickerLauncher, { WrappedPicker: launches, pickerProps: {}, children: name }) : link ? /* @__PURE__ */ jsxRuntimeExports.jsx(MainLink, { href: link, children: "name" }) : name,
         desc && /* @__PURE__ */ jsxRuntimeExports.jsx(
           Text,
           {
@@ -34670,17 +34690,60 @@ function EffectDisplay({ eff }) {
     }
   );
 }
+function CounterDisplay({ counter: counter2 }) {
+  const info = getCounterInfo(counter2);
+  if (info.desc.length > 0 && typeof info.desc[0] !== "string") {
+    console.error(`Faulty desc for counter ${info.displayName}`);
+    return;
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    RawEffectDisplay,
+    {
+      turnsLeft: counter2.turnsLeft,
+      name: /* @__PURE__ */ jsxRuntimeExports.jsx(Text, { children: info.displayName }),
+      icon: /* @__PURE__ */ jsxRuntimeExports.jsx(CounterIcon, { counter: counter2, medium: true }),
+      link: counter2.url,
+      desc: info.desc.length > 0 ? info.desc[0] : void 0
+    }
+  );
+}
+function effOrCounterTurnsLeft(effOrCounter) {
+  return effOrCounter instanceof Effect ? haveEffect(effOrCounter) : effOrCounter.turnsLeft;
+}
 function EffectsBrick() {
-  const myEffs = getActiveEffects().sort((eff1, eff2) => {
-    const turnsDiff = haveEffect(eff1) - haveEffect(eff2);
-    return turnsDiff === 0 ? eff1.identifierNumber - eff2.identifierNumber : turnsDiff;
-  });
+  const countersSplit = get("relayCounters").split(":");
+  const counters = [];
+  if (countersSplit.length % 3 === 0) {
+    for (let i = 0; i < countersSplit.length; i += 3) {
+      counters.push(
+        parseCounter(
+          Number(countersSplit[i]),
+          countersSplit[i + 1],
+          countersSplit[i + 2]
+        )
+      );
+    }
+  }
+  const myEffsAndCounters = getActiveEffects();
+  myEffsAndCounters.push(...counters);
+  const myEffsAndCountersSorted = myEffsAndCounters.sort(
+    (effOrCounter1, effOrCounter2) => {
+      const turnsDiff = effOrCounterTurnsLeft(effOrCounter1) - effOrCounterTurnsLeft(effOrCounter2);
+      return turnsDiff === 0 ? effOrCounter1.name > effOrCounter2.name ? 1 : -1 : turnsDiff;
+    }
+  );
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Brick, { name: "effects", header: "Effects", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(VStack, { spacing: 0, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Divider, {}),
-    myEffs.map((eff) => {
+    myEffsAndCountersSorted.map((effOrCounter) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(EffectDisplay, { eff }, `effdisp${eff.name}`),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Divider, {}, `div${eff.name}`)
+        effOrCounter instanceof Effect ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          EffectDisplay,
+          {
+            eff: effOrCounter
+          },
+          `effdisp${effOrCounter.name}`
+        ) : /* @__PURE__ */ jsxRuntimeExports.jsx(CounterDisplay, { counter: effOrCounter }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Divider, {}, `div${effOrCounter.name}`)
       ] });
     }),
     needableEffects.map((needableInfo) => {
@@ -34836,6 +34899,19 @@ const effectList = [
 const needableEffects = [
   // evergreen
   needFlavour
+];
+const digitizeCounter = [
+  "Digitize Monster",
+  (counterInfo) => {
+    var _a2;
+    const digitizeMonster = (_a2 = get("_sourceTerminalDigitizeMonster")) == null ? void 0 : _a2.toString();
+    const digitizeCount = get("_sourceTerminalDigitizeMonsterCount");
+    counterInfo.desc.push(`${digitizeMonster} #${digitizeCount}`);
+  }
+];
+const counterList = [
+  // 2016
+  digitizeCounter
 ];
 function dropName(dropInfo) {
   if (typeof dropInfo.drop === "string") {
@@ -35145,6 +35221,33 @@ function getEffectInfo(eff) {
         }
       ) });
     }
+  }
+  return res;
+}
+function parseCounter(turnCount, details, image) {
+  const turnsLeft = turnCount - myTurncount();
+  const detailsMinusTags = details.replaceAll(/ \S+=\S+/g, "");
+  const linkMatchInfo = detailsMinusTags.match(/\S+\.php\S+/);
+  const url = linkMatchInfo ? linkMatchInfo[0] : void 0;
+  const name = detailsMinusTags.replace(/ \S+\.php\S+/, "");
+  return { turnsLeft, name, image, url };
+}
+function getCounterInfo(counter2) {
+  const res = {
+    thing: counter2,
+    image: counter2.image,
+    desc: [],
+    extraOptions: [],
+    borderType: "normal",
+    displayName: counter2.name,
+    dropsInfo: [],
+    progress: []
+  };
+  const counterInfoModifierEntry = counterList.find(
+    (value) => counter2.name.includes(value[0])
+  );
+  if (counterInfoModifierEntry) {
+    counterInfoModifierEntry[1](res);
   }
   return res;
 }
