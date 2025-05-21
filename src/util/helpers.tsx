@@ -20,6 +20,7 @@ import {
 	myRain,
 	mySoulsauce,
 	myThunder,
+	myTurncount,
 	pullsRemaining,
 	rainCost,
 	Skill,
@@ -40,6 +41,7 @@ import famList from './resources/famList'
 import skillList from './resources/skillList'
 import effectList from './resources/effectList'
 import ActionLink from '../browser/components/Link/ActionLink'
+import counterList from './resources/counterList'
 
 interface DropInfo {
 	drop: Item | string
@@ -522,6 +524,56 @@ export function getEffectInfo(eff: Effect): EffectInfo {
 				</ActionLink>
 			)
 		}
+	}
+
+	return res
+}
+
+/// COUNTERS
+
+export interface Counter {
+	turnsLeft: number
+	name: string
+	image: string
+	url?: string
+}
+
+export function parseCounter(
+	turnCount: number,
+	details: string,
+	image: string,
+): Counter {
+	const turnsLeft = turnCount - myTurncount()
+	const detailsMinusTags = details.replaceAll(/ \S+=\S+/g, '')
+	const linkMatchInfo = detailsMinusTags.match(/\S+\.php\S+/)
+	const url = linkMatchInfo ? linkMatchInfo[0] : undefined
+	const name = detailsMinusTags.replace(/ \S+\.php\S+/, '')
+
+	return { turnsLeft, name, image, url }
+}
+
+export type CounterInfo = GeneralInfo<Counter>
+
+export type CounterInfoModifier = (counterInfo: CounterInfo) => void
+
+export function getCounterInfo(counter: Counter): CounterInfo {
+	const res: CounterInfo = {
+		thing: counter,
+		image: counter.image,
+		desc: [],
+		extraOptions: [],
+		borderType: 'normal',
+		displayName: counter.name,
+		dropsInfo: [],
+		progress: [],
+	}
+
+	const counterInfoModifierEntry = counterList.find((value) =>
+		counter.name.includes(value[0]),
+	)
+
+	if (counterInfoModifierEntry) {
+		counterInfoModifierEntry[1](res)
 	}
 
 	return res
